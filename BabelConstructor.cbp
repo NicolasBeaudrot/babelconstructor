@@ -15,7 +15,7 @@
 				<Compiler>
 					<Add option="-g" />
 					<Add directory="ExternLibrairie/Box2D_v2.1.2/Box2D" />
-					<Add directory="ExternLibrairie/SFML-1.6-sdk-windows-mingw/SFML-1.6/include" />
+					<Add directory="ExternLibrairie/SFML-1.6/include" />
 					<Add directory="ExternLibrairie/tinyxml" />
 				</Compiler>
 				<Linker>
@@ -23,7 +23,7 @@
 					<Add option="-lsfml-window" />
 					<Add option="-lsfml-system" />
 					<Add directory="ExternLibrairie/Box2D_v2.1.2/Box2D/Build" />
-					<Add directory="ExternLibrairie/SFML-1.6-sdk-windows-mingw/SFML-1.6/lib" />
+					<Add directory="ExternLibrairie/SFML-1.6/lib" />
 					<Add directory="/usr/local/lib" />
 				</Linker>
 			</Target>
@@ -44,7 +44,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add directory="ExternLibrairie/Box2D_v2.1.2/Box2D" />
-			<Add directory="ExternLibrairie/SFML-1.6-sdk-windows-mingw/SFML-1.6/include" />
+			<Add directory="ExternLibrairie/SFML-1.6/include" />
 			<Add directory="ExternLibrairie/tinyxml" />
 		</Compiler>
 		<Linker>
@@ -56,7 +56,7 @@
 			<Add library="/usr/local/lib/libsfml-window.so" />
 			<Add library="ExternLibrairie/Box2D_v2.1.2/Box2D/Build/Box2D/libBox2D.so" />
 			<Add directory="ExternLibrairie/Box2D_v2.1.2/Box2D/Build" />
-			<Add directory="ExternLibrairie/SFML-1.6-sdk-windows-mingw/SFML-1.6/lib" />
+			<Add directory="ExternLibrairie/SFML-1.6/lib" />
 			<Add directory="/usr/local/lib" />
 		</Linker>
 		<Unit filename="Element/Element.cpp" />
