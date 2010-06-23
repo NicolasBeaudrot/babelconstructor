@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+
+<map>
+	<background>fond_bleu_central.jpg</background>
+	<support width="500" height="30">barre.png</support>
+	<limite y="200">limite.png</limite>
+	<elements>
+		<elem file="carre.png" x="350" y="385" angle="30" />
+		<elem file="carre.png" x="100" y="300" angle="0" />
+		<elem file="cercle.png" x="50" y="50" angle="0" />
+		<elem file="etoile.png" x="300" y="150" angle="10" />
+		<elem file="rectangle.png" x="400" y="450" angle="0" />
+	</elements>
+</map>
