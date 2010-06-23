@@ -20,16 +20,11 @@ GameManager::~GameManager() {
 void GameManager::createWorld() {
     b2Vec2 gravity(0.0f, -170.0f);
 	bool doSleep = true;
-
-    // Construct a world object, which will hold and simulate the rigid bodies.
 	world = new b2World(gravity, doSleep);
 
-	// Define the ground body.
 	b2BodyDef groundBodyDef;
 	groundBodyDef.position.Set(0.0f, 0.0f);
 	b2Body* groundBody = world->CreateBody(&groundBodyDef);
-
-	// Define the ground box shape.
 	b2PolygonShape groundBox;
 	groundBox.SetAsBox(_app.GetWidth(), 0.0f);
 	groundBody->CreateFixture(&groundBox, 0.0f);
