@@ -1,6 +1,8 @@
 #include "Element.h"
 #include <iostream>
 
+/* modified by Vincent */
+
 Element::Element(sf::Vector2f& position, float angle, std::string& file, b2World& world) : clicked(false) {
     _image.LoadFromFile("ressources/images/" + file);
     _sprite.SetImage(_image);
