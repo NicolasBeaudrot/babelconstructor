@@ -6,6 +6,8 @@
 #include "../Utility/Logger.h"
 #include <vector>
 #include "Element.h"
+#include "Square.h"
+#include "Circle.h"
 
     class ElementFactory : public CSingleton<ElementFactory>
     {
@@ -27,7 +29,7 @@
             void Init(sf::RenderWindow *application);
             void Delete();
             void loadBase(std::string background, std::string base, sf::Vector2f& dimension, b2World& world, std::string limite, float limite_y);
-            void add(sf::Vector2f& position, float& angle, std::string type, b2World& world);
+            void add(std::string type, sf::Vector2f& position, float& angle, std::string file, b2World& world, float* fixture);
             void clic(const sf::Input& input);
             void rotate(int value);
             void render(const sf::Input& input);

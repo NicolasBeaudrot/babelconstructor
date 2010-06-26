@@ -35,11 +35,16 @@ Map::Map(sf::RenderWindow * application, sf::View* camera, const std::string &no
         while (elem){
             sf::Vector2f position;
             float angle;
+            float *fixture = new float[3];
+
             elem->QueryFloatAttribute("x", &position.x);
             elem->QueryFloatAttribute("y", &position.y);
             elem->QueryFloatAttribute("angle", &angle);
+            elem->QueryFloatAttribute("density", &fixture[0]);
+            elem->QueryFloatAttribute("friction", &fixture[1]);
+            elem->QueryFloatAttribute("restitution", &fixture[2]);
 
-            ElementFactory::Instance()->add(position, angle, elem->Attribute("file"), world);
+            ElementFactory::Instance()->add(elem->Attribute("type"), position, angle, elem->Attribute("file"), world, fixture);
             elem = elem->NextSiblingElement();
         }
     }

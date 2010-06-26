@@ -46,10 +46,18 @@ void ElementFactory::loadBase(std::string background, std::string base, sf::Vect
 	baseBody->CreateFixture(&baseBox, 0.0f);
 }
 
-void ElementFactory::add(sf::Vector2f& position, float& angle, std::string file, b2World& world) {
-    Element *el = new Element(position, angle, file, world);
-    _tabElem.push_back(el);
-    Logger::Instance()->log("Element loaded : " + file);
+void ElementFactory::add(std::string type, sf::Vector2f& position, float& angle, std::string file, b2World& world, float* fixture) {
+    if (type == "Square") {
+        Square *el;
+        el = new Square(position, angle, file, world, fixture);
+        _tabElem.push_back(el);
+    } else if (type == "Circle") {
+        Circle *el;
+        el = new Circle(position, angle, file, world, fixture);
+        _tabElem.push_back(el);
+    }
+
+
 }
 
 void ElementFactory::clic(const sf::Input& input) {
@@ -82,7 +90,6 @@ void ElementFactory::render(const sf::Input& input) {
     _app->Draw(_sprite_back);
     _app->Draw(_sprite_base);
     _app->Draw(_sprite_limite);
-
    for(unsigned int i=0 ; i <  _tabElem.size() ; i++) {
         _tabElem[i]->render(_app, input);
    }

@@ -9,13 +9,12 @@
     class Element
     {
         protected :
-            sf::Image _image;
-            sf::Sprite _sprite;
             b2Body* _body;
             bool clicked;
-
+            sf::Image _image;
+            sf::Sprite _sprite;
         public :
-            Element(sf::Vector2f &position, float angle, std::string& file, b2World& world);
+            Element();
             ~Element();
             void clic(sf::Sprite& mouse);
             void rotate(int value);

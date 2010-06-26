@@ -41,7 +41,6 @@ it freely, subject to the following restrictions:
 #define RADIANS_PER_DEGREE (PI/180.0)
 #define ToRad(X) ( PI*(X)/180.f )        // Convertir des degrés en radian
 #define ToDeg(X) ( 180.f*(X)/PI )        // Convertir des radians en degrés
-#define Carre(X) ((X)*(X))                   // au carré
 #include <cmath>
 
 class Collision {
@@ -106,88 +105,9 @@ public:
 
     static float to_radian(float angle);
 
+    static float to_meter(float value);
 
-    inline static float Distance(const float x1, const float y1, const float x2 = 0.f, const float y2 = 0.f)
-    {
-        return sqrt( (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) );
-    }
-
-    inline static float Distance(const sf::Vector2f& p1, const sf::Vector2f& p2 = sf::Vector2f(0.f, 0.f))
-    {
-        // Utilisation de l'autre fonction Distance.
-        return Distance(p1.x, p1.y, p2.x, p2.y);
-    }
-
-    inline static sf::Vector2f Translate(const float distance, const float angle, const sf::Vector2f& p = sf::Vector2f(0.f, 0.f))
-    {
-        // X -1 en y car le repère est inversé dans SFML
-        return sf::Vector2f(p.x + distance * std::cos(ToRad(angle)), p.y - distance * std::sin(ToRad(angle)));
-    }
-
-    inline static sf::Vector2f Translate(const sf::Vector2f& p, const sf::Vector2f& v)
-    {
-        return sf::Vector2f(p.x + v.x, p.y + v.y);
-    }
-
-    inline static float Angle(const float x1, const float y1, const float x2 = 0.f, const float y2 = 0.f)
-    {
-        float x = x1 - x2;
-        float y = y1 - y2;
-
-        if (y == 0.f)
-        {
-            if (x >= 0.f)
-                return 0.f;
-            else
-                return 180.f;
-        }
-
-        if (y >= 0.f)
-        {
-            return ( ToDeg( std::atan(y/x) ) + 270.f );
-        }
-        else
-        {
-            return ( ToDeg( std::atan(y/x) ) + 90.f );
-        }
-    }
-
-    inline static float Angle(const sf::Vector2f& p1, const sf::Vector2f& p2 = sf::Vector2f(0.f, 0.f))
-    {
-        return Angle(p1.x, p1.y, p2.x, p2.y);
-    }
-
-    inline static sf::Vector2f DansLeRepereDe(const sf::Drawable& Item, const sf::Vector2f& p)
-    {
-        float distance = Distance(p, Item.GetPosition());
-        float angle = Angle(p, Item.GetPosition());
-
-        return Translate(distance, angle - Item.GetRotation());
-    }
-
-    inline static bool IsPicked(const sf::Sprite& s, const sf::Vector2f& p, const int AlphaMax = -1)
-    {
-
-        sf::Vector2f pt = DansLeRepereDe(s, p) - s.GetCenter();
-
-        if (
-            pt.x > 0 &&
-            pt.x < s.GetSize().x &&
-            pt.y > 0 &&
-            pt.y < s.GetSize().y
-        )
-        {
-            if (AlphaMax >= 0)
-            {
-                if (s.GetPixel(static_cast<int>(pt.x), static_cast<int>(pt.y)).a <= AlphaMax)
-                    return false;
-            }
-
-            return true;
-        }
-
-        return false;
-    }
+    static float to_pixel(float value);
 
 private:
 

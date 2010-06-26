@@ -44,10 +44,14 @@
 			<Add directory="ExternLibrairie/Box2D_v2.1.2/Box2D/Build" />
 			<Add directory="ExternLibrairie/SFML-1.6/lib" />
 		</Linker>
+		<Unit filename="Element/Circle.cpp" />
+		<Unit filename="Element/Circle.h" />
 		<Unit filename="Element/Element.cpp" />
 		<Unit filename="Element/Element.h" />
 		<Unit filename="Element/ElementFactory.cpp" />
 		<Unit filename="Element/ElementFactory.h" />
+		<Unit filename="Element/Square.cpp" />
+		<Unit filename="Element/Square.h" />
 		<Unit filename="GameManager.cpp" />
 		<Unit filename="GameManager.h" />
 		<Unit filename="Map/Map.cpp" />
