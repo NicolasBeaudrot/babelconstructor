@@ -8,7 +8,7 @@
 		<elem type="Square" file="carre.png" x="350" y="385" angle="30" density="100.0" friction="0.3" restitution="0.3" />
 		<elem type="Square" file="carre.png" x="200" y="300" angle="0" density="100.0" friction="0.3" restitution="0.3" />
 		<elem type="Circle" file="cercle.png" x="50" y="50" angle="0" density="100.0" friction="1.0" restitution="0.2" />
-		<elem type="Star" file="etoile.png" x="300" y="150" angle="10" density="100.0" friction="0.3" restitution="0.3" />
-		<elem type="Rectangle" file="rectangle.png" x="400" y="450" angle="0" density="100.0" friction="0.3" restitution="0.3" />
+		<elem type="Triangle" file="triangle.png" x="300" y="150" angle="0" density="100.0" friction="0.3" restitution="0.3" />
+		<elem type="Square" file="rectangle.png" x="400" y="450" angle="0" density="100.0" friction="0.3" restitution="0.3" />
 	</elements> 
 </map>

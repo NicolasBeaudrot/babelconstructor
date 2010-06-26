@@ -8,6 +8,7 @@
 #include "Element.h"
 #include "Square.h"
 #include "Circle.h"
+#include "Triangle.h"
 
     class ElementFactory : public CSingleton<ElementFactory>
     {

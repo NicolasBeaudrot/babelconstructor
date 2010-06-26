@@ -47,14 +47,15 @@ void ElementFactory::loadBase(std::string background, std::string base, sf::Vect
 }
 
 void ElementFactory::add(std::string type, sf::Vector2f& position, float& angle, std::string file, b2World& world, float* fixture) {
-    if (type == "Square") {
-        Square *el;
-        el = new Square(position, angle, file, world, fixture);
-        _tabElem.push_back(el);
+    if (type == "Square" or type == "Rectangle") {
+        Square *elem = new Square(position, angle, file, world, fixture);
+        _tabElem.push_back(elem);
     } else if (type == "Circle") {
-        Circle *el;
-        el = new Circle(position, angle, file, world, fixture);
-        _tabElem.push_back(el);
+        Circle *elem = new Circle(position, angle, file, world, fixture);
+        _tabElem.push_back(elem);
+    } else if (type == "Triangle") {
+        Triangle *elem = new Triangle(position, angle, file, world, fixture);
+        _tabElem.push_back(elem);
     }
 
 
