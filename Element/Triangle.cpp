@@ -14,9 +14,9 @@ Triangle::Triangle(sf::Vector2f &position, float angle, std::string& file, b2Wor
     _body = world.CreateBody(&bd);
 
 	b2Vec2 vertices[3];
-    vertices[0].Set(0.0f, 0.0f);
-    vertices[1].Set(50.0f, 0.0f);
-    vertices[2].Set(25.0f, 50.0f);
+    vertices[1].Set(-25.0f, -22.0f);
+    vertices[2].Set(25.0f, -22.0f);
+    vertices[0].Set(0.0f, 22.0f);
     int32 count = 3;
 
     b2PolygonShape triangle;
