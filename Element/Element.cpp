@@ -1,7 +1,7 @@
 #include "Element.h"
 #include <iostream>
 
-Element::Element() : clicked(false) {
+Element::Element() : clicked(false),xClicked(NULL),yClicked(NULL) {
 }
 
 Element::~Element() {
@@ -11,10 +11,10 @@ Element::~Element() {
 void Element::clic(sf::Sprite& mouse) {
     if (!clicked && Collision::PixelPerfectTest(_sprite, mouse)) {
         clicked = true;
-        _body->SetActive(false);
+       // _body->SetActive(true);
     } else {
         clicked = false;
-        _body->SetActive(true);
+       // _body->SetActive(true);
     }
 }
 
@@ -32,11 +32,30 @@ bool Element::test(float value) {
 
 void Element::render(const sf::Input& input) {
     if (clicked) {
-        _sprite.SetX(input.GetMouseX());
-        _sprite.SetY(input.GetMouseY());
-        b2Vec2 position(_app->GetWidth() - input.GetMouseX(), _app->GetHeight() - input.GetMouseY());
+
+        //1er clic
+        if(!xClicked && !yClicked){
+            xClicked=input.GetMouseX();
+            yClicked=input.GetMouseY();
+
+        }
+
+        int deltaX = input.GetMouseX() - xClicked;
+        int deltaY = input.GetMouseY() - yClicked;
+
+        _sprite.SetX(_sprite.GetPosition().x + deltaX );
+        _sprite.SetY(_sprite.GetPosition().y + deltaY);
+
+        b2Vec2 position(_app->GetWidth() - _sprite.GetPosition().x, _app->GetHeight() - _sprite.GetPosition().y);
         _body->SetTransform(position, Collision::to_radian(-_sprite.GetRotation()));
+
+        //maj
+        xClicked=input.GetMouseX();
+        yClicked=input.GetMouseY();
+
     } else {
+        xClicked=NULL;
+        yClicked=NULL;
         b2Vec2 position = _body->GetPosition();
         _sprite.SetX(_app->GetWidth() - position.x);
         _sprite.SetY(_app->GetHeight() - position.y);

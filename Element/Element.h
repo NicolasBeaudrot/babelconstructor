@@ -15,6 +15,10 @@
             sf::Image *_image;
             sf::Sprite _sprite;
             sf::RenderWindow *_app;
+
+            int xClicked;
+            int yClicked;
+
         public :
             Element();
             ~Element();
