@@ -71,9 +71,7 @@ void ElementFactory::clic(const sf::Input& input) {
 
         for(unsigned int i=0 ; i <  _tabElem.size() ; i++) {
             _tabElem[i]->clic(_mouse);
-            if (_tabElem[i]->test(_sprite_limite.GetPosition().y)) {
-                Logger::Instance()->log("Gagné");
-            }
+            _tabElem[i]->test(_sprite_limite.GetPosition().y);
         }
     }
 

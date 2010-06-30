@@ -1,7 +1,7 @@
 #include "Element.h"
-#include <iostream>
+#include "ElementFactory.h"
 
-Element::Element() : clicked(false),xClicked(NULL),yClicked(NULL) {
+Element::Element() : clicked(false), xClicked(NULL), yClicked(NULL), tested(false) {
 }
 
 Element::~Element() {
@@ -14,6 +14,7 @@ void Element::clic(sf::Sprite& mouse) {
        // _body->SetActive(true);
     } else {
         clicked = false;
+        _clock.Reset();
        // _body->SetActive(true);
     }
 }
@@ -24,11 +25,16 @@ void Element::rotate(int value) {
     }
 }
 
-bool Element::test(float value) {
-    b2Vec2 pos = _body->GetPosition();
-    return (((_app->GetHeight() - pos.y) -  _image->GetHeight()/2) <= value);
+void Element::test(float value) {
+    if (!clicked) {
+        b2Vec2 pos = _body->GetPosition();
+        if (((_app->GetHeight() - pos.y) -  _image->GetHeight()/2) <= value) {
+            tested = true;
+        } else {
+            tested = false;
+        }
+    }
 }
-
 
 void Element::render(const sf::Input& input) {
     if (clicked) {
@@ -60,6 +66,18 @@ void Element::render(const sf::Input& input) {
         _sprite.SetX(_app->GetWidth() - position.x);
         _sprite.SetY(_app->GetHeight() - position.y);
         _sprite.SetRotation(-Collision::to_degres(_body->GetAngle()));
+
+        if (tested) {
+            if (_clock.GetElapsedTime() > 5) {
+                sf::Font font;
+                if (!font.LoadFromFile("ressources/fonts/gilligan.ttf", 50)) {
+                    Logger::Instance()->log("Unable to load the font");
+                }
+                sf::String text("Winner", font, 50);
+                text.SetPosition(_app->GetWidth()/2-50, 10);
+                _app->Draw(text);
+            }
+        }
     }
 
     _app->Draw(_sprite);
