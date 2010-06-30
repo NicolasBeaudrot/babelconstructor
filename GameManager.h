@@ -14,7 +14,6 @@ class GameManager
         sf::RenderWindow _app;
         sf::Clock _clock;
         sf::View _camera;
-        std::string current_map;
         b2World *world;
 
     public :

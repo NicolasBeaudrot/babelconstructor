@@ -1,0 +1,5 @@
+<?xml version="1.0" ?>
+
+<game>
+	<window width="800" height="600" colors="32" fullscreen="false" />
+</game>

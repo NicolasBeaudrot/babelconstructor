@@ -57,8 +57,6 @@ void ElementFactory::add(std::string type, sf::Vector2f& position, float& angle,
         Triangle *elem = new Triangle(position, angle, file, world, fixture);
         _tabElem.push_back(elem);
     }
-
-
 }
 
 void ElementFactory::clic(const sf::Input& input) {

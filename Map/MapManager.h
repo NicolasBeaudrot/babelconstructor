@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "../Utility/Singleton.h"
 #include "Map.h"
+#include <dirent.h>
 
     class MapManager : public CSingleton<MapManager>
     {
@@ -11,9 +12,11 @@
             friend class CSingleton<MapManager>;
             MapManager();
             virtual ~MapManager();
-
-            sf::RenderWindow *_app;
+            sf::RenderWindow* _app;
             sf::View* _camera;
+            std::vector<std::string> _tabMap;
+            int _indexCurr;
+
         public:
             void Init(sf::RenderWindow* window, sf::View* camera);
 
@@ -21,6 +24,7 @@
 
             Map* getCurrentMap;
 
+            bool nextMap(b2World& world);
     };
 
 #endif

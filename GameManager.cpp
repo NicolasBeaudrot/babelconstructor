@@ -1,7 +1,7 @@
 #include "GameManager.h"
 
 
-GameManager::GameManager() : _app(), _camera(), current_map("map1.xml"){
+GameManager::GameManager() : _app(), _camera() {
     _app.Create(sf::VideoMode(800, 600, 32), "Babel Constructor");
 
     MapManager::Instance()->Init(&_app, &_camera);
@@ -45,7 +45,7 @@ void GameManager::destroyWorld() {
 void GameManager::run() {
 
     createWorld();
-    MapManager::Instance()->Load(current_map, *world);
+    MapManager::Instance()->nextMap(*world);
 
     while (_app.IsOpened()) {
         sf::Event Event;
@@ -65,7 +65,7 @@ void GameManager::run() {
                 destroyWorld();
                 delete MapManager::Instance()->getCurrentMap;
                 createWorld();
-                MapManager::Instance()->Load("map2.xml", *world);
+                MapManager::Instance()->nextMap(*world);
             }
         }
 
