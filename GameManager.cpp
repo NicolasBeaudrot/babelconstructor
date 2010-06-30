@@ -79,7 +79,8 @@ void GameManager::run() {
     while (_app.IsOpened()) {
         sf::Event Event;
         while (_app.GetEvent(Event))  {
-            if (Event.Type == sf::Event::Closed || Event.Key.Code == sf::Key::Escape) {
+            if (Event.Type == sf::Event::Closed
+                        || (Event.Type == sf::Event::KeyPressed && Event.Key.Code == sf::Key::Escape)) {
                 _app.Close();
             } else if (Event.Type == sf::Event::MouseButtonReleased) {
                 ElementFactory::Instance()->clic(_app.GetInput());
