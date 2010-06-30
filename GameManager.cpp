@@ -1,8 +1,36 @@
 #include "GameManager.h"
-
+#include <tinyxml.h>
+#include <tinyxml.cpp>
+#include <tinyxmlerror.cpp>
+#include <tinyxmlparser.cpp>
+#include <tinystr.cpp>
+#include <tinystr.h>
 
 GameManager::GameManager() : _app(), _camera() {
-    _app.Create(sf::VideoMode(800, 600, 32), "Babel Constructor");
+    TiXmlDocument doc("ressources/config.xml");
+    int width, height, colors;
+    std::string fullscreen = "false";
+
+    if (!doc.LoadFile()) {
+        Logger::Instance()->log("Unable to load the config file");
+        width = 800;
+        height = 600;
+        colors = 32;
+    } else {
+        Logger::Instance()->log("Config loaded");
+        TiXmlHandle hdl(&doc);
+        TiXmlElement *win;
+        win = hdl.FirstChildElement("game").FirstChild("window").Element();
+        win->QueryIntAttribute("width", &width);
+        win->QueryIntAttribute("height", &height);
+        win->QueryIntAttribute("colors", &colors);
+        fullscreen = win->Attribute("fullscreen");
+    }
+    if (fullscreen == "true") {
+        _app.Create(sf::VideoMode(width, height, colors), "Babel Constructor", sf::Style::Fullscreen);
+    } else {
+        _app.Create(sf::VideoMode(width, height, colors), "Babel Constructor");
+    }
 
     MapManager::Instance()->Init(&_app, &_camera);
     ElementFactory::Instance()->Init(&_app);
@@ -15,6 +43,7 @@ GameManager::~GameManager() {
     MapManager::Kill();
     ElementFactory::Kill();
     Logger::Kill();
+    ImageManager::Kill();
 }
 
 void GameManager::createWorld() {
@@ -50,7 +79,7 @@ void GameManager::run() {
     while (_app.IsOpened()) {
         sf::Event Event;
         while (_app.GetEvent(Event))  {
-            if (Event.Type == sf::Event::Closed) {
+            if (Event.Type == sf::Event::Closed || Event.Key.Code == sf::Key::Escape) {
                 _app.Close();
             } else if (Event.Type == sf::Event::MouseButtonReleased) {
                 ElementFactory::Instance()->clic(_app.GetInput());

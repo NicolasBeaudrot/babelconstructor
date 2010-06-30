@@ -1,9 +1,7 @@
 #ifndef MAP
 #define MAP
-#include <SFML/Graphics.hpp>
 #include "../Element/ElementFactory.h"
 #include "../Utility/Logger.h"
-#include <Box2D/Box2D.h>
 
 class Map {
 	private:

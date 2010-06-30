@@ -5,7 +5,7 @@
     class Triangle : public Element
     {
         public :
-            Triangle(sf::Vector2f &position, float angle, std::string& file, b2World& world, float* fixture);
+            Triangle(sf::Vector2f &position, float angle, std::string& file, b2World& world, float* fixture, sf::RenderWindow *application);
     };
 
 #endif

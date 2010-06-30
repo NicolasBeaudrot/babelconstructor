@@ -7,9 +7,9 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="bin\Debug\BabelConstructor" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="bin\Debug" />
-				<Option object_output="obj\Debug\" />
+				<Option output="bin/Debug/BabelConstructor" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="bin/Debug" />
+				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -17,9 +17,9 @@
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="bin\Release\BabelConstructor" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="bin\Release" />
-				<Option object_output="obj\Release\" />
+				<Option output="bin/Release/BabelConstructor" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="bin/Release" />
+				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -32,39 +32,41 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add directory="ExternLibrairie\Box2D_v2.1.2\Box2D" />
-			<Add directory="ExternLibrairie\SFML-1.6\include" />
-			<Add directory="ExternLibrairie\tinyxml" />
+			<Add directory="ExternLibrairie/Box2D_v2.1.2/Box2D" />
+			<Add directory="ExternLibrairie/SFML-1.6/include" />
+			<Add directory="ExternLibrairie/tinyxml" />
 		</Compiler>
 		<Linker>
 			<Add option="-lsfml-graphics" />
 			<Add option="-lsfml-window" />
 			<Add option="-lsfml-system" />
-			<Add library="ExternLibrairie\Box2D_v2.1.2\Box2D\Build\Box2D\libBox2D.a" />
-			<Add directory="ExternLibrairie\Box2D_v2.1.2\Box2D\Build" />
-			<Add directory="ExternLibrairie\SFML-1.6\lib" />
+			<Add library="ExternLibrairie/Box2D_v2.1.2/Box2D/Build/Box2D/libBox2D.a" />
+			<Add directory="ExternLibrairie/Box2D_v2.1.2/Box2D/Build" />
+			<Add directory="ExternLibrairie/SFML-1.6/lib" />
 		</Linker>
-		<Unit filename="Element\Circle.cpp" />
-		<Unit filename="Element\Circle.h" />
-		<Unit filename="Element\Element.cpp" />
-		<Unit filename="Element\Element.h" />
-		<Unit filename="Element\ElementFactory.cpp" />
-		<Unit filename="Element\ElementFactory.h" />
-		<Unit filename="Element\Square.cpp" />
-		<Unit filename="Element\Square.h" />
-		<Unit filename="Element\Triangle.cpp" />
-		<Unit filename="Element\Triangle.h" />
+		<Unit filename="Element/Circle.cpp" />
+		<Unit filename="Element/Circle.h" />
+		<Unit filename="Element/Element.cpp" />
+		<Unit filename="Element/Element.h" />
+		<Unit filename="Element/ElementFactory.cpp" />
+		<Unit filename="Element/ElementFactory.h" />
+		<Unit filename="Element/Square.cpp" />
+		<Unit filename="Element/Square.h" />
+		<Unit filename="Element/Triangle.cpp" />
+		<Unit filename="Element/Triangle.h" />
 		<Unit filename="GameManager.cpp" />
 		<Unit filename="GameManager.h" />
-		<Unit filename="Map\Map.cpp" />
-		<Unit filename="Map\Map.h" />
-		<Unit filename="Map\MapManager.cpp" />
-		<Unit filename="Map\MapManager.h" />
-		<Unit filename="Utility\Collision.cpp" />
-		<Unit filename="Utility\Collision.h" />
-		<Unit filename="Utility\Logger.cpp" />
-		<Unit filename="Utility\Logger.h" />
-		<Unit filename="Utility\Singleton.h" />
+		<Unit filename="Map/Map.cpp" />
+		<Unit filename="Map/Map.h" />
+		<Unit filename="Map/MapManager.cpp" />
+		<Unit filename="Map/MapManager.h" />
+		<Unit filename="Utility/Collision.cpp" />
+		<Unit filename="Utility/Collision.h" />
+		<Unit filename="Utility/ImageManager.cpp" />
+		<Unit filename="Utility/ImageManager.h" />
+		<Unit filename="Utility/Logger.cpp" />
+		<Unit filename="Utility/Logger.h" />
+		<Unit filename="Utility/Singleton.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

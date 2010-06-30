@@ -48,13 +48,13 @@ void ElementFactory::loadBase(std::string background, std::string base, sf::Vect
 
 void ElementFactory::add(std::string type, sf::Vector2f& position, float& angle, std::string file, b2World& world, float* fixture) {
     if (type == "Square" or type == "Rectangle") {
-        Square *elem = new Square(position, angle, file, world, fixture);
+        Square *elem = new Square(position, angle, file, world, fixture, _app);
         _tabElem.push_back(elem);
     } else if (type == "Circle") {
-        Circle *elem = new Circle(position, angle, file, world, fixture);
+        Circle *elem = new Circle(position, angle, file, world, fixture, _app);
         _tabElem.push_back(elem);
     } else if (type == "Triangle") {
-        Triangle *elem = new Triangle(position, angle, file, world, fixture);
+        Triangle *elem = new Triangle(position, angle, file, world, fixture, _app);
         _tabElem.push_back(elem);
     }
 }
@@ -90,7 +90,7 @@ void ElementFactory::render(const sf::Input& input) {
     _app->Draw(_sprite_base);
     _app->Draw(_sprite_limite);
    for(unsigned int i=0 ; i <  _tabElem.size() ; i++) {
-        _tabElem[i]->render(_app, input);
+        _tabElem[i]->render(input);
    }
 
 }

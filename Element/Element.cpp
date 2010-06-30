@@ -9,7 +9,6 @@ Element::~Element() {
 }
 
 void Element::clic(sf::Sprite& mouse) {
-
     if (!clicked && Collision::PixelPerfectTest(_sprite, mouse)) {
         clicked = true;
         _body->SetActive(false);
@@ -26,24 +25,24 @@ void Element::rotate(int value) {
 }
 
 bool Element::test(float value) {
-    std::cout << _sprite.GetPosition().y << std::endl;
-    return (_sprite.GetPosition().y <= value);
+    b2Vec2 pos = _body->GetPosition();
+    return (((_app->GetHeight() - pos.y) -  _image->GetHeight()/2) <= value);
 }
 
 
-void Element::render(sf::RenderWindow* window, const sf::Input& input) {
+void Element::render(const sf::Input& input) {
     if (clicked) {
         _sprite.SetX(input.GetMouseX());
         _sprite.SetY(input.GetMouseY());
-        b2Vec2 position(window->GetWidth() - input.GetMouseX(),window->GetHeight() - input.GetMouseY());
+        b2Vec2 position(_app->GetWidth() - input.GetMouseX(), _app->GetHeight() - input.GetMouseY());
         _body->SetTransform(position, Collision::to_radian(-_sprite.GetRotation()));
     } else {
         b2Vec2 position = _body->GetPosition();
-        _sprite.SetX(window->GetWidth() - position.x);
-        _sprite.SetY(window->GetHeight() - position.y);
+        _sprite.SetX(_app->GetWidth() - position.x);
+        _sprite.SetY(_app->GetHeight() - position.y);
         _sprite.SetRotation(-Collision::to_degres(_body->GetAngle()));
     }
 
-    window->Draw(_sprite);
+    _app->Draw(_sprite);
 }
 

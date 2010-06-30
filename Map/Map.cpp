@@ -1,10 +1,5 @@
 #include "Map.h"
 #include <tinyxml.h>
-#include <tinyxml.cpp>
-#include <tinyxmlerror.cpp>
-#include <tinyxmlparser.cpp>
-#include <tinystr.cpp>
-#include <tinystr.h>
 
 Map::Map(sf::RenderWindow * application, sf::View* camera, const std::string &nom, b2World& world) : _app(application), _camera(camera){
     const std::string file = "ressources/map/" + nom;

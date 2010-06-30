@@ -62,6 +62,8 @@
 		<Unit filename="Map/MapManager.h" />
 		<Unit filename="Utility/Collision.cpp" />
 		<Unit filename="Utility/Collision.h" />
+		<Unit filename="Utility/ImageManager.cpp" />
+		<Unit filename="Utility/ImageManager.h" />
 		<Unit filename="Utility/Logger.cpp" />
 		<Unit filename="Utility/Logger.h" />
 		<Unit filename="Utility/Singleton.h" />
