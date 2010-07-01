@@ -36,7 +36,7 @@
             void add(std::string type, sf::Vector2f& position, float& angle, std::string file, b2World& world, float* fixture);
             void clic(const sf::Input& input);
             void rotate(int value);
-            void render(const sf::Input& input);
+            bool render(const sf::Input& input);
     };
 
 #endif

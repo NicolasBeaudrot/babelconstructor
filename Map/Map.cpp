@@ -48,7 +48,3 @@ Map::Map(sf::RenderWindow * application, sf::View* camera, const std::string &no
 Map::~Map() {
     ElementFactory::Instance()->Delete();
 }
-
-void Map::render(const sf::Input& input) {
-    ElementFactory::Instance()->render(input);
-}

@@ -44,6 +44,7 @@ void MapManager::Load(const std::string& nom, b2World& world) {
 
 bool MapManager::nextMap(b2World& world) {
     _indexCurr++;
+    delete getCurrentMap;
     if (_indexCurr < _tabMap.size()) {
         getCurrentMap = new Map(_app, _camera, _tabMap[_indexCurr], world);
     } else {

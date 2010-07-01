@@ -93,7 +93,6 @@ void GameManager::run() {
                 }
             } else if (Event.Type == sf::Event::KeyPressed && Event.Key.Code == sf::Key::N) {
                 destroyWorld();
-                delete MapManager::Instance()->getCurrentMap;
                 createWorld();
                 MapManager::Instance()->nextMap(*world);
             }
@@ -105,7 +104,11 @@ void GameManager::run() {
 
         world->Step(_app.GetFrameTime(), 6, 2);
 
-        MapManager::Instance()->getCurrentMap->render(_app.GetInput());
+        if (ElementFactory::Instance()->render(_app.GetInput())) {
+            destroyWorld();
+            createWorld();
+            MapManager::Instance()->nextMap(*world);
+        }
 
 		_app.SetView(_app.GetDefaultView());
         _app.Display();

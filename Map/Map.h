@@ -11,7 +11,6 @@ class Map {
     public :
         Map(sf::RenderWindow * application, sf::View* camera, const std::string &nom, b2World& world);
         virtual ~Map();
-        void render(const sf::Input& input);
 };
 
 #endif

@@ -18,6 +18,8 @@ void ElementFactory::Init(sf::RenderWindow *application) {
 }
 
 void ElementFactory::Delete() {
+    tested  = false;
+    clicked = false;
     for (unsigned int i=0 ; i < _tabElem.size() ; i++) {
         delete _tabElem[i];
     }
@@ -92,10 +94,12 @@ void ElementFactory::rotate(int value) {
     }
 }
 
-void ElementFactory::render(const sf::Input& input) {
+bool ElementFactory::render(const sf::Input& input) {
+    bool ret=false;
     _app->Draw(_sprite_back);
     _app->Draw(_sprite_base);
     _app->Draw(_sprite_limite);
+
    for(unsigned int i=0 ; i <  _tabElem.size() ; i++) {
         _tabElem[i]->render(input);
    }
@@ -114,15 +118,19 @@ void ElementFactory::render(const sf::Input& input) {
             sf::String text("Winner", *_font, 50);
             text.SetPosition(_app->GetWidth()/2-50, 10);
             _app->Draw(text);
-        }
-
-        if ((int)elapsedTime % 2 == 0) {
-            tested = false;
-            for(unsigned int i=0 ; i <  _tabElem.size() ; i++) {
-                if (_tabElem[i]->test(_sprite_limite.GetPosition().y)) {
-                    tested = true;
+            if (floor(elapsedTime) == 8) {
+                ret = true;
+            }
+        } else {
+            if ((int)elapsedTime % 2 == 0) {
+                tested = false;
+                for(unsigned int i=0 ; i <  _tabElem.size() ; i++) {
+                    if (_tabElem[i]->test(_sprite_limite.GetPosition().y)) {
+                        tested = true;
+                    }
                 }
             }
         }
     }
+    return ret;
 }
