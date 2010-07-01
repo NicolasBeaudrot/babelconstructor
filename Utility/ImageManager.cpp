@@ -1,23 +1,24 @@
 /*
-* Class ImageManager
-* Manage sf::Image creation for better use of memory
+* Class RessourceManager
+* Manage ressources creation for better use of memory
 * @author : Adrian Gaudebert - adrian.gaudebert@gmail.com
+            Nicolas Beaudrot - nicolas.beaudrot@gmail.com
 */
 
 #include "ImageManager.h"
 
 /* -------------------------- */
-/* ImageManager::ImageManager */
+/* RessourceManager::RessourceManager */
 /* -------------------------- */
-ImageManager::ImageManager()
+RessourceManager::RessourceManager()
 {
 
 }
 
 /* --------------------------- */
-/* ImageManager::~ImageManager */
+/* RessourceManager::~RessourceManager */
 /* --------------------------- */
-ImageManager::~ImageManager()
+RessourceManager::~RessourceManager()
 {
   //On détruit toutes les images restantes
   std::map<std::string, sf::Image*>::iterator it;
@@ -28,9 +29,9 @@ ImageManager::~ImageManager()
 }
 
 /* ------------------------- */
-/* ImageManager::SearchImage */
+/* RessourceManager::SearchImage */
 /* ------------------------- */
-bool ImageManager::SearchImage(const std::string &ImageLink, sf::Image* &ImgTemp)
+bool RessourceManager::SearchImage(const std::string &ImageLink, sf::Image* &ImgTemp)
 {
   std::map<std::string, sf::Image*>::iterator it;
 
@@ -49,9 +50,9 @@ bool ImageManager::SearchImage(const std::string &ImageLink, sf::Image* &ImgTemp
 }
 
 /* ------------------------- */
-/* ImageManager::CreateImage */
+/* RessourceManager::CreateImage */
 /* ------------------------- */
-sf::Image *ImageManager::CreateImage(const std::string &ImageLink)
+sf::Image *RessourceManager::CreateImage(const std::string &ImageLink)
 {
   sf::Image *ImgTemp = new sf::Image();
   if(ImgTemp->LoadFromFile(ImageLink))
@@ -68,9 +69,9 @@ sf::Image *ImageManager::CreateImage(const std::string &ImageLink)
 }
 
 /* ---------------------- */
-/* ImageManager::GetImage */
+/* RessourceManager::GetImage */
 /* ---------------------- */
-sf::Image *ImageManager::GetImage(const std::string &ImageLink)
+sf::Image *RessourceManager::GetImage(const std::string &ImageLink)
 {
   sf::Image *ImgTemp;
 
@@ -84,9 +85,9 @@ sf::Image *ImageManager::GetImage(const std::string &ImageLink)
 }
 
 /* ------------------------- */
-/* ImageManager::DeleteImage */
+/* RessourceManager::DeleteImage */
 /* ------------------------- */
-void ImageManager::DeleteImage(sf::Image &Img)
+void RessourceManager::DeleteImage(sf::Image &Img)
 {
   std::map<std::string, sf::Image*>::iterator it;
 
@@ -104,9 +105,9 @@ void ImageManager::DeleteImage(sf::Image &Img)
 }
 
 /* ------------------------- */
-/* ImageManager::DeleteImage */
+/* RessourceManager::DeleteImage */
 /* ------------------------- */
-void ImageManager::DeleteImage(const std::string& ImageLink)
+void RessourceManager::DeleteImage(const std::string& ImageLink)
 {
   std::map<std::string, sf::Image*>::iterator it;
 
@@ -120,4 +121,21 @@ void ImageManager::DeleteImage(const std::string& ImageLink)
       Images.erase(it);
     }
   }
+}
+
+sf::Font *RessourceManager::GetFont(const std::string &FontLink) {
+    sf::Font *FontTemp;
+    std::map<std::string, sf::Font*>::iterator it;
+    it = Fonts.find(FontLink);
+
+    if(it == Fonts.end()) {
+        FontTemp = new sf::Font();
+        if(FontTemp->LoadFromFile(FontLink)) {
+            Fonts.insert(std::pair<std::string, sf::Font*>(FontLink, FontTemp));
+        }
+    } else {
+        FontTemp = it->second;
+    }
+
+    return FontTemp;
 }

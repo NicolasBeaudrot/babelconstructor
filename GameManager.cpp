@@ -43,7 +43,7 @@ GameManager::~GameManager() {
     MapManager::Kill();
     ElementFactory::Kill();
     Logger::Kill();
-    ImageManager::Kill();
+    RessourceManager::Kill();
 }
 
 void GameManager::createWorld() {

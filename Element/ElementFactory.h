@@ -17,6 +17,9 @@
             ElementFactory();
             virtual ~ElementFactory();
             std::vector<Element*> _tabElem;
+            bool clicked, tested;
+            sf::Font *_font;
+            sf::Clock _clock;
             sf::RenderWindow *_app;
             sf::Sprite _mouse;
             sf::Image _img_back;

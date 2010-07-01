@@ -1,4 +1,5 @@
 #include "ElementFactory.h"
+#include <sstream>
 
 ElementFactory::ElementFactory() : _app(NULL) {
 }
@@ -7,8 +8,10 @@ ElementFactory::~ElementFactory() {
 }
 
 void ElementFactory::Init(sf::RenderWindow *application) {
-    _app = application;
-
+    _app    = application;
+    _font   = RessourceManager::Instance()->GetFont("ressources/fonts/gilligan.ttf");
+    tested  = false;
+    clicked = false;
     _mouse.SetColor(sf::Color::Black);
     _mouse.Resize(2,2);
     _mouse.SetCenter(0, 0);
@@ -68,10 +71,16 @@ void ElementFactory::clic(const sf::Input& input) {
 
         sf::Vector2f mouse = sf::Vector2f(input.GetMouseX(),input.GetMouseY());
         _mouse.SetPosition(mouse);
-
+        clicked = !clicked;
+        if(!clicked) {
+            _clock.Reset();
+        }
+        tested = false;
         for(unsigned int i=0 ; i <  _tabElem.size() ; i++) {
             _tabElem[i]->clic(_mouse);
-            _tabElem[i]->test(_sprite_limite.GetPosition().y);
+            if (_tabElem[i]->test(_sprite_limite.GetPosition().y)) {
+                tested = true;
+            }
         }
     }
 
@@ -91,4 +100,29 @@ void ElementFactory::render(const sf::Input& input) {
         _tabElem[i]->render(input);
    }
 
+   if (tested && !clicked) {
+        float elapsedTime = _clock.GetElapsedTime();
+        if(elapsedTime >= 2.5 && elapsedTime <= 5) {
+            std::ostringstream oss;
+            oss << floor(elapsedTime) - 1;
+            std::string t = oss.str();
+            sf::String time(t, *_font, 40);
+            time.SetPosition(20,20);
+            _app->Draw(time);
+        }
+        if (elapsedTime >= 5) {
+            sf::String text("Winner", *_font, 50);
+            text.SetPosition(_app->GetWidth()/2-50, 10);
+            _app->Draw(text);
+        }
+
+        if ((int)elapsedTime % 2 == 0) {
+            tested = false;
+            for(unsigned int i=0 ; i <  _tabElem.size() ; i++) {
+                if (_tabElem[i]->test(_sprite_limite.GetPosition().y)) {
+                    tested = true;
+                }
+            }
+        }
+    }
 }

@@ -11,12 +11,10 @@
     {
         protected :
             b2Body* _body;
-            bool clicked,
-                 tested;
+            bool clicked;
             sf::Image *_image;
             sf::Sprite _sprite;
             sf::RenderWindow *_app;
-            sf::Clock _clock;
 
             int xClicked;
             int yClicked;
@@ -26,7 +24,7 @@
             ~Element();
             void clic(sf::Sprite& mouse);
             void rotate(int value);
-            void test(float value);
+            bool test(float value);
             void render(const sf::Input& input);
     };
 #endif

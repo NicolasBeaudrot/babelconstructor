@@ -4,20 +4,23 @@
 #include <map>
 #include <SFML/Graphics.hpp>
 /*
-* Class ImageManager
-* Manage sf::Image creation for better use of memory
+* Class RessourceManager
+* Manage ressources creation for better use of memory
 * @author : Adrian Gaudebert - adrian.gaudebert@gmail.com
+            Nicolas Beaudrot - nicolas.beaudrot@gmail.com
 */
-class ImageManager : public CSingleton<ImageManager>
+class RessourceManager : public CSingleton<RessourceManager>
 {
   private:
-    friend class CSingleton<ImageManager>;
+    friend class CSingleton<RessourceManager>;
 
-    ImageManager();
+    RessourceManager();
 
-    virtual ~ImageManager();
+    virtual ~RessourceManager();
 
     std::map<std::string, sf::Image*> Images;
+
+    std::map<std::string, sf::Font*> Fonts;
 
     /**
     * Search an Image in memory
@@ -55,5 +58,12 @@ class ImageManager : public CSingleton<ImageManager>
     * @return None
     */
     void DeleteImage(const std::string& ImageLink);
+
+    /**
+    *Get a sf::Font from a file name
+    * @param ImageLink File name of the font
+    * @return Pointer to the sf::Font
+    */
+    sf::Font *GetFont(const std::string &FontLink);
 };
 #endif

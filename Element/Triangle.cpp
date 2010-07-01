@@ -3,7 +3,7 @@
 Triangle::Triangle(sf::Vector2f &position, float angle, std::string& file, b2World& world, float* fixture, sf::RenderWindow *application) : Element() {
     _app = application;
      std::string path = "ressources/images/" + file;
-    _image = ImageManager::Instance()->GetImage(path);
+    _image = RessourceManager::Instance()->GetImage(path);
     _sprite.SetImage(*_image);
     _sprite.SetPosition(position);
     _sprite.SetRotation(angle);
