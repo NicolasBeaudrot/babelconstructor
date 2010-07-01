@@ -75,6 +75,7 @@ void GameManager::run() {
 
     createWorld();
     MapManager::Instance()->nextMap(*world);
+    bool paused = false;
 
     while (_app.IsOpened()) {
         sf::Event Event;
@@ -95,22 +96,25 @@ void GameManager::run() {
                 destroyWorld();
                 createWorld();
                 MapManager::Instance()->nextMap(*world);
+            } else if (Event.Type == sf::Event::KeyPressed && Event.Key.Code == sf::Key::P) {
+                paused = !paused;
             }
         }
 
-        _app.SetFramerateLimit(100);
+        if (!paused) {
+            _app.SetFramerateLimit(100);
+            _app.Clear();
 
-        _app.Clear();
+            world->Step(_app.GetFrameTime(), 6, 2);
 
-        world->Step(_app.GetFrameTime(), 6, 2);
+            if (ElementFactory::Instance()->render(_app.GetInput())) {
+                destroyWorld();
+                createWorld();
+                MapManager::Instance()->nextMap(*world);
+            }
 
-        if (ElementFactory::Instance()->render(_app.GetInput())) {
-            destroyWorld();
-            createWorld();
-            MapManager::Instance()->nextMap(*world);
+            _app.SetView(_app.GetDefaultView());
+            _app.Display();
         }
-
-		_app.SetView(_app.GetDefaultView());
-        _app.Display();
     }
 }
