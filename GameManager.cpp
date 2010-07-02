@@ -117,7 +117,7 @@ void GameManager::run() {
                 MapManager::Instance()->nextMap(*world);
             }
 
-            //Looser
+            //Loser
             if(ElementFactory::Instance()->below()) {
                 sf::Font *font   = RessourceManager::Instance()->GetFont("ressources/fonts/gilligan.ttf");
                 sf::String perdu("You lose !", *font, 50);

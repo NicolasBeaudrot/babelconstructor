@@ -15,6 +15,7 @@ void Element::clic(sf::Sprite& mouse) {
     } else {
         clicked = false;
        // _body->SetActive(true);
+       std::cout << mouse.GetPosition().y << std::endl;
     }
 }
 

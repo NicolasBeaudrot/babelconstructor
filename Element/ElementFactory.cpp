@@ -32,16 +32,16 @@ void ElementFactory::loadBase(std::string background, std::string base, sf::Vect
     _sprite_back.Resize(_app->GetWidth(), _app->GetHeight());
     Logger::Instance()->log("Background loaded");
 
-    _img_limite.LoadFromFile("ressources/images/" + limite);
-    _sprite_limite.SetImage(_img_limite);
-    _sprite_limite.SetPosition(_app->GetWidth() - _img_limite.GetWidth(), limite_y);
-    Logger::Instance()->log("Limite loaded");
-
     _img_base.LoadFromFile("ressources/images/" + base);
     _sprite_base.SetImage(_img_base);
     _sprite_base.Resize(dimension.x, dimension.y);
     _sprite_base.SetPosition(sf::Vector2f(_app->GetWidth()/2 - dimension.x/2, _app->GetHeight() - 100));
     Logger::Instance()->log("Base loaded");
+
+    _img_limite.LoadFromFile("ressources/images/" + limite);
+    _sprite_limite.SetImage(_img_limite);
+    _sprite_limite.SetPosition(_app->GetWidth() - _img_limite.GetWidth(), _sprite_base.GetPosition().y - limite_y);
+    Logger::Instance()->log("Limite loaded");
 
 	b2BodyDef baseBodyDef;
 	baseBodyDef.position.Set((_app->GetWidth()/2), 90);
@@ -52,6 +52,9 @@ void ElementFactory::loadBase(std::string background, std::string base, sf::Vect
 }
 
 void ElementFactory::add(std::string type, sf::Vector2f& position, float& angle, std::string file, b2World& world, float* fixture) {
+    position.x = _sprite_base.GetPosition().x + position.x;
+    position.y = _sprite_base.GetPosition().y - position.y;
+
     if (type == "Square" or type == "Rectangle") {
         Square *elem = new Square(position, angle, file, world, fixture, _app);
         _tabElem.push_back(elem);
@@ -85,7 +88,6 @@ void ElementFactory::clic(const sf::Input& input) {
             }
         }
     }
-
 }
 
 bool ElementFactory::below() {
