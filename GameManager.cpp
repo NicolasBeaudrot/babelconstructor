@@ -39,7 +39,6 @@ GameManager::GameManager() : _app(), _camera() {
 
 GameManager::~GameManager() {
     destroyWorld();
-    delete MapManager::Instance()->getCurrentMap;
     MapManager::Kill();
     ElementFactory::Kill();
     Logger::Kill();
@@ -80,13 +79,11 @@ void GameManager::run() {
     while (_app.IsOpened()) {
         sf::Event Event;
         while (_app.GetEvent(Event))  {
-            if (Event.Type == sf::Event::Closed
-                        || (Event.Type == sf::Event::KeyPressed && Event.Key.Code == sf::Key::Escape)) {
+            if (Event.Type == sf::Event::Closed || (Event.Type == sf::Event::KeyPressed && Event.Key.Code == sf::Key::Escape)) {
                 _app.Close();
             } else if (Event.Type == sf::Event::MouseButtonReleased) {
                 ElementFactory::Instance()->clic(_app.GetInput());
-            } else if (Event.Type == sf::Event::KeyPressed
-                       && (Event.Key.Code == sf::Key::Up || Event.Key.Code == sf::Key::Down)) {
+            } else if (Event.Type == sf::Event::KeyPressed && (Event.Key.Code == sf::Key::Up || Event.Key.Code == sf::Key::Down)) {
                 if (Event.Key.Code == sf::Key::Up) {
                     ElementFactory::Instance()->rotate(4);
                 } else {
@@ -98,6 +95,12 @@ void GameManager::run() {
                 MapManager::Instance()->nextMap(*world);
             } else if (Event.Type == sf::Event::KeyPressed && Event.Key.Code == sf::Key::P) {
                 paused = !paused;
+            } else if (Event.Type == sf::Event::KeyPressed && Event.Key.Code == sf::Key::Return) {
+                paused = false;
+                destroyWorld();
+                createWorld();
+                MapManager::Instance()->reLoad(*world);
+
             }
         }
 
@@ -107,10 +110,20 @@ void GameManager::run() {
 
             world->Step(_app.GetFrameTime(), 6, 2);
 
+            //Winner
             if (ElementFactory::Instance()->render(_app.GetInput())) {
                 destroyWorld();
                 createWorld();
                 MapManager::Instance()->nextMap(*world);
+            }
+
+            //Looser
+            if(ElementFactory::Instance()->below()) {
+                sf::Font *font   = RessourceManager::Instance()->GetFont("ressources/fonts/gilligan.ttf");
+                sf::String perdu("You lose !", *font, 50);
+                perdu.SetPosition(_app.GetWidth()/2-100, 10);
+                _app.Draw(perdu);
+                paused = true;
             }
 
             _app.SetView(_app.GetDefaultView());

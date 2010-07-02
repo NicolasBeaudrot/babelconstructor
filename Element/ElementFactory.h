@@ -59,26 +59,47 @@
 
             /**
             * This function is used to load the background, the base and the limit
+            * @param background : background texture filename
+            * @param base : base texture filename
+            * @param dimension : width and height of the base
+            * @param world : box2D world
+            * @param limite : limit texture filename
+            * @param limite_y : y position of the limit
             */
             void loadBase(std::string background, std::string base, sf::Vector2f& dimension, b2World& world, std::string limite, float limite_y);
 
             /**
             * This function is used to load an element
+            * @param type : shape type
+            * @param position : initial position
+            * @param angle : initial angle
+            * @param file : texture filename
+            * @param world : box2D object
+            * @param fixture : an array containing physical informations
             */
             void add(std::string type, sf::Vector2f& position, float& angle, std::string file, b2World& world, float* fixture);
 
             /**
             * This function is used to call each element when there is a mouse clic
+            * @param input : mouse coordonnates
             */
             void clic(const sf::Input& input);
 
             /**
-            * This function is used to call each element when there is a rotation
+            * This function is used to call each element to know if one is below the base position
             */
-            void rotate(int value);
+            bool below();
 
             /**
-            * This function is used to call each element for rendering
+            * This function is used to call each element when there is a rotation
+            * @param value : angle value added
+            */
+            void rotate(const int value);
+
+            /**
+            * This function is used to call each element for rendering and to konw if one is upper than the limit
+            * @param input contains mouse coordonates
+            * @return true if the map is over else false
             */
             bool render(const sf::Input& input);
     };

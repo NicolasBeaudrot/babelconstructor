@@ -5,7 +5,7 @@ Element::Element() : clicked(false), xClicked(NULL), yClicked(NULL) {
 }
 
 Element::~Element() {
-    Logger::Instance()->log("Element destroyed");
+    Logger::Instance()->log("Element deleted");
 }
 
 void Element::clic(sf::Sprite& mouse) {

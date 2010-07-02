@@ -3,9 +3,10 @@
 MapManager::MapManager() :
                     _app(NULL),
                     _camera(NULL) {
-    getCurrentMap = NULL;
+    _currentMap = NULL;
     _indexCurr = -1;
     DIR * rep = opendir("./ressources/map");
+
     if (rep != NULL) {
         struct dirent * ent;
         while ((ent = readdir(rep)) != NULL)
@@ -22,15 +23,18 @@ MapManager::MapManager() :
             if (file.substr(pos + 1, file.length() - pos - 1) == "xml") {
                 _tabMap.push_back(file);
             }
-
         }
         closedir(rep);
         Logger::Instance()->log("Map directory listed");
+    } else {
+        Logger::Instance()->log("Unable to open maps' directory");
     }
 }
 
 MapManager::~MapManager() {
     _tabMap.clear();
+    delete _currentMap;
+    Logger::Instance()->log("Map deleted");
 }
 
 void MapManager::Init(sf::RenderWindow* windows, sf::View* camera) {
@@ -38,20 +42,21 @@ void MapManager::Init(sf::RenderWindow* windows, sf::View* camera) {
 	_camera = camera;
 }
 
-void MapManager::Load(const std::string& nom, b2World& world) {
-    getCurrentMap = new Map(_app, _camera, nom, world);
-}
-
 bool MapManager::nextMap(b2World& world) {
     _indexCurr++;
-    delete getCurrentMap;
+    delete _currentMap;
     if (_indexCurr < _tabMap.size()) {
-        getCurrentMap = new Map(_app, _camera, _tabMap[_indexCurr], world);
+        _currentMap = new Map(_app, _camera, _tabMap[_indexCurr], world);
     } else {
         _indexCurr = 0;
-        getCurrentMap = new Map(_app, _camera, _tabMap[_indexCurr], world);
+        _currentMap = new Map(_app, _camera, _tabMap[_indexCurr], world);
         return false;
     }
     return true;
+}
+
+void MapManager::reLoad(b2World& world) {
+    delete _currentMap;
+    _currentMap = new Map(_app, _camera, _tabMap[_indexCurr], world);
 }
 

@@ -32,6 +32,7 @@
             sf::View* _camera;
             std::vector<std::string> _tabMap;
             int _indexCurr;
+            Map* _currentMap;
 
         public:
             /**
@@ -42,23 +43,19 @@
             void Init(sf::RenderWindow* window, sf::View* camera);
 
             /**
-            * This fucntion is used to load a map using a filename
+            * This function is used to load the next map
+            * @param world : box2D object
+            * @return true if there is a new map, false if the game is finished.
+            */
+            bool nextMap(b2World& world);
+
+            /**
+            * This function is used to reload the current map
             * @param nom : map filename
             * @param world : box2D object
             */
-            void Load(const std::string& nom, b2World& world);
+            void reLoad(b2World& world);
 
-            /**
-            * Public attribute
-            * This pointor is used to access to the current map
-            */
-            Map* getCurrentMap;
-
-            /**
-            * This function is used to load the next map
-            * @param world : box2D object
-            */
-            bool nextMap(b2World& world);
     };
 
 #endif

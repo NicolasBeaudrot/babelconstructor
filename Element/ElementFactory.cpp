@@ -88,6 +88,15 @@ void ElementFactory::clic(const sf::Input& input) {
 
 }
 
+bool ElementFactory::below() {
+    for (unsigned int i=0 ; i < _tabElem.size() ; i++) {
+        if (_tabElem[i]->below(_sprite_base.GetPosition().y + 10)) {
+            return true;
+        }
+    }
+    return false;
+}
+
 void ElementFactory::rotate(int value) {
     for (unsigned int i=0 ; i < _tabElem.size() ; i++) {
         _tabElem[i]->rotate(value);

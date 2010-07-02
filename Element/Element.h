@@ -49,21 +49,21 @@
             * This function is used to rotate an element
             * @param value : angle value added
             */
-            void rotate(int value);
+            void rotate(const int value);
 
             /**
             * This function is used to know if the element is upper than the value
             * @param value : y position of the limit
             * @return the comparaison result
             */
-            bool test(float value);
+            bool test(const float value);
 
             /**
             * This function is used to know if the element is below than the value
             * @param value : y position of the ground
             * @return the comparaison result
             */
-            bool below(float value);
+            bool below(const float value);
 
             /**
             * This function is used to display the element
