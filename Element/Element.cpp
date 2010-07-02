@@ -35,6 +35,15 @@ bool Element::test(float value) {
     }
 }
 
+bool Element::below(float value) {
+    b2Vec2 pos = _body->GetPosition();
+    if (((_app->GetHeight() - pos.y) -  _image->GetHeight()/2) > value) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 void Element::render(const sf::Input& input) {
     if (clicked) {
 

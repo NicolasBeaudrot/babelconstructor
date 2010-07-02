@@ -1,3 +1,19 @@
+/*
+    Copyright (C) 2010  Nicolas Beaudrot, Vincent Durey
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #ifndef ELEMENTFACTORY_H
 #define ELEMENTFACTORY_H
 #include <SFML/System.hpp>
@@ -30,12 +46,40 @@
             sf::Sprite _sprite_limite;
 
         public :
+            /**
+            * Constructor
+            * @param : SFML window
+            */
             void Init(sf::RenderWindow *application);
+
+            /**
+            * Destructor
+            */
             void Delete();
+
+            /**
+            * This function is used to load the background, the base and the limit
+            */
             void loadBase(std::string background, std::string base, sf::Vector2f& dimension, b2World& world, std::string limite, float limite_y);
+
+            /**
+            * This function is used to load an element
+            */
             void add(std::string type, sf::Vector2f& position, float& angle, std::string file, b2World& world, float* fixture);
+
+            /**
+            * This function is used to call each element when there is a mouse clic
+            */
             void clic(const sf::Input& input);
+
+            /**
+            * This function is used to call each element when there is a rotation
+            */
             void rotate(int value);
+
+            /**
+            * This function is used to call each element for rendering
+            */
             bool render(const sf::Input& input);
     };
 
