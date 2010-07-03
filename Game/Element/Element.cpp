@@ -15,7 +15,6 @@ void Element::clic(sf::Sprite& mouse) {
     } else {
         clicked = false;
        // _body->SetActive(true);
-       std::cout << mouse.GetPosition().y << std::endl;
     }
 }
 
@@ -28,7 +27,15 @@ void Element::rotate(int value) {
 bool Element::test(float value) {
     if (!clicked) {
         b2Vec2 pos = _body->GetPosition();
-        if (((_app->GetHeight() - pos.y) -  _image->GetHeight()/2) <= value) {
+        b2Transform t = _body->GetTransform();
+        float height;
+        if ((t.R.col1.y >= 0.8 && t.R.col1.y <= 1) || (t.R.col1.y >= -1 && t.R.col1.y <= -0.8)) { //La forme est debout
+            height = _image->GetWidth()/2;
+        } else { //La forme est normale
+            height = _image->GetHeight()/2;
+        }
+
+        if (((_app->GetHeight() - pos.y) -  height) <= value) {
             return true;
         } else {
             return false;
@@ -38,7 +45,8 @@ bool Element::test(float value) {
 
 bool Element::below(float value) {
     b2Vec2 pos = _body->GetPosition();
-    if (((_app->GetHeight() - pos.y) -  _image->GetHeight()/2) > value) {
+
+    if (((_app->GetHeight() - pos.y) - _image->GetHeight()/2) >= value) {
         return true;
     } else {
         return false;
