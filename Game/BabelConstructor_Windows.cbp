@@ -32,17 +32,17 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add directory="ExternLibrairie/Box2D_v2.1.2/Box2D" />
-			<Add directory="ExternLibrairie/SFML-1.6/include" />
-			<Add directory="ExternLibrairie/tinyxml" />
+			<Add directory="../ExternLibrairie/Box2D_v2.1.2/Box2D" />
+			<Add directory="../ExternLibrairie/SFML-1.6/include" />
+			<Add directory="../ExternLibrairie/tinyxml" />
 		</Compiler>
 		<Linker>
 			<Add option="-lsfml-graphics" />
 			<Add option="-lsfml-window" />
 			<Add option="-lsfml-system" />
-			<Add library="ExternLibrairie/Box2D_v2.1.2/Box2D/Build/Box2D/libBox2D.a" />
-			<Add directory="ExternLibrairie/Box2D_v2.1.2/Box2D/Build" />
-			<Add directory="ExternLibrairie/SFML-1.6/lib" />
+			<Add library="../ExternLibrairie/Box2D_v2.1.2/Box2D/Build/Box2D/libBox2D.a" />
+			<Add directory="../ExternLibrairie/Box2D_v2.1.2/Box2D/Build" />
+			<Add directory="../ExternLibrairie/SFML-1.6/lib" />
 		</Linker>
 		<Unit filename="Element/Circle.cpp" />
 		<Unit filename="Element/Circle.h" />
