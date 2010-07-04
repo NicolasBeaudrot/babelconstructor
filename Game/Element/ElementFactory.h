@@ -26,7 +26,7 @@
 #include "Circle.h"
 #include "Triangle.h"
 
-    class ElementFactory : public CSingleton<ElementFactory>
+    class ElementFactory : public CSingleton<ElementFactory>, public b2ContactListener
     {
         private :
             friend class CSingleton<ElementFactory>;
@@ -34,6 +34,9 @@
             virtual ~ElementFactory();
             std::vector<Element*> _tabElem;
             bool clicked, tested;
+            b2World *_world;
+            b2MouseJoint* _mouseJoint;
+            b2Body* _groundBody;
             sf::Font *_font;
             sf::Clock _clock;
             sf::RenderWindow *_app;
@@ -50,7 +53,7 @@
             * Constructor
             * @param : SFML window
             */
-            void Init(sf::RenderWindow *application);
+            void Init(sf::RenderWindow *application,b2World *);
 
             /**
             * Destructor
@@ -86,6 +89,12 @@
             void clic(const sf::Input& input);
 
             /**
+            * This function is called when the mouse is moved
+            * @param input : mouse coordonnates
+            */
+            void move(const sf::Input& input);
+
+            /**
             * This function is used to call each element to know if one is below the base position
             */
             bool below();
@@ -102,6 +111,17 @@
             * @return true if the map is over else false
             */
             bool render(const sf::Input& input);
+
+            virtual void PreSolve(b2Contact* contact, const b2Manifold* oldManifold);
+            virtual void BeginContact(b2Contact* contact) { B2_NOT_USED(contact); }
+            virtual void EndContact(b2Contact* contact) { B2_NOT_USED(contact); }
+            virtual void PostSolve(const b2Contact* contact, const b2ContactImpulse* impulse)
+            {
+                B2_NOT_USED(contact);
+                B2_NOT_USED(impulse);
+            }
+
+
     };
 
 #endif

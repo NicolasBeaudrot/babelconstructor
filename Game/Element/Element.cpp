@@ -54,9 +54,9 @@ bool Element::below(float value) {
 }
 
 void Element::render(const sf::Input& input) {
-    if (clicked) {
+    //if (clicked) {
 
-        //1er clic
+      /*  //1er clic
         if(!xClicked && !yClicked){
             xClicked=input.GetMouseX();
             yClicked=input.GetMouseY();
@@ -74,16 +74,16 @@ void Element::render(const sf::Input& input) {
 
         //maj
         xClicked=input.GetMouseX();
-        yClicked=input.GetMouseY();
+        yClicked=input.GetMouseY();*/
 
-    } else {
+   // } else {
         xClicked=NULL;
         yClicked=NULL;
         b2Vec2 position = _body->GetPosition();
         _sprite.SetX(_app->GetWidth() - position.x);
         _sprite.SetY(_app->GetHeight() - position.y);
         _sprite.SetRotation(-Collision::to_degres(_body->GetAngle()));
-    }
+   // }
 
     _app->Draw(_sprite);
 }

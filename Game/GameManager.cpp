@@ -32,8 +32,9 @@ GameManager::GameManager() : _app(), _camera() {
         _app.Create(sf::VideoMode(width, height, colors), "Babel Constructor");
     }
 
+    createWorld();
     MapManager::Instance()->Init(&_app, &_camera);
-    ElementFactory::Instance()->Init(&_app);
+    ElementFactory::Instance()->Init(&_app,world);
     Logger::Instance()->Init();
 }
 
@@ -72,7 +73,7 @@ void GameManager::destroyWorld() {
 
 void GameManager::run() {
 
-    createWorld();
+    //createWorld();
     MapManager::Instance()->nextMap(*world);
     bool paused = false;
 
@@ -101,6 +102,8 @@ void GameManager::run() {
                 createWorld();
                 MapManager::Instance()->reLoad(*world);
 
+            }else if(Event.Type == sf::Event::MouseMoved){
+                ElementFactory::Instance()->move(_app.GetInput());
             }
         }
 

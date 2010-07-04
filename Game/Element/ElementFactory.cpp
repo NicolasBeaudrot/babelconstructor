@@ -1,13 +1,51 @@
 #include "ElementFactory.h"
 #include <sstream>
 
-ElementFactory::ElementFactory() : _app(NULL) {
+
+
+
+class QueryCallback : public b2QueryCallback
+{
+public:
+	QueryCallback(const b2Vec2& point)
+	{
+		m_point = point;
+		m_fixture = NULL;
+
+	}
+
+	bool ReportFixture(b2Fixture* fixture)
+	{
+		b2Body* body = fixture->GetBody();
+		if (body->GetType() == b2_dynamicBody)
+		{
+			bool inside = fixture->TestPoint(m_point);
+			if (inside)
+			{
+				m_fixture = fixture;
+
+				// We are done, terminate the query.
+				return false;
+			}
+		}
+
+		// Continue the query.
+		return true;
+	}
+
+	b2Vec2 m_point;
+	b2Fixture* m_fixture;
+};
+
+
+ElementFactory::ElementFactory() : _app(NULL),_world(NULL),_mouseJoint(NULL),_groundBody(NULL) {
 }
 
 ElementFactory::~ElementFactory() {
 }
 
-void ElementFactory::Init(sf::RenderWindow *application) {
+void ElementFactory::Init(sf::RenderWindow *application, b2World *world) {
+    _world  = world;
     _app    = application;
     _font   = RessourceManager::Instance()->GetFont("ressources/fonts/gilligan.ttf");
     tested  = false;
@@ -15,11 +53,27 @@ void ElementFactory::Init(sf::RenderWindow *application) {
     _mouse.SetColor(sf::Color::Black);
     _mouse.Resize(2,2);
     _mouse.SetCenter(0, 0);
+
+    _world->SetContactListener(this);
+
+    b2BodyDef bodyDef;
+	_groundBody = _world->CreateBody(&bodyDef);
+
 }
+
+void ElementFactory::PreSolve(b2Contact* contact, const b2Manifold* oldManifold){
+
+   // Logger::Instance()->log("PreSolve ");
+}
+
 
 void ElementFactory::Delete() {
     tested  = false;
     clicked = false;
+
+    //delete _mouseJoint; DELETING WHEN WE DELETE THE WORLD
+    //delete _groundBody; DELETING WHEN WE DELETE THE WORLD
+
     for (unsigned int i=0 ; i < _tabElem.size() ; i++) {
         delete _tabElem[i];
     }
@@ -67,6 +121,16 @@ void ElementFactory::add(std::string type, sf::Vector2f& position, float& angle,
     }
 }
 
+
+void ElementFactory::move(const sf::Input& input) {
+
+    if (_mouseJoint){
+        b2Vec2 p( 800 - input.GetMouseX(), 600 - input.GetMouseY());
+        _mouseJoint->SetTarget(p);
+	}
+}
+
+
 void ElementFactory::clic(const sf::Input& input) {
 
     if (input.GetMouseX() >= 0 && input.GetMouseX() <= _app->GetWidth()
@@ -80,6 +144,51 @@ void ElementFactory::clic(const sf::Input& input) {
         if(!clicked) {
             _clock.Reset();
         }
+
+
+        if (_mouseJoint)
+        {
+
+            //revert back the fixedRotation Attribute
+            _mouseJoint->GetBodyB()->SetFixedRotation(false);
+            _world->DestroyJoint(_mouseJoint);
+            _mouseJoint = NULL;
+        }else{
+
+            // Query the world for overlapping shapes.
+            // Did we click on a shape?
+            b2Vec2 p( 800 - mouse.x, 600 - mouse.y);
+
+            // Make a small box.
+            b2AABB aabb;
+            b2Vec2 d;
+            d.Set(0.001f, 0.001f);
+            aabb.lowerBound = p - d;
+            aabb.upperBound = p + d;
+
+            QueryCallback callback(p);
+            _world->QueryAABB(&callback, aabb);
+
+            if (callback.m_fixture)
+            {
+                Logger::Instance()->log("element trouve");
+
+                b2Body* body = callback.m_fixture->GetBody();
+                b2MouseJointDef md;
+                md.bodyA = _groundBody;
+                md.bodyB = body;
+                md.target = p;
+                md.maxForce = 1000.0f*body->GetMass();
+
+               _mouseJoint = (b2MouseJoint*)_world->CreateJoint(&md);
+               body->SetAwake(true);
+
+               //Fixe the rotation
+               body->SetFixedRotation(true);
+
+            }
+        }
+
         tested = false;
         for(unsigned int i=0 ; i <  _tabElem.size() ; i++) {
             _tabElem[i]->clic(_mouse);
@@ -96,6 +205,7 @@ bool ElementFactory::below() {
             return true;
         }
     }
+
     return false;
 }
 
