@@ -41,15 +41,15 @@
 
             /**
             * This function is called each clic
-            * @param mouse coordonnates
+            * @param mouse coordonnates, b2Body
             */
-            void clic(sf::Sprite& mouse);
+            void clic(sf::Sprite& mouse,b2Body *);
 
             /**
             * This function is used to rotate an element
             * @param value : angle value added
             */
-            void rotate(const int value);
+            void rotate(const float value);
 
             /**
             * This function is used to know if the element is upper than the value

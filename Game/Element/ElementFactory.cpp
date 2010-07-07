@@ -45,6 +45,10 @@ ElementFactory::~ElementFactory() {
 }
 
 void ElementFactory::Init(sf::RenderWindow *application, b2World *world) {
+
+    _mouseJoint=NULL;
+    _groundBody=NULL;
+
     _world  = world;
     _app    = application;
     _font   = RessourceManager::Instance()->GetFont("ressources/fonts/gilligan.ttf");
@@ -58,8 +62,9 @@ void ElementFactory::Init(sf::RenderWindow *application, b2World *world) {
 
     b2BodyDef bodyDef;
 	_groundBody = _world->CreateBody(&bodyDef);
-
 }
+
+
 
 void ElementFactory::PreSolve(b2Contact* contact, const b2Manifold* oldManifold){
 
@@ -71,8 +76,9 @@ void ElementFactory::Delete() {
     tested  = false;
     clicked = false;
 
-    //delete _mouseJoint; DELETING WHEN WE DELETE THE WORLD
-    //delete _groundBody; DELETING WHEN WE DELETE THE WORLD
+   // delete _mouseJoint; //DELETING WHEN WE DELETE THE WORLD
+   // delete _groundBody; //DELETING WHEN WE DELETE THE WORLD
+
 
     for (unsigned int i=0 ; i < _tabElem.size() ; i++) {
         delete _tabElem[i];
@@ -125,6 +131,8 @@ void ElementFactory::add(std::string type, sf::Vector2f& position, float& angle,
 void ElementFactory::move(const sf::Input& input) {
 
     if (_mouseJoint){
+        Logger::Instance()->log("move ");
+        std::cout<<input.GetMouseX();
         b2Vec2 p( 800 - input.GetMouseX(), 600 - input.GetMouseY());
         _mouseJoint->SetTarget(p);
 	}
@@ -174,13 +182,18 @@ void ElementFactory::clic(const sf::Input& input) {
                 Logger::Instance()->log("element trouve");
 
                 b2Body* body = callback.m_fixture->GetBody();
+
                 b2MouseJointDef md;
                 md.bodyA = _groundBody;
+
                 md.bodyB = body;
                 md.target = p;
                 md.maxForce = 1000.0f*body->GetMass();
 
+                Logger::Instance()->log("ici trouve 4");
+
                _mouseJoint = (b2MouseJoint*)_world->CreateJoint(&md);
+
                body->SetAwake(true);
 
                //Fixe the rotation
@@ -191,7 +204,12 @@ void ElementFactory::clic(const sf::Input& input) {
 
         tested = false;
         for(unsigned int i=0 ; i <  _tabElem.size() ; i++) {
-            _tabElem[i]->clic(_mouse);
+
+            if(_mouseJoint)
+                _tabElem[i]->clic(_mouse,_mouseJoint->GetBodyB());
+            else // to deselect element
+                _tabElem[i]->clic(_mouse,NULL);
+
             if (_tabElem[i]->test(_sprite_limite.GetPosition().y)) {
                 tested = true;
             }
@@ -209,9 +227,9 @@ bool ElementFactory::below() {
     return false;
 }
 
-void ElementFactory::rotate(int value) {
+void ElementFactory::rotate(float value) {
     for (unsigned int i=0 ; i < _tabElem.size() ; i++) {
-        _tabElem[i]->rotate(value);
+        _tabElem[i]->rotate( value);
     }
 }
 

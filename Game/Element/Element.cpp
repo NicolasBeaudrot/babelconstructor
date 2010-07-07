@@ -8,8 +8,10 @@ Element::~Element() {
     Logger::Instance()->log("Element deleted");
 }
 
-void Element::clic(sf::Sprite& mouse) {
-    if (!clicked && Collision::PixelPerfectTest(_sprite, mouse)) {
+void Element::clic(sf::Sprite& mouse,b2Body * body) {
+    //if (!clicked && Collision::PixelPerfectTest(_sprite, mouse) ) {
+    //We compare the bodies to know if this Element is selected or not
+    if (!clicked && _body == body ) {
         clicked = true;
        // _body->SetActive(true);
     } else {
@@ -18,9 +20,10 @@ void Element::clic(sf::Sprite& mouse) {
     }
 }
 
-void Element::rotate(int value) {
+void Element::rotate(float value) {
     if (clicked) {
-        _sprite.Rotate(value);
+        _body->SetTransform(_body->GetPosition(), _body->GetAngle()+ value);
+        //_sprite.Rotate(value);
     }
 }
 

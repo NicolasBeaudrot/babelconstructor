@@ -103,7 +103,7 @@
             * This function is used to call each element when there is a rotation
             * @param value : angle value added
             */
-            void rotate(const int value);
+            void rotate(const float value);
 
             /**
             * This function is used to call each element for rendering and to konw if one is upper than the limit

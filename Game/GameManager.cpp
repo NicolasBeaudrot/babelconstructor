@@ -86,13 +86,14 @@ void GameManager::run() {
                 ElementFactory::Instance()->clic(_app.GetInput());
             } else if (Event.Type == sf::Event::KeyPressed && (Event.Key.Code == sf::Key::Up || Event.Key.Code == sf::Key::Down)) {
                 if (Event.Key.Code == sf::Key::Up) {
-                    ElementFactory::Instance()->rotate(4);
+                    ElementFactory::Instance()->rotate(0.1);
                 } else {
-                    ElementFactory::Instance()->rotate(-4);
+                    ElementFactory::Instance()->rotate(-0.1);
                 }
             } else if (Event.Type == sf::Event::KeyPressed && Event.Key.Code == sf::Key::N) {
                 destroyWorld();
                 createWorld();
+                ElementFactory::Instance()->Init(& _app,world );
                 MapManager::Instance()->nextMap(*world);
             } else if (Event.Type == sf::Event::KeyPressed && Event.Key.Code == sf::Key::P) {
                 paused = !paused;
@@ -100,6 +101,7 @@ void GameManager::run() {
                 paused = false;
                 destroyWorld();
                 createWorld();
+                ElementFactory::Instance()->Init(& _app,world );
                 MapManager::Instance()->reLoad(*world);
 
             }else if(Event.Type == sf::Event::MouseMoved){
