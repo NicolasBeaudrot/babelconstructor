@@ -188,6 +188,8 @@ void ElementFactory::clic(const sf::Input& input) {
 
                 md.bodyB = body;
                 md.target = p;
+                md.dampingRatio = 1.0f;
+                md.frequencyHz = 1.0f;
                 md.maxForce = 1000.0f*body->GetMass();
 
                 Logger::Instance()->log("ici trouve 4");
@@ -233,8 +235,8 @@ void ElementFactory::rotate(float value) {
     }
 }
 
-bool ElementFactory::render(const sf::Input& input) {
-    bool ret=false;
+int ElementFactory::render(const sf::Input& input) {
+    int ret=0;
     _app->Draw(_sprite_back);
     _app->Draw(_sprite_base);
     _app->Draw(_sprite_limite);
@@ -254,11 +256,9 @@ bool ElementFactory::render(const sf::Input& input) {
             _app->Draw(time);
         }
         if (elapsedTime >= 5) {
-            sf::String text("Winner", *_font, 50);
-            text.SetPosition(_app->GetWidth()/2-50, 10);
-            _app->Draw(text);
+            ret = 1;
             if (floor(elapsedTime) == 8) {
-                ret = true;
+                ret = 2;
             }
         } else {
             if ((int)elapsedTime % 2 == 0) {

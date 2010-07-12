@@ -73,16 +73,16 @@ void GameManager::destroyWorld() {
 
 void GameManager::run() {
 
-    //createWorld();
     MapManager::Instance()->nextMap(*world);
     bool paused = false;
+    bool winner = false;
 
     while (_app.IsOpened()) {
         sf::Event Event;
         while (_app.GetEvent(Event))  {
             if (Event.Type == sf::Event::Closed || (Event.Type == sf::Event::KeyPressed && Event.Key.Code == sf::Key::Escape)) {
                 _app.Close();
-            } else if (Event.Type == sf::Event::MouseButtonReleased) {
+            } else if (Event.Type == sf::Event::MouseButtonReleased && !winner) {
                 ElementFactory::Instance()->clic(_app.GetInput());
             } else if (Event.Type == sf::Event::KeyPressed && (Event.Key.Code == sf::Key::Up || Event.Key.Code == sf::Key::Down)) {
                 if (Event.Key.Code == sf::Key::Up) {
@@ -116,19 +116,28 @@ void GameManager::run() {
             world->Step(_app.GetFrameTime(), 6, 2);
 
             //Winner
-            if (ElementFactory::Instance()->render(_app.GetInput())) {
-                destroyWorld();
-                createWorld();
-                MapManager::Instance()->nextMap(*world);
-            }
-
-            //Loser
-            if(ElementFactory::Instance()->below()) {
-                sf::Font *font   = RessourceManager::Instance()->GetFont("ressources/fonts/gilligan.ttf");
-                sf::String perdu("You lose !", *font, 50);
-                perdu.SetPosition(_app.GetWidth()/2-100, 10);
-                _app.Draw(perdu);
-                paused = true;
+            int status = ElementFactory::Instance()->render(_app.GetInput());
+            if (status != 0) {
+                if(status == 1) {
+                    sf::Font *font   = RessourceManager::Instance()->GetFont("ressources/fonts/gilligan.ttf");
+                    sf::String text("Winner", *font, 50);
+                    text.SetPosition(_app.GetWidth()/2-50, 10);
+                    _app.Draw(text);
+                    winner = true;
+                } else if (status == 2) {
+                    destroyWorld();
+                    createWorld();
+                    MapManager::Instance()->nextMap(*world);
+                }
+            } else {
+                //Loser
+                if(ElementFactory::Instance()->below()) {
+                    sf::Font *font   = RessourceManager::Instance()->GetFont("ressources/fonts/gilligan.ttf");
+                    sf::String perdu("You lose !", *font, 50);
+                    perdu.SetPosition(_app.GetWidth()/2-100, 10);
+                    _app.Draw(perdu);
+                    paused = true;
+                }
             }
 
             _app.SetView(_app.GetDefaultView());

@@ -10,5 +10,8 @@
 		<elem type="Circle" file="cercle.png" x="100" y="250" angle="0" density="100.0" friction="1.0" restitution="0.2" />
 		<elem type="Triangle" file="triangle.png" x="120" y="200" angle="45" density="100.0" friction="0.3" restitution="0.3" />
 		<elem type="Square" file="rectangle.png" x="250" y="350" angle="0" density="100.0" friction="0.3" restitution="0.3" />
-	</elements> 
+	</elements>
+	<obstacles>
+		<obstacle type="Square" file="carre.png" x="120" y="250" angle="20" />
+	</obstacles>
 </map>

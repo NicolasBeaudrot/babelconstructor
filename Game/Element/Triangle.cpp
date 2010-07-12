@@ -13,6 +13,7 @@ Triangle::Triangle(sf::Vector2f &position, float angle, std::string& file, b2Wor
     bd.type = b2_dynamicBody;
     bd.position.Set(_app->GetWidth() - position.x, _app->GetHeight() - position.y);
     bd.angle = -Collision::to_radian(angle);
+    bd.angularDamping = 0.01f;
     _body = world.CreateBody(&bd);
 
 	b2Vec2 vertices[3];

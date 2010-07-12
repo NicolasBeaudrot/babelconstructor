@@ -110,7 +110,7 @@
             * @param input contains mouse coordonates
             * @return true if the map is over else false
             */
-            bool render(const sf::Input& input);
+            int render(const sf::Input& input);
 
             virtual void PreSolve(b2Contact* contact, const b2Manifold* oldManifold);
             virtual void BeginContact(b2Contact* contact) { B2_NOT_USED(contact); }
