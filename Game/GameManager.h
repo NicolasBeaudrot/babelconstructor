@@ -3,10 +3,11 @@
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
-#include "Map/MapManager.h"
-#include "Element/ElementFactory.h"
-#include "Utility/Logger.h"
 #include <Box2D/Box2D.h>
+#include "Map/MapManager.h"
+#include "Utility/Logger.h"
+#include "Element/ElementFactory.h"
+#include "Obstacle/ObstacleFactory.h"
 
 class GameManager
 {

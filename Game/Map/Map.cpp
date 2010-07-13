@@ -1,10 +1,11 @@
 #include "Map.h"
 #include <tinyxml.h>
 
-Map::Map(sf::RenderWindow * application, sf::View* camera, const std::string &nom, b2World& world) : _app(application), _camera(camera){
+Map::Map(sf::RenderWindow * application, sf::View* camera, const std::string &nom) : _app(application), _camera(camera){
     const std::string file = "ressources/map/" + nom;
     sf::Vector2f dimension;
-    float limite_y;
+    sf::Vector2f base_position;
+    float limite_y = 0;
 
     TiXmlDocument doc( file.c_str() );
     if (!doc.LoadFile()) {
@@ -25,7 +26,8 @@ Map::Map(sf::RenderWindow * application, sf::View* camera, const std::string &no
             limite = hdl.FirstChildElement("map").FirstChild("limite").Element();
             limite->QueryFloatAttribute("y", &limite_y);
 
-            ElementFactory::Instance()->loadBase(back->GetText(), base->GetText(), dimension, world, limite->GetText(), limite_y);
+
+            base_position = ElementFactory::Instance()->loadBase(back->GetText(), base->GetText(), dimension, limite->GetText(), limite_y);
 
             elem = hdl.FirstChildElement("map").FirstChild("elements").FirstChildElement().Element();
             while (elem){
@@ -42,7 +44,7 @@ Map::Map(sf::RenderWindow * application, sf::View* camera, const std::string &no
 
                 if (elem->Attribute("type") != NULL && position.x != NULL && position.y != NULL && elem->Attribute("file") != NULL
                     && fixture[0] > 1 && fixture[1] >= 0 && fixture[1] <= 1 && fixture[2] >= 0 && fixture[2] <= 1) {
-                    ElementFactory::Instance()->add(elem->Attribute("type"), position, angle, elem->Attribute("file"), world, fixture);
+                    ElementFactory::Instance()->add(elem->Attribute("type"), position, angle, elem->Attribute("file"), fixture);
                 }
                 elem = elem->NextSiblingElement();
             }
@@ -56,7 +58,7 @@ Map::Map(sf::RenderWindow * application, sf::View* camera, const std::string &no
                 elem->QueryFloatAttribute("y", &position.y);
                 elem->QueryFloatAttribute("angle", &angle);
 
-                //ElementFactory::Instance()->add(elem->Attribute("type"), position, angle, elem->Attribute("file"), world, fixture);
+                ObstacleFactory::Instance()->add(elem->Attribute("type"), position, angle, elem->Attribute("file"), base_position);
                 elem = elem->NextSiblingElement();
             }
         } catch(...) {
@@ -67,4 +69,5 @@ Map::Map(sf::RenderWindow * application, sf::View* camera, const std::string &no
 
 Map::~Map() {
     ElementFactory::Instance()->Delete();
+    ObstacleFactory::Instance()->Delete();
 }

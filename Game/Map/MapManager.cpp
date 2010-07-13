@@ -42,21 +42,21 @@ void MapManager::Init(sf::RenderWindow* windows, sf::View* camera) {
 	_camera = camera;
 }
 
-bool MapManager::nextMap(b2World& world) {
+bool MapManager::nextMap() {
     _indexCurr++;
     delete _currentMap;
     if (_indexCurr < _tabMap.size()) {
-        _currentMap = new Map(_app, _camera, _tabMap[_indexCurr], world);
+        _currentMap = new Map(_app, _camera, _tabMap[_indexCurr]);
     } else {
         _indexCurr = 0;
-        _currentMap = new Map(_app, _camera, _tabMap[_indexCurr], world);
+        _currentMap = new Map(_app, _camera, _tabMap[_indexCurr]);
         return false;
     }
     return true;
 }
 
-void MapManager::reLoad(b2World& world) {
+void MapManager::reLoad() {
     delete _currentMap;
-    _currentMap = new Map(_app, _camera, _tabMap[_indexCurr], world);
+    _currentMap = new Map(_app, _camera, _tabMap[_indexCurr]);
 }
 

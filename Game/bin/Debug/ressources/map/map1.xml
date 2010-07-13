@@ -12,6 +12,6 @@
 		<elem type="Square" file="rectangle.png" x="250" y="350" angle="0" density="100.0" friction="0.3" restitution="0.3" />
 	</elements>
 	<obstacles>
-		<obstacle type="Square" file="carre.png" x="120" y="250" angle="20" />
+		<obstacle type="Square" file="carre.png" x="120" y="450" angle="0" />
 	</obstacles>
 </map>

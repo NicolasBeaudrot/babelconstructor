@@ -25,6 +25,7 @@
 #include "Square.h"
 #include "Circle.h"
 #include "Triangle.h"
+#include "../Obstacle/ObstacleFactory.h"
 
     class ElementFactory : public CSingleton<ElementFactory>, public b2ContactListener
     {
@@ -52,6 +53,7 @@
             /**
             * Constructor
             * @param : SFML window
+            * @param : Box2D world
             */
             void Init(sf::RenderWindow *application,b2World *);
 
@@ -65,11 +67,11 @@
             * @param background : background texture filename
             * @param base : base texture filename
             * @param dimension : width and height of the base
-            * @param world : box2D world
             * @param limite : limit texture filename
             * @param limite_y : y position of the limit
+            * @return the base position
             */
-            void loadBase(std::string background, std::string base, sf::Vector2f& dimension, b2World& world, std::string limite, float limite_y);
+            sf::Vector2f loadBase(std::string background, std::string base, sf::Vector2f& dimension, std::string limite, float limite_y);
 
             /**
             * This function is used to load an element
@@ -77,10 +79,9 @@
             * @param position : initial position
             * @param angle : initial angle
             * @param file : texture filename
-            * @param world : box2D object
             * @param fixture : an array containing physical informations
             */
-            void add(std::string type, sf::Vector2f& position, float& angle, std::string file, b2World& world, float* fixture);
+            void add(std::string type, sf::Vector2f& position, float& angle, std::string file, float* fixture);
 
             /**
             * This function is used to call each element when there is a mouse clic

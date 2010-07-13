@@ -14,45 +14,38 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef MAP_MANAGER
-#define MAP_MANAGER
+#ifndef OBSTACLE_H
+#define OBSTACLE_H
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
-#include "../Utility/Singleton.h"
-#include "Map.h"
-#include <dirent.h>
+#include <Box2D/Box2D.h>
+#include "../Utility/Collision.h"
+#include "../Utility/Logger.h"
+#include "../Utility/ImageManager.h"
 
-    class MapManager : public CSingleton<MapManager>
+    class Obstacle
     {
-        private:
-            friend class CSingleton<MapManager>;
-            MapManager();
-            virtual ~MapManager();
-            sf::RenderWindow* _app;
-            sf::View* _camera;
-            std::vector<std::string> _tabMap;
-            unsigned int _indexCurr;
-            Map* _currentMap;
+        protected :
+            b2Body* _body;
+            sf::RenderWindow *_app;
+            sf::Image *_image;
+            sf::Sprite _sprite;
 
-        public:
+        public :
             /**
             * Constructor
-            * @param window : SFML window
-            * @param camera : SFML camera
             */
-            void Init(sf::RenderWindow* window, sf::View* camera);
+            Obstacle();
 
             /**
-            * This function is used to load the next map
-            * @return true if there is a new map, false if the game is finished.
+            * Destructor
             */
-            bool nextMap();
+            ~Obstacle();
 
             /**
-            * This function is used to reload the current map
+            * This function is used to display the obstacle
             */
-            void reLoad();
-
+            void render();
     };
 
 #endif

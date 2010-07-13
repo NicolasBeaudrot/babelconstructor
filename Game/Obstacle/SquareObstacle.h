@@ -14,30 +14,14 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef MAP
-#define MAP
-#include "../Element/ElementFactory.h"
-#include "../Obstacle/ObstacleFactory.h"
-#include "../Utility/Logger.h"
+#ifndef SQUAREOBSTACLE_H
+#define SQUAREOBSTACLE_H
+#include "Obstacle.h"
 
-class Map {
-	private:
-		sf::RenderWindow * _app;
-        sf::View * _camera;
-
-    public :
-        /**
-        * Constructor : it will load a map
-        * @param application : SFML window
-        * @param camera : SFML camera
-        * @param nom : map filename
-        */
-        Map(sf::RenderWindow * application, sf::View* camera, const std::string &nom);
-
-        /**
-        * Destructor
-        */
-        virtual ~Map();
-};
+    class SquareObstacle : public Obstacle
+    {
+        public :
+            SquareObstacle(sf::Vector2f& position, float& angle, std::string file, b2World& world, sf::RenderWindow *application);
+    };
 
 #endif

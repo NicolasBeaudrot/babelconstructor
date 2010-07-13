@@ -1,9 +1,6 @@
 #include "ElementFactory.h"
 #include <sstream>
 
-
-
-
 class QueryCallback : public b2QueryCallback
 {
 public:
@@ -67,7 +64,6 @@ void ElementFactory::Init(sf::RenderWindow *application, b2World *world) {
 
 
 void ElementFactory::PreSolve(b2Contact* contact, const b2Manifold* oldManifold){
-
    // Logger::Instance()->log("PreSolve ");
 }
 
@@ -79,14 +75,13 @@ void ElementFactory::Delete() {
    // delete _mouseJoint; //DELETING WHEN WE DELETE THE WORLD
    // delete _groundBody; //DELETING WHEN WE DELETE THE WORLD
 
-
     for (unsigned int i=0 ; i < _tabElem.size() ; i++) {
         delete _tabElem[i];
     }
     _tabElem.clear();
 }
 
-void ElementFactory::loadBase(std::string background, std::string base, sf::Vector2f& dimension, b2World& world, std::string limite, float limite_y) {
+sf::Vector2f ElementFactory::loadBase(std::string background, std::string base, sf::Vector2f& dimension, std::string limite, float limite_y) {
     _img_back.LoadFromFile("ressources/images/" + background);
     _sprite_back.SetImage(_img_back);
     _sprite_back.Resize(_app->GetWidth(), _app->GetHeight());
@@ -105,24 +100,26 @@ void ElementFactory::loadBase(std::string background, std::string base, sf::Vect
 
 	b2BodyDef baseBodyDef;
 	baseBodyDef.position.Set((_app->GetWidth()/2), 90);
-	b2Body* baseBody = world.CreateBody(&baseBodyDef);
+	b2Body* baseBody = _world->CreateBody(&baseBodyDef);
 	b2PolygonShape baseBox;
 	baseBox.SetAsBox(dimension.x / 2.0f, 10.0f);
 	baseBody->CreateFixture(&baseBox, 0.0f);
+
+	return _sprite_base.GetPosition();
 }
 
-void ElementFactory::add(std::string type, sf::Vector2f& position, float& angle, std::string file, b2World& world, float* fixture) {
+void ElementFactory::add(std::string type, sf::Vector2f& position, float& angle, std::string file, float* fixture) {
     position.x = _sprite_base.GetPosition().x + position.x;
     position.y = _sprite_base.GetPosition().y - position.y;
 
     if (type == "Square" or type == "Rectangle") {
-        Square *elem = new Square(position, angle, file, world, fixture, _app);
+        Square *elem = new Square(position, angle, file, *_world, fixture, _app);
         _tabElem.push_back(elem);
     } else if (type == "Circle") {
-        Circle *elem = new Circle(position, angle, file, world, fixture, _app);
+        Circle *elem = new Circle(position, angle, file, *_world, fixture, _app);
         _tabElem.push_back(elem);
     } else if (type == "Triangle") {
-        Triangle *elem = new Triangle(position, angle, file, world, fixture, _app);
+        Triangle *elem = new Triangle(position, angle, file, *_world, fixture, _app);
         _tabElem.push_back(elem);
     }
 }
@@ -131,9 +128,9 @@ void ElementFactory::add(std::string type, sf::Vector2f& position, float& angle,
 void ElementFactory::move(const sf::Input& input) {
 
     if (_mouseJoint){
-        Logger::Instance()->log("move ");
-        std::cout<<input.GetMouseX();
-        b2Vec2 p( 800 - input.GetMouseX(), 600 - input.GetMouseY());
+        //Logger::Instance()->log("move ");
+        //std::cout<<input.GetMouseX();
+        b2Vec2 p( _app->GetWidth() - input.GetMouseX(), _app->GetHeight() - input.GetMouseY());
         _mouseJoint->SetTarget(p);
 	}
 }
@@ -165,7 +162,7 @@ void ElementFactory::clic(const sf::Input& input) {
 
             // Query the world for overlapping shapes.
             // Did we click on a shape?
-            b2Vec2 p( 800 - mouse.x, 600 - mouse.y);
+            b2Vec2 p(_app->GetWidth() - mouse.x, _app->GetHeight() - mouse.y);
 
             // Make a small box.
             b2AABB aabb;
@@ -179,7 +176,7 @@ void ElementFactory::clic(const sf::Input& input) {
 
             if (callback.m_fixture)
             {
-                Logger::Instance()->log("element trouve");
+                //Logger::Instance()->log("element trouve");
 
                 b2Body* body = callback.m_fixture->GetBody();
 
@@ -192,7 +189,7 @@ void ElementFactory::clic(const sf::Input& input) {
                 md.frequencyHz = 1.0f;
                 md.maxForce = 1000.0f*body->GetMass();
 
-                Logger::Instance()->log("ici trouve 4");
+                //Logger::Instance()->log("ici trouve 4");
 
                _mouseJoint = (b2MouseJoint*)_world->CreateJoint(&md);
 
@@ -240,6 +237,7 @@ int ElementFactory::render(const sf::Input& input) {
     _app->Draw(_sprite_back);
     _app->Draw(_sprite_base);
     _app->Draw(_sprite_limite);
+    ObstacleFactory::Instance()->render();
 
    for(unsigned int i=0 ; i <  _tabElem.size() ; i++) {
         _tabElem[i]->render(input);

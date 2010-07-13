@@ -60,6 +60,12 @@
 		<Unit filename="Map/Map.h" />
 		<Unit filename="Map/MapManager.cpp" />
 		<Unit filename="Map/MapManager.h" />
+		<Unit filename="Obstacle/Obstacle.cpp" />
+		<Unit filename="Obstacle/Obstacle.h" />
+		<Unit filename="Obstacle/ObstacleFactory.cpp" />
+		<Unit filename="Obstacle/ObstacleFactory.h" />
+		<Unit filename="Obstacle/SquareObstacle.cpp" />
+		<Unit filename="Obstacle/SquareObstacle.h" />
 		<Unit filename="Utility/Collision.cpp" />
 		<Unit filename="Utility/Collision.h" />
 		<Unit filename="Utility/ImageManager.cpp" />

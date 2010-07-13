@@ -34,7 +34,8 @@ GameManager::GameManager() : _app(), _camera() {
 
     createWorld();
     MapManager::Instance()->Init(&_app, &_camera);
-    ElementFactory::Instance()->Init(&_app,world);
+    ElementFactory::Instance()->Init(&_app, world);
+    ObstacleFactory::Instance()->Init(&_app, world);
     Logger::Instance()->Init();
 }
 
@@ -42,6 +43,7 @@ GameManager::~GameManager() {
     destroyWorld();
     MapManager::Kill();
     ElementFactory::Kill();
+    ObstacleFactory::Kill();
     Logger::Kill();
     RessourceManager::Kill();
 }
@@ -73,7 +75,7 @@ void GameManager::destroyWorld() {
 
 void GameManager::run() {
 
-    MapManager::Instance()->nextMap(*world);
+    MapManager::Instance()->nextMap();
     bool paused = false;
     bool winner = false;
 
@@ -94,7 +96,7 @@ void GameManager::run() {
                 destroyWorld();
                 createWorld();
                 ElementFactory::Instance()->Init(& _app,world );
-                MapManager::Instance()->nextMap(*world);
+                MapManager::Instance()->nextMap();
             } else if (Event.Type == sf::Event::KeyPressed && Event.Key.Code == sf::Key::P) {
                 paused = !paused;
             } else if (Event.Type == sf::Event::KeyPressed && Event.Key.Code == sf::Key::Return) {
@@ -102,7 +104,7 @@ void GameManager::run() {
                 destroyWorld();
                 createWorld();
                 ElementFactory::Instance()->Init(& _app,world );
-                MapManager::Instance()->reLoad(*world);
+                MapManager::Instance()->reLoad();
 
             }else if(Event.Type == sf::Event::MouseMoved){
                 ElementFactory::Instance()->move(_app.GetInput());
@@ -127,7 +129,7 @@ void GameManager::run() {
                 } else if (status == 2) {
                     destroyWorld();
                     createWorld();
-                    MapManager::Instance()->nextMap(*world);
+                    MapManager::Instance()->nextMap();
                 }
             } else {
                 //Loser
