@@ -18,6 +18,7 @@
 #define LOGGER_H
 #include "Singleton.h"
 #include <iostream>
+#include <fstream>
 
     class Logger : public CSingleton<Logger>
     {
@@ -25,6 +26,8 @@
             friend class CSingleton<Logger>;
             Logger();
             virtual ~Logger();
+            std::ofstream _file;
+            bool _debug;
 
         public :
             void Init();
