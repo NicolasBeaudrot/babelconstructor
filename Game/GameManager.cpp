@@ -96,6 +96,7 @@ void GameManager::run() {
                 destroyWorld();
                 createWorld();
                 ElementFactory::Instance()->Init(& _app,world );
+                ObstacleFactory::Instance()->Init(&_app, world);
                 MapManager::Instance()->nextMap();
             } else if (Event.Type == sf::Event::KeyPressed && Event.Key.Code == sf::Key::P) {
                 paused = !paused;
@@ -104,6 +105,7 @@ void GameManager::run() {
                 destroyWorld();
                 createWorld();
                 ElementFactory::Instance()->Init(& _app,world );
+                ObstacleFactory::Instance()->Init(&_app, world);
                 MapManager::Instance()->reLoad();
 
             }else if(Event.Type == sf::Event::MouseMoved){
