@@ -6,4 +6,7 @@ SOURCES += Canvas/SFMLCanvas.cpp \
 DESTDIR = "bin"
 INCLUDEPATH += "../ExternLibrairie/SFML-1.6/include"
 DEPENDPATH += "../ExternLibrairie/SFML-1.6/lib"
-LIBS += -lsfml-graphics -lsfml-window -lsfml-system
+LIBS += -lsfml-graphics \
+    -lsfml-window \
+    -lsfml-system
+FORMS += ui/main.ui

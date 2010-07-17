@@ -61,7 +61,7 @@
   <valuemap type="QVariantMap" >
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Debug</value>
    <valuelist key="abstractProcess.Environment" type="QVariantList" >
-    <value type="QString" >DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-SlyGZeJ1Do,guid=b24a3d0bba2e701b49faa4a64c2ede0f</value>
+    <value type="QString" >DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-caSOJ7EdVt,guid=45645a0db7f63602695759644c417256</value>
     <value type="QString" >DESKTOP_SESSION=gnome</value>
     <value type="QString" >DESKTOP_STARTUP_ID=</value>
     <value type="QString" >DISPLAY=:0.0</value>
@@ -69,13 +69,14 @@
     <value type="QString" >GDM_KEYBOARD_LAYOUT=fr	oss</value>
     <value type="QString" >GDM_LANG=fr_FR.UTF-8</value>
     <value type="QString" >GNOME_DESKTOP_SESSION_ID=this-is-deprecated</value>
-    <value type="QString" >GNOME_KEYRING_PID=2531</value>
-    <value type="QString" >GNOME_KEYRING_SOCKET=/tmp/keyring-h6VUbg/socket</value>
-    <value type="QString" >GPG_AGENT_INFO=/tmp/seahorse-1RZ42h/S.gpg-agent:2631:1</value>
+    <value type="QString" >GNOME_KEYRING_PID=2486</value>
+    <value type="QString" >GNOME_KEYRING_SOCKET=/tmp/keyring-e1qNgl/socket</value>
+    <value type="QString" >GPG_AGENT_INFO=/tmp/seahorse-oN4XSa/S.gpg-agent:2586:1</value>
     <value type="QString" >GTK_MODULES=canberra-gtk-module:gail:atk-bridge</value>
     <value type="QString" >GTK_RC_FILES=/etc/gtk/gtkrc:/home/nico/.gtkrc-1.2-gnome2</value>
     <value type="QString" >HOME=/home/nico</value>
     <value type="QString" >LANG=fr_FR.UTF-8</value>
+    <value type="QString" >LANGUAGE=</value>
     <value type="QString" >LD_LIBRARY_PATH=/usr/lib/qtcreator:</value>
     <value type="QString" >LIBGL_DRIVERS_PATH=/usr/lib/dri</value>
     <value type="QString" >LIBJPLPATH=/usr/lib/swi-prolog/lib/i386/</value>
@@ -84,16 +85,16 @@
     <value type="QString" >PATH=/usr/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/var/www/web/siteperso/cakephp/cake/console</value>
     <value type="QString" >PWD=/home/nico</value>
     <value type="QString" >QTDIR=/usr</value>
-    <value type="QString" >SESSION_MANAGER=local/nico-laptop:@/tmp/.ICE-unix/2546,unix/nico-laptop:/tmp/.ICE-unix/2546</value>
+    <value type="QString" >SESSION_MANAGER=local/nico-laptop:@/tmp/.ICE-unix/2501,unix/nico-laptop:/tmp/.ICE-unix/2501</value>
     <value type="QString" >SHELL=/bin/bash</value>
     <value type="QString" >SPEECHD_PORT=7560</value>
-    <value type="QString" >SSH_AGENT_PID=2590</value>
-    <value type="QString" >SSH_AUTH_SOCK=/tmp/keyring-h6VUbg/socket.ssh</value>
+    <value type="QString" >SSH_AGENT_PID=2561</value>
+    <value type="QString" >SSH_AUTH_SOCK=/tmp/keyring-e1qNgl/socket.ssh</value>
     <value type="QString" >USER=nico</value>
     <value type="QString" >USERNAME=nico</value>
-    <value type="QString" >XAUTHORITY=/var/run/gdm/auth-for-nico-fib6kx/database</value>
+    <value type="QString" >XAUTHORITY=/var/run/gdm/auth-for-nico-gQ9gol/database</value>
     <value type="QString" >XDG_DATA_DIRS=/usr/share/gnome:/usr/local/share/:/usr/share/</value>
-    <value type="QString" >XDG_SESSION_COOKIE=9b9b0aaa089a35b2aac05ee74a00585c-1278139918.980732-65352247</value>
+    <value type="QString" >XDG_SESSION_COOKIE=9b9b0aaa089a35b2aac05ee74a00585c-1279357526.147204-30180402</value>
    </valuelist>
    <valuelist key="abstractProcess.arguments" type="QVariantList" >
     <value type="QString" >/home/nico/Documents/babelconstructor/LevelEditor/BabelLevelEditor.pro</value>
@@ -103,7 +104,7 @@
     <value type="QString" >CONFIG+=debug</value>
    </valuelist>
    <value key="abstractProcess.command" type="QString" >/usr/bin/qmake-qt4</value>
-   <value key="abstractProcess.enabled" type="bool" >true</value>
+   <value key="abstractProcess.enabled" type="bool" >false</value>
    <value key="abstractProcess.workingDirectory" type="QString" >/home/nico/Documents/babelconstructor/LevelEditor</value>
    <value key="buildConfiguration" type="int" >2</value>
   </valuemap>
@@ -113,7 +114,7 @@
   <valuemap type="QVariantMap" >
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Debug</value>
    <valuelist key="abstractProcess.Environment" type="QVariantList" >
-    <value type="QString" >DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-SlyGZeJ1Do,guid=b24a3d0bba2e701b49faa4a64c2ede0f</value>
+    <value type="QString" >DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-caSOJ7EdVt,guid=45645a0db7f63602695759644c417256</value>
     <value type="QString" >DESKTOP_SESSION=gnome</value>
     <value type="QString" >DESKTOP_STARTUP_ID=</value>
     <value type="QString" >DISPLAY=:0.0</value>
@@ -121,13 +122,14 @@
     <value type="QString" >GDM_KEYBOARD_LAYOUT=fr	oss</value>
     <value type="QString" >GDM_LANG=fr_FR.UTF-8</value>
     <value type="QString" >GNOME_DESKTOP_SESSION_ID=this-is-deprecated</value>
-    <value type="QString" >GNOME_KEYRING_PID=2531</value>
-    <value type="QString" >GNOME_KEYRING_SOCKET=/tmp/keyring-h6VUbg/socket</value>
-    <value type="QString" >GPG_AGENT_INFO=/tmp/seahorse-1RZ42h/S.gpg-agent:2631:1</value>
+    <value type="QString" >GNOME_KEYRING_PID=2486</value>
+    <value type="QString" >GNOME_KEYRING_SOCKET=/tmp/keyring-e1qNgl/socket</value>
+    <value type="QString" >GPG_AGENT_INFO=/tmp/seahorse-oN4XSa/S.gpg-agent:2586:1</value>
     <value type="QString" >GTK_MODULES=canberra-gtk-module:gail:atk-bridge</value>
     <value type="QString" >GTK_RC_FILES=/etc/gtk/gtkrc:/home/nico/.gtkrc-1.2-gnome2</value>
     <value type="QString" >HOME=/home/nico</value>
     <value type="QString" >LANG=fr_FR.UTF-8</value>
+    <value type="QString" >LANGUAGE=</value>
     <value type="QString" >LD_LIBRARY_PATH=/usr/lib/qtcreator:</value>
     <value type="QString" >LIBGL_DRIVERS_PATH=/usr/lib/dri</value>
     <value type="QString" >LIBJPLPATH=/usr/lib/swi-prolog/lib/i386/</value>
@@ -136,16 +138,16 @@
     <value type="QString" >PATH=/usr/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/var/www/web/siteperso/cakephp/cake/console</value>
     <value type="QString" >PWD=/home/nico</value>
     <value type="QString" >QTDIR=/usr</value>
-    <value type="QString" >SESSION_MANAGER=local/nico-laptop:@/tmp/.ICE-unix/2546,unix/nico-laptop:/tmp/.ICE-unix/2546</value>
+    <value type="QString" >SESSION_MANAGER=local/nico-laptop:@/tmp/.ICE-unix/2501,unix/nico-laptop:/tmp/.ICE-unix/2501</value>
     <value type="QString" >SHELL=/bin/bash</value>
     <value type="QString" >SPEECHD_PORT=7560</value>
-    <value type="QString" >SSH_AGENT_PID=2590</value>
-    <value type="QString" >SSH_AUTH_SOCK=/tmp/keyring-h6VUbg/socket.ssh</value>
+    <value type="QString" >SSH_AGENT_PID=2561</value>
+    <value type="QString" >SSH_AUTH_SOCK=/tmp/keyring-e1qNgl/socket.ssh</value>
     <value type="QString" >USER=nico</value>
     <value type="QString" >USERNAME=nico</value>
-    <value type="QString" >XAUTHORITY=/var/run/gdm/auth-for-nico-fib6kx/database</value>
+    <value type="QString" >XAUTHORITY=/var/run/gdm/auth-for-nico-gQ9gol/database</value>
     <value type="QString" >XDG_DATA_DIRS=/usr/share/gnome:/usr/local/share/:/usr/share/</value>
-    <value type="QString" >XDG_SESSION_COOKIE=9b9b0aaa089a35b2aac05ee74a00585c-1278139918.980732-65352247</value>
+    <value type="QString" >XDG_SESSION_COOKIE=9b9b0aaa089a35b2aac05ee74a00585c-1279357526.147204-30180402</value>
    </valuelist>
    <valuelist key="abstractProcess.arguments" type="QVariantList" >
     <value type="QString" >-w</value>
