@@ -12,7 +12,7 @@ int main(int argc, char **argv)
     Ui::MainWindow ui;
     ui.setupUi(MainFrame);
     MainFrame->setWindowTitle("Babel Level Editor");
-    MainFrame->resize(700, 500);
+    MainFrame->resize(700, 600);
     MainFrame->show();
 
     //On crée une vue SFML dans la fenêtre principale
