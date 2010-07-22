@@ -1,21 +1,20 @@
 #include "SFMLCanvas.h"
 
 SFMLCanvas::SFMLCanvas(QWidget* Parent, Ui::MainWindow& u, const QPoint& Position, const QSize& Size)
- : QSFMLCanvas(Parent, Position, Size)
+ : QSFMLCanvas(Parent, Position, Size), _clicked(false)
 {
     _win = &u;
     connect(_win->BaseButton, SIGNAL(clicked()), this, SLOT(on_BaseButton_clicked()));
-    connect(_win->elementsListView, SIGNAL(clicked(QModelIndex)), this, SLOT(on_listView_clicked(QModelIndex)));
+    connect(_win->elementsListView, SIGNAL(clicked(QModelIndex)), this, SLOT(on_elementsListView_clicked(QModelIndex)));
 
-    _elements = new ItemFactory("ressources/images/elements");
-    _elements->getList(*_win->elementsListView);
-    _obstacles = new ItemFactory("ressources/images/obstacles");
-    _obstacles->getList(*_win->obstaclesListView);
+    _items = new ItemFactory("ressources/images/elements");
+    _items->getList(*_win->elementsListView, 1);
+    _items->setPath("ressources/images/obstacles");
+    _items->getList(*_win->obstaclesListView, 2);
 }
 
 SFMLCanvas::~SFMLCanvas() {
-    delete _elements;
-    delete _obstacles;
+    delete _items;
 }
 
 void SFMLCanvas::OnInit() {
@@ -36,11 +35,17 @@ void SFMLCanvas::mouseReleaseEvent  ( QMouseEvent * e ) {
     } else {
         _win->objectProperties->setVisible(false);
     }
+    _clicked = false;
 }
 
 void SFMLCanvas::OnUpdate() {
     Clear(sf::Color(255, 255, 255));
     Draw(_base_sprite);
+
+    if (_clicked) {
+        sp_curs.SetPosition(QCursor::pos().x() - 150 - curs.GetWidth()/2, QCursor::pos().y() - 100 - curs.GetHeight()/2);
+        Draw(sp_curs);
+    }
 }
 
 void SFMLCanvas::on_BaseButton_clicked() {
@@ -106,7 +111,9 @@ void SFMLCanvas::hideProperties() {
     _win->yLabel->setVisible(false);
 }
 
-void SFMLCanvas::on_listView_clicked(QModelIndex index)
-{
-    std::cout << "Index : " << index.row() << std::endl;
+void SFMLCanvas::on_elementsListView_clicked(QModelIndex index) {
+    std::cout << _items->getFile(index.row(), 1).toStdString() << std::endl;
+    curs.LoadFromFile(_items->getFile(index.row(), 1).toStdString());
+    sp_curs.SetImage(curs);
+    _clicked = true;
 }
