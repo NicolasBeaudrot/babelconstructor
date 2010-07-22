@@ -5,6 +5,17 @@ SFMLCanvas::SFMLCanvas(QWidget* Parent, Ui::MainWindow& u, const QPoint& Positio
 {
     _win = &u;
     connect(_win->BaseButton, SIGNAL(clicked()), this, SLOT(on_BaseButton_clicked()));
+    connect(_win->elementsListView, SIGNAL(clicked(QModelIndex)), this, SLOT(on_listView_clicked(QModelIndex)));
+
+    _elements = new ItemFactory("ressources/images/elements");
+    _elements->getList(*_win->elementsListView);
+    _obstacles = new ItemFactory("ressources/images/obstacles");
+    _obstacles->getList(*_win->obstaclesListView);
+}
+
+SFMLCanvas::~SFMLCanvas() {
+    delete _elements;
+    delete _obstacles;
 }
 
 void SFMLCanvas::OnInit() {
@@ -42,13 +53,35 @@ void SFMLCanvas::displayProperties() {
     hideProperties();
 
     switch(_mode) {
-        case 1 : //Mode base
+        case 1 : { //Mode base
             _win->objectProperties->setTitle("Properties : Base");
             _win->widthLabel->setVisible(true);
             _win->widthEdit->setVisible(true);
             QString width;
             _win->widthEdit->setText(width.setNum(_base_image.GetWidth()));
-            break;
+        }
+        break;
+
+        case 2 : { //Mode Elements
+            _win->objectProperties->setTitle("Properties : Element");
+            _win->angleEdit->setVisible(true);
+            _win->angleLabel->setVisible(true);
+            _win->densityEdit->setVisible(true);
+            _win->densityLabel->setVisible(true);
+            _win->frictionEdit->setVisible(true);
+            _win->frictionLabel->setVisible(true);
+            _win->heightEdit->setVisible(true);
+            _win->heigthLabel->setVisible(true);
+            _win->restitutionEdit->setVisible(true);
+            _win->restitutionLabel->setVisible(true);
+            _win->widthEdit->setVisible(true);
+            _win->widthLabel->setVisible(true);
+            _win->xEdit->setVisible(true);
+            _win->xLabel->setVisible(true);
+            _win->yEdit->setVisible(true);
+            _win->yLabel->setVisible(true);
+        }
+        break;
     }
 
     _win->objectProperties->setVisible(true);
@@ -71,4 +104,9 @@ void SFMLCanvas::hideProperties() {
     _win->xLabel->setVisible(false);
     _win->yEdit->setVisible(false);
     _win->yLabel->setVisible(false);
+}
+
+void SFMLCanvas::on_listView_clicked(QModelIndex index)
+{
+    std::cout << "Index : " << index.row() << std::endl;
 }

@@ -1,8 +1,11 @@
 HEADERS += Canvas/SFMLCanvas.h \
-    Canvas/QSFMLCanvas.hpp
+    Canvas/QSFMLCanvas.hpp \
+    Element/listElement.h \
+    Item/ItemFactory.h
 SOURCES += Canvas/SFMLCanvas.cpp \
     Canvas/QSFMLCanvas.cpp \
-    main.cpp
+    main.cpp \
+    Item/ItemFactory.cpp
 DESTDIR = "bin"
 INCLUDEPATH += "../ExternLibrairie/SFML-1.6/include"
 DEPENDPATH += "../ExternLibrairie/SFML-1.6/lib"
