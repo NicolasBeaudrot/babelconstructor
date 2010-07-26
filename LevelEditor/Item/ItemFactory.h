@@ -18,6 +18,10 @@
 
             void setPosition(int index, sf::Vector2f position);
 
+            int isClicked(float x, float y);
+
+            int getType(int index);
+
             void render(QSFMLCanvas &win);
     };
 #endif // ITEMFACTORY_H

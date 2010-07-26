@@ -18,6 +18,10 @@
 
             void setPosition(sf::Vector2f position);
 
+            bool isClicked(float x, float y);
+
+            int getType();
+
             void render(QSFMLCanvas &win);
     };
 

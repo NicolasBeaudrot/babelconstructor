@@ -6,6 +6,7 @@ SFMLCanvas::SFMLCanvas(QWidget* Parent, Ui::MainWindow& u, const QPoint& Positio
     _win = &u;
     connect(_win->BaseButton, SIGNAL(clicked()), this, SLOT(on_BaseButton_clicked()));
     connect(_win->elementsListView, SIGNAL(clicked(QModelIndex)), this, SLOT(on_elementsListView_clicked(QModelIndex)));
+    connect(_win->obstaclesListView, SIGNAL(clicked(QModelIndex)), this, SLOT(on_obstaclesListView_clicked(QModelIndex)));
 
     QStringList files = QDir( "ressources/images/elements" ).entryList(QDir::Files | QDir::NoDotAndDotDot);
     _win->elementsListView->setModel(new QStringListModel(files));
@@ -33,6 +34,10 @@ void SFMLCanvas::mouseReleaseEvent  ( QMouseEvent * e ) {
     if (e->x() >= (_base_sprite.GetPosition().x - _base_image.GetWidth()/2) && e->x() <= (_base_sprite.GetPosition().x - _base_image.GetWidth()/2 + _base_image.GetWidth())
         && e->y() >= (_base_sprite.GetPosition().y - _base_image.GetHeight()/2) && e->y() <= (_base_sprite.GetPosition().y - _base_image.GetHeight()/2 + _base_image.GetHeight())) {
         _mode = 1;
+        displayProperties();
+    } else if (_items->isClicked(e->x(), e->y()) != -1) {
+        _currentItem = _items->isClicked(e->x(), e->y());
+        _mode = _items->getType(_currentItem);
         displayProperties();
     } else {
         _win->objectProperties->setVisible(false);
@@ -68,7 +73,6 @@ void SFMLCanvas::displayProperties() {
             _win->widthEdit->setText(width.setNum(_base_image.GetWidth()));
         }
         break;
-
         case 2 : { //Mode Elements
             _win->objectProperties->setTitle("Properties : Element");
             _win->angleEdit->setVisible(true);
@@ -81,6 +85,20 @@ void SFMLCanvas::displayProperties() {
             _win->heigthLabel->setVisible(true);
             _win->restitutionEdit->setVisible(true);
             _win->restitutionLabel->setVisible(true);
+            _win->widthEdit->setVisible(true);
+            _win->widthLabel->setVisible(true);
+            _win->xEdit->setVisible(true);
+            _win->xLabel->setVisible(true);
+            _win->yEdit->setVisible(true);
+            _win->yLabel->setVisible(true);
+        }
+        break;
+        case 3 : { //Mode Obstacles
+            _win->objectProperties->setTitle("Properties : Obstacle");
+            _win->angleEdit->setVisible(true);
+            _win->angleLabel->setVisible(true);
+            _win->heightEdit->setVisible(true);
+            _win->heigthLabel->setVisible(true);
             _win->widthEdit->setVisible(true);
             _win->widthLabel->setVisible(true);
             _win->xEdit->setVisible(true);
@@ -115,5 +133,11 @@ void SFMLCanvas::hideProperties() {
 
 void SFMLCanvas::on_elementsListView_clicked(QModelIndex index) {
     _clicked = true;
-    _currentItem = _items->add(1,"ressources/images/elements/" + index.data().toString());
+    _currentItem = _items->add(2,"ressources/images/elements/" + index.data().toString());
+}
+
+void SFMLCanvas::on_obstaclesListView_clicked(QModelIndex index)
+{
+    _clicked = true;
+    _currentItem = _items->add(3, "ressources/images/obstacles/" + index.data().toString());
 }

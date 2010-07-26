@@ -19,6 +19,20 @@ void ItemFactory::setPosition(int index, sf::Vector2f position) {
     _itemsArray[index]->setPosition(position);
 }
 
+int ItemFactory::isClicked(float x, float y) {
+    int ret = -1;
+    for( unsigned int i=0; i < _itemsArray.size(); i++) {
+        if (_itemsArray[i]->isClicked(x,y)) {
+            ret = i;
+        }
+    }
+    return ret;
+}
+
+int ItemFactory::getType(int index) {
+    return _itemsArray[index]->getType();
+}
+
 void ItemFactory::render(QSFMLCanvas &win) {
     for(unsigned int i=0; i < _itemsArray.size() ; i++) {
         _itemsArray[i]->render(win);

@@ -32,6 +32,7 @@
             int _currentItem;
 
     private slots:
+        void on_obstaclesListView_clicked(QModelIndex index);
         void on_elementsListView_clicked(QModelIndex index);
         void on_BaseButton_clicked();
 };
