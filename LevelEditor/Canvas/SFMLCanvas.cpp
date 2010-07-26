@@ -7,10 +7,12 @@ SFMLCanvas::SFMLCanvas(QWidget* Parent, Ui::MainWindow& u, const QPoint& Positio
     connect(_win->BaseButton, SIGNAL(clicked()), this, SLOT(on_BaseButton_clicked()));
     connect(_win->elementsListView, SIGNAL(clicked(QModelIndex)), this, SLOT(on_elementsListView_clicked(QModelIndex)));
 
-    _items = new ItemFactory("ressources/images/elements");
-    _items->getList(*_win->elementsListView, 1);
-    _items->setPath("ressources/images/obstacles");
-    _items->getList(*_win->obstaclesListView, 2);
+    QStringList files = QDir( "ressources/images/elements" ).entryList(QDir::Files | QDir::NoDotAndDotDot);
+    _win->elementsListView->setModel(new QStringListModel(files));
+    files = QDir( "ressources/images/obstacles" ).entryList(QDir::Files | QDir::NoDotAndDotDot);
+    _win->obstaclesListView->setModel(new QStringListModel(files));
+
+    _items = new ItemFactory();
 }
 
 SFMLCanvas::~SFMLCanvas() {
@@ -43,9 +45,9 @@ void SFMLCanvas::OnUpdate() {
     Draw(_base_sprite);
 
     if (_clicked) {
-        sp_curs.SetPosition(QCursor::pos().x() - 150 - curs.GetWidth()/2, QCursor::pos().y() - 100 - curs.GetHeight()/2);
-        Draw(sp_curs);
+        _items->setPosition(_currentItem, sf::Vector2f(QCursor::pos().x() - 150, QCursor::pos().y() - 100));
     }
+    _items->render(*this);
 }
 
 void SFMLCanvas::on_BaseButton_clicked() {
@@ -112,8 +114,6 @@ void SFMLCanvas::hideProperties() {
 }
 
 void SFMLCanvas::on_elementsListView_clicked(QModelIndex index) {
-    std::cout << _items->getFile(index.row(), 1).toStdString() << std::endl;
-    curs.LoadFromFile(_items->getFile(index.row(), 1).toStdString());
-    sp_curs.SetImage(curs);
     _clicked = true;
+    _currentItem = _items->add(1,"ressources/images/elements/" + index.data().toString());
 }

@@ -1,31 +1,26 @@
 #include "ItemFactory.h"
 
-ItemFactory::ItemFactory(QString image_path) : _path(image_path){
+ItemFactory::ItemFactory() {
 }
 
-void ItemFactory::getList(QListView &l, int type) {
-    QStringList files = QDir( _path ).entryList(QDir::Files | QDir::NoDotAndDotDot);
-    l.setModel(new QStringListModel(files));
-
-    if (type == 1) { //Elements
-        for(int i=0; i < files.size(); i++) {
-            _elementsArray.insert(i, new Item(_path + "/" + files[i]));
-        }
-    } else if (type == 2) { //Obstacles
-        for(int i=0; i < files.size(); i++) {
-            _obstaclesArray.insert(i, new Item(_path + "/" + files[i]));
-        }
+ItemFactory::~ItemFactory() {
+    for(unsigned int i=0; i < _itemsArray.size(); i++) {
+        delete _itemsArray[i];
     }
 }
 
-void ItemFactory::setPath(QString image_path) {
-    _path = image_path;
+int ItemFactory::add(int type, QString file) {
+    Item *temp = new Item(file, type, _itemsArray.size());
+    _itemsArray.push_back(temp);
+    return (_itemsArray.size() - 1);
 }
 
-QString ItemFactory::getFile(int index, int type) {
-    if (type == 1) {
-        return _elementsArray[index]->getFile();
-    } else if(type == 2) {
-        return _obstaclesArray[index]->getFile();
+void ItemFactory::setPosition(int index, sf::Vector2f position) {
+    _itemsArray[index]->setPosition(position);
+}
+
+void ItemFactory::render(QSFMLCanvas &win) {
+    for(unsigned int i=0; i < _itemsArray.size() ; i++) {
+        _itemsArray[i]->render(win);
     }
 }

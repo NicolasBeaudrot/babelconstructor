@@ -1,11 +1,13 @@
 #ifndef SFMLCANVAS_H
 #define SFMLCANVAS_H
 #include "QSFMLCanvas.hpp"
-#include <QMouseEvent>
-#include <vector>
 #include <iostream>
 #include "ui_main.h"
+#include <QtCore>
 #include "Item/ItemFactory.h"
+#include <QListView>
+#include <QStringListModel>
+#include <QMouseEvent>
 
     class SFMLCanvas : public QSFMLCanvas
     {
@@ -23,12 +25,11 @@
             void mouseReleaseEvent( QMouseEvent * e );
             sf::Image  _base_image;
             sf::Sprite _base_sprite;
-            sf::Image curs;
-            sf::Sprite sp_curs;
             Ui::MainWindow *_win;
             int _mode;
             ItemFactory *_items;
             bool _clicked;
+            int _currentItem;
 
     private slots:
         void on_elementsListView_clicked(QModelIndex index);

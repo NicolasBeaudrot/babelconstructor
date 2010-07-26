@@ -1,23 +1,23 @@
 #ifndef ITEMFACTORY_H
 #define ITEMFACTORY_H
-#include <QtCore>
-#include <QListView>
-#include <QStringListModel>
 #include "Item.h"
+#include "Canvas/QSFMLCanvas.hpp"
+#include <vector>
+#include <QString>
 
     class ItemFactory
     {
         private :
-            QString _path;
-            QHash<int, Item*> _elementsArray;
-            QHash<int, Item*> _obstaclesArray;
+            std::vector<Item*> _itemsArray;
         public :
-            ItemFactory(QString image_path);
+            ItemFactory();
 
-            void getList(QListView &l, int type);
+            ~ItemFactory();
 
-            void setPath(QString image_path);
+            int add(int type, QString file);
 
-            QString getFile(int index, int type);
+            void setPosition(int index, sf::Vector2f position);
+
+            void render(QSFMLCanvas &win);
     };
 #endif // ITEMFACTORY_H
