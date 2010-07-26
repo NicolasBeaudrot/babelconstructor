@@ -15,6 +15,10 @@ int ItemFactory::add(int type, QString file) {
     return (_itemsArray.size() - 1);
 }
 
+void ItemFactory::remove(int index) {
+    _itemsArray[index]->setVisibility(false);
+}
+
 void ItemFactory::setPosition(int index, sf::Vector2f position) {
     _itemsArray[index]->setPosition(position);
 }

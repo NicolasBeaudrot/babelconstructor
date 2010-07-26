@@ -18,9 +18,11 @@
 
             void setPosition(sf::Vector2f position);
 
-            bool isClicked(float x, float y);
+            void setVisibility(bool visible);
 
             int getType();
+
+            bool isClicked(float x, float y);
 
             void render(QSFMLCanvas &win);
     };

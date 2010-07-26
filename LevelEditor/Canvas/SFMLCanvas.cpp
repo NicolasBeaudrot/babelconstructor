@@ -31,18 +31,25 @@ void SFMLCanvas::OnInit() {
 }
 
 void SFMLCanvas::mouseReleaseEvent  ( QMouseEvent * e ) {
-    if (e->x() >= (_base_sprite.GetPosition().x - _base_image.GetWidth()/2) && e->x() <= (_base_sprite.GetPosition().x - _base_image.GetWidth()/2 + _base_image.GetWidth())
-        && e->y() >= (_base_sprite.GetPosition().y - _base_image.GetHeight()/2) && e->y() <= (_base_sprite.GetPosition().y - _base_image.GetHeight()/2 + _base_image.GetHeight())) {
-        _mode = 1;
-        displayProperties();
-    } else if (_items->isClicked(e->x(), e->y()) != -1) {
-        _currentItem = _items->isClicked(e->x(), e->y());
-        _mode = _items->getType(_currentItem);
-        displayProperties();
+    if (e->button() == Qt::LeftButton) {
+        if (e->x() >= (_base_sprite.GetPosition().x - _base_image.GetWidth()/2) && e->x() <= (_base_sprite.GetPosition().x - _base_image.GetWidth()/2 + _base_image.GetWidth())
+            && e->y() >= (_base_sprite.GetPosition().y - _base_image.GetHeight()/2) && e->y() <= (_base_sprite.GetPosition().y - _base_image.GetHeight()/2 + _base_image.GetHeight())) {
+            _mode = 1;
+            displayProperties();
+        } else if (_items->isClicked(e->x(), e->y()) != -1) {
+            _currentItem = _items->isClicked(e->x(), e->y());
+            _mode = _items->getType(_currentItem);
+            displayProperties();
+        } else {
+            _win->objectProperties->setVisible(false);
+        }
+        _clicked = false;
     } else {
-        _win->objectProperties->setVisible(false);
+        if(_clicked) {
+            _items->remove(_currentItem);
+            _clicked = false;
+        }
     }
-    _clicked = false;
 }
 
 void SFMLCanvas::OnUpdate() {

@@ -16,6 +16,8 @@
 
             int add(int type, QString file);
 
+            void remove(int index);
+
             void setPosition(int index, sf::Vector2f position);
 
             int isClicked(float x, float y);

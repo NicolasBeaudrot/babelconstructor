@@ -7,6 +7,10 @@ Item::Item(QString file, int type, int id) : _type(type), _id(id) {
     _isVisible = true;
 }
 
+void Item::setVisibility(bool visible) {
+    _isVisible = visible;
+}
+
 void Item::setPosition(sf::Vector2f position) {
     _isVisible = true;
     _sprite.SetPosition(position.x - _image.GetWidth()/2, position.y - _image.GetHeight()/2);
@@ -14,7 +18,8 @@ void Item::setPosition(sf::Vector2f position) {
 
 bool Item::isClicked(float x, float y) {
     if (x >= (_sprite.GetPosition().x - _image.GetWidth()/2) && x <= (_sprite.GetPosition().x - _image.GetWidth()/2 + _image.GetWidth())
-        && y >= (_sprite.GetPosition().y - _image.GetHeight()/2) && y <= (_sprite.GetPosition().y - _image.GetHeight()/2 + _image.GetHeight())) {
+        && y >= (_sprite.GetPosition().y - _image.GetHeight()/2) && y <= (_sprite.GetPosition().y - _image.GetHeight()/2 + _image.GetHeight())
+        && _isVisible) {
         return true;
     } else {
         return false;
