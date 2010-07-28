@@ -7,11 +7,9 @@ SFMLCanvas::SFMLCanvas(QWidget* Parent, Ui::MainWindow& u, const QPoint& Positio
     connect(_win->BaseButton, SIGNAL(clicked()), this, SLOT(on_BaseButton_clicked()));
     connect(_win->elementsListView, SIGNAL(clicked(QModelIndex)), this, SLOT(on_elementsListView_clicked(QModelIndex)));
     connect(_win->obstaclesListView, SIGNAL(clicked(QModelIndex)), this, SLOT(on_obstaclesListView_clicked(QModelIndex)));
-
-    QStringList files = QDir( "ressources/images/elements" ).entryList(QDir::Files | QDir::NoDotAndDotDot);
-    _win->elementsListView->setModel(new QStringListModel(files));
-    files = QDir( "ressources/images/obstacles" ).entryList(QDir::Files | QDir::NoDotAndDotDot);
-    _win->obstaclesListView->setModel(new QStringListModel(files));
+    connect(_win->refreshButton, SIGNAL(clicked()), this, SLOT(on_refreshButton_clicked()));
+    connect(_win->angleEdit, SIGNAL(sliderMoved(int)), this, SLOT(on_angleEdit_sliderMoved(int)));
+    refreshItemsList();
 
     _items = new ItemFactory();
     _win->objectProperties->setFocus();
@@ -29,6 +27,13 @@ void SFMLCanvas::OnInit() {
     _base_sprite.SetImage(_base_image);
     _base_sprite.SetCenter(_base_sprite.GetSize() / 2.0f);
     _base_sprite.SetPosition(this->GetWidth()/2, this->GetHeight()-50);
+}
+
+void SFMLCanvas::refreshItemsList() {
+    QStringList files = QDir( "ressources/images/elements" ).entryList(QDir::Files | QDir::NoDotAndDotDot);
+    _win->elementsListView->setModel(new QStringListModel(files));
+    files = QDir( "ressources/images/obstacles" ).entryList(QDir::Files | QDir::NoDotAndDotDot);
+    _win->obstaclesListView->setModel(new QStringListModel(files));
 }
 
 void SFMLCanvas::mouseReleaseEvent  ( QMouseEvent * e ) {
@@ -115,7 +120,7 @@ void SFMLCanvas::displayProperties() {
             _win->densityEdit->setValue(prop[5]);
             _win->restitutionEdit->setValue(prop[6]);
             _win->frictionEdit->setValue(prop[7]);
-            _win->objectProperties->setTitle("Properties : Element");
+            _win->objectProperties->setTitle("Properties : Element " + _items->getTexture(_currentItem));
             _win->angleEdit->setVisible(true);
             _win->angleLabel->setVisible(true);
             _win->densityEdit->setVisible(true);
@@ -190,4 +195,15 @@ void SFMLCanvas::on_obstaclesListView_clicked(QModelIndex index)
 {
     _clicked = true;
     _currentItem = _items->add(3, "ressources/images/obstacles/" + index.data().toString());
+}
+
+void SFMLCanvas::on_refreshButton_clicked()
+{
+    refreshItemsList();
+}
+
+void SFMLCanvas::on_angleEdit_sliderMoved(int position)
+{
+    _items->setRotation(_currentItem, position);
+    std::cout << position << std::endl;
 }

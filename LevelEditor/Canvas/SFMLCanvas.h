@@ -22,6 +22,7 @@
         private :
             void OnInit();
             void OnUpdate();
+            void refreshItemsList();
             void mouseReleaseEvent( QMouseEvent * e );
             sf::Image  _base_image;
             sf::Sprite _base_sprite;
@@ -32,6 +33,8 @@
             int _currentItem;
 
     private slots:
+        void on_angleEdit_sliderMoved(int position);
+        void on_refreshButton_clicked();
         void on_obstaclesListView_clicked(QModelIndex index);
         void on_elementsListView_clicked(QModelIndex index);
         void on_BaseButton_clicked();

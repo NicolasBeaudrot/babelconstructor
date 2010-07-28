@@ -35,6 +35,11 @@ void Item::setProperties(int index, float prop) {
     _properties[index] = prop;
 }
 
+void Item::setRotation(float value) {
+    _sprite.SetRotation(value);
+    _properties[4] = value;
+}
+
 bool Item::isClicked(float x, float y) {
     if (x >= (_sprite.GetPosition().x - _image.GetWidth()/2) && x <= (_sprite.GetPosition().x - _image.GetWidth()/2 + _image.GetWidth())
         && y >= (_sprite.GetPosition().y - _image.GetHeight()/2) && y <= (_sprite.GetPosition().y - _image.GetHeight()/2 + _image.GetHeight())

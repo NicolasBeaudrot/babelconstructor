@@ -21,11 +21,13 @@
 
             void setPosition(sf::Vector2f position);
 
-            void setVisibility(bool visible);
-
             void setProperties(float *prop);
 
             void setProperties(int index, float prop);
+
+            void setRotation(float value);
+
+            void setVisibility(bool visible);
 
             int getType();
 

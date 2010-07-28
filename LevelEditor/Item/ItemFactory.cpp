@@ -27,6 +27,10 @@ void ItemFactory::setProperties(int index, float *prop) {
     _itemsArray[index]->setProperties(prop);
 }
 
+void ItemFactory::setRotation(int index, float value) {
+    _itemsArray[index]->setRotation(value);
+}
+
 int ItemFactory::isClicked(float x, float y) {
     int ret = -1;
     for( unsigned int i=0; i < _itemsArray.size(); i++) {

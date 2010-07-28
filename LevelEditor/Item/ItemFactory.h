@@ -22,6 +22,8 @@
 
             void setProperties(int index, float *prop);
 
+            void setRotation(int index, float value);
+
             int isClicked(float x, float y);
 
             int getType(int index);
