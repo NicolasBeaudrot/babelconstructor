@@ -20,11 +20,11 @@ void Item::setVisibility(bool visible) {
 
 void Item::setPosition(sf::Vector2f position) {
     _isVisible = true;
-    position.x += _image.GetWidth()/2;
-    position.y += _image.GetHeight()/2;
+    /*position.x += _image.GetWidth()/2;
+    position.y += _image.GetHeight()/2;*/
     _properties[2] = position.x;
     _properties[3] = position.y;
-    _sprite.SetPosition(position.x - _image.GetWidth()/2, position.y - _image.GetHeight()/2);
+    _sprite.SetPosition(position.x, position.y);
 }
 
 void Item::setProperties(float *prop) {

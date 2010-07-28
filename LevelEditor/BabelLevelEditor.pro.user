@@ -76,45 +76,45 @@
   <valuemap type="QVariantMap">
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Debug</value>
    <valuelist key="abstractProcess.Environment" type="QVariantList">
-    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-Y9IzAkaJmP,guid=4fb461322465eb69e43c79ff4c4fddd9</value>
+    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-EfTyFRfmdF,guid=5415b0a76fa49bb3f3f5cf044c50a033</value>
+    <value type="QString">DEFAULTS_PATH=/usr/share/gconf/gnome.default.path</value>
     <value type="QString">DESKTOP_SESSION=gnome</value>
-    <value type="QString">DESKTOP_STARTUP_ID=</value>
     <value type="QString">DISPLAY=:0.0</value>
     <value type="QString">GDMSESSION=gnome</value>
     <value type="QString">GDM_KEYBOARD_LAYOUT=fr	oss</value>
-    <value type="QString">GDM_LANG=fr_FR.UTF-8</value>
+    <value type="QString">GDM_LANG=fr_FR.utf8</value>
     <value type="QString">GNOME_DESKTOP_SESSION_ID=this-is-deprecated</value>
-    <value type="QString">GNOME_KEYRING_PID=2647</value>
-    <value type="QString">GNOME_KEYRING_SOCKET=/tmp/keyring-KM3FhH/socket</value>
-    <value type="QString">GPG_AGENT_INFO=/tmp/seahorse-SS9dYL/S.gpg-agent:2747:1</value>
+    <value type="QString">GNOME_KEYRING_CONTROL=/tmp/keyring-EKpHnv</value>
+    <value type="QString">GNOME_KEYRING_PID=1547</value>
+    <value type="QString">GPG_AGENT_INFO=/tmp/seahorse-QQv2Vl/S.gpg-agent:1611:1</value>
     <value type="QString">GTK_MODULES=canberra-gtk-module:gail:atk-bridge</value>
-    <value type="QString">GTK_RC_FILES=/etc/gtk/gtkrc:/home/nico/.gtkrc-1.2-gnome2</value>
     <value type="QString">HOME=/home/nico</value>
-    <value type="QString">LANG=fr_FR.UTF-8</value>
+    <value type="QString">LANG=fr_FR.utf8</value>
     <value type="QString">LANGUAGE=</value>
     <value type="QString">LD_LIBRARY_PATH=/usr/lib/qtcreator:</value>
-    <value type="QString">LIBGL_DRIVERS_PATH=/usr/lib/dri</value>
+    <value type="QString">LIBGL_DRIVERS_PATH=/usr/lib/fglrx/dri</value>
     <value type="QString">LIBJPLPATH=/usr/lib/swi-prolog/lib/i386/</value>
     <value type="QString">LOGNAME=nico</value>
+    <value type="QString">MANDATORY_PATH=/usr/share/gconf/gnome.mandatory.path</value>
     <value type="QString">ORBIT_SOCKETDIR=/tmp/orbit-nico</value>
     <value type="QString">PATH=/usr/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/var/www/web/siteperso/cakephp/cake/console</value>
     <value type="QString">PWD=/home/nico</value>
-    <value type="QString">QTDIR=/usr</value>
-    <value type="QString">SESSION_MANAGER=local/nico-laptop:@/tmp/.ICE-unix/2662,unix/nico-laptop:/tmp/.ICE-unix/2662</value>
+    <value type="QString">QTDIR=/usr/share/qt4</value>
+    <value type="QString">SESSION_MANAGER=local/nico-laptop:@/tmp/.ICE-unix/1565,unix/nico-laptop:/tmp/.ICE-unix/1565</value>
     <value type="QString">SHELL=/bin/bash</value>
     <value type="QString">SPEECHD_PORT=7560</value>
-    <value type="QString">SSH_AGENT_PID=2705</value>
-    <value type="QString">SSH_AUTH_SOCK=/tmp/keyring-KM3FhH/socket.ssh</value>
+    <value type="QString">SSH_AUTH_SOCK=/tmp/keyring-EKpHnv/ssh</value>
     <value type="QString">USER=nico</value>
     <value type="QString">USERNAME=nico</value>
-    <value type="QString">XAUTHORITY=/var/run/gdm/auth-for-nico-MQw6xL/database</value>
+    <value type="QString">XAUTHORITY=/var/run/gdm/auth-for-nico-zxbcLd/database</value>
+    <value type="QString">XDG_CONFIG_DIRS=/etc/xdg/xdg-gnome:/etc/xdg</value>
     <value type="QString">XDG_DATA_DIRS=/usr/share/gnome:/usr/local/share/:/usr/share/</value>
-    <value type="QString">XDG_SESSION_COOKIE=9b9b0aaa089a35b2aac05ee74a00585c-1280302553.493861-1505185112</value>
+    <value type="QString">XDG_SESSION_COOKIE=9b9b0aaa089a35b2aac05ee74a00585c-1280352307.396519-1304583415</value>
    </valuelist>
    <valuelist key="abstractProcess.arguments" type="QVariantList">
     <value type="QString">/home/nico/Documents/babelconstructor/LevelEditor/BabelLevelEditor.pro</value>
     <value type="QString">-spec</value>
-    <value type="QString">/usr/share/qt4/mkspecs/linux-g++</value>
+    <value type="QString">linux-g++</value>
     <value type="QString">-r</value>
     <value type="QString">CONFIG+=debug</value>
    </valuelist>
@@ -129,41 +129,42 @@
   <valuemap type="QVariantMap">
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Debug</value>
    <valuelist key="abstractProcess.Environment" type="QVariantList">
-    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-Y9IzAkaJmP,guid=4fb461322465eb69e43c79ff4c4fddd9</value>
+    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-EfTyFRfmdF,guid=5415b0a76fa49bb3f3f5cf044c50a033</value>
+    <value type="QString">DEFAULTS_PATH=/usr/share/gconf/gnome.default.path</value>
     <value type="QString">DESKTOP_SESSION=gnome</value>
-    <value type="QString">DESKTOP_STARTUP_ID=</value>
     <value type="QString">DISPLAY=:0.0</value>
     <value type="QString">GDMSESSION=gnome</value>
     <value type="QString">GDM_KEYBOARD_LAYOUT=fr	oss</value>
-    <value type="QString">GDM_LANG=fr_FR.UTF-8</value>
+    <value type="QString">GDM_LANG=fr_FR.utf8</value>
     <value type="QString">GNOME_DESKTOP_SESSION_ID=this-is-deprecated</value>
-    <value type="QString">GNOME_KEYRING_PID=2647</value>
-    <value type="QString">GNOME_KEYRING_SOCKET=/tmp/keyring-KM3FhH/socket</value>
-    <value type="QString">GPG_AGENT_INFO=/tmp/seahorse-SS9dYL/S.gpg-agent:2747:1</value>
+    <value type="QString">GNOME_KEYRING_CONTROL=/tmp/keyring-EKpHnv</value>
+    <value type="QString">GNOME_KEYRING_PID=1547</value>
+    <value type="QString">GPG_AGENT_INFO=/tmp/seahorse-QQv2Vl/S.gpg-agent:1611:1</value>
     <value type="QString">GTK_MODULES=canberra-gtk-module:gail:atk-bridge</value>
-    <value type="QString">GTK_RC_FILES=/etc/gtk/gtkrc:/home/nico/.gtkrc-1.2-gnome2</value>
     <value type="QString">HOME=/home/nico</value>
-    <value type="QString">LANG=fr_FR.UTF-8</value>
+    <value type="QString">LANG=fr_FR.utf8</value>
     <value type="QString">LANGUAGE=</value>
     <value type="QString">LD_LIBRARY_PATH=/usr/lib/qtcreator:</value>
-    <value type="QString">LIBGL_DRIVERS_PATH=/usr/lib/dri</value>
+    <value type="QString">LIBGL_DRIVERS_PATH=/usr/lib/fglrx/dri</value>
     <value type="QString">LIBJPLPATH=/usr/lib/swi-prolog/lib/i386/</value>
     <value type="QString">LOGNAME=nico</value>
+    <value type="QString">MANDATORY_PATH=/usr/share/gconf/gnome.mandatory.path</value>
     <value type="QString">ORBIT_SOCKETDIR=/tmp/orbit-nico</value>
     <value type="QString">PATH=/usr/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/var/www/web/siteperso/cakephp/cake/console</value>
     <value type="QString">PWD=/home/nico</value>
-    <value type="QString">QTDIR=/usr</value>
-    <value type="QString">SESSION_MANAGER=local/nico-laptop:@/tmp/.ICE-unix/2662,unix/nico-laptop:/tmp/.ICE-unix/2662</value>
+    <value type="QString">QTDIR=/usr/share/qt4</value>
+    <value type="QString">SESSION_MANAGER=local/nico-laptop:@/tmp/.ICE-unix/1565,unix/nico-laptop:/tmp/.ICE-unix/1565</value>
     <value type="QString">SHELL=/bin/bash</value>
     <value type="QString">SPEECHD_PORT=7560</value>
-    <value type="QString">SSH_AGENT_PID=2705</value>
-    <value type="QString">SSH_AUTH_SOCK=/tmp/keyring-KM3FhH/socket.ssh</value>
+    <value type="QString">SSH_AUTH_SOCK=/tmp/keyring-EKpHnv/ssh</value>
     <value type="QString">USER=nico</value>
     <value type="QString">USERNAME=nico</value>
-    <value type="QString">XAUTHORITY=/var/run/gdm/auth-for-nico-MQw6xL/database</value>
+    <value type="QString">XAUTHORITY=/var/run/gdm/auth-for-nico-zxbcLd/database</value>
+    <value type="QString">XDG_CONFIG_DIRS=/etc/xdg/xdg-gnome:/etc/xdg</value>
     <value type="QString">XDG_DATA_DIRS=/usr/share/gnome:/usr/local/share/:/usr/share/</value>
-    <value type="QString">XDG_SESSION_COOKIE=9b9b0aaa089a35b2aac05ee74a00585c-1280302553.493861-1505185112</value>
+    <value type="QString">XDG_SESSION_COOKIE=9b9b0aaa089a35b2aac05ee74a00585c-1280352307.396519-1304583415</value>
    </valuelist>
+   <value key="abstractProcess.IgnoreReturnValue" type="bool">false</value>
    <valuelist key="abstractProcess.arguments" type="QVariantList">
     <value type="QString">-w</value>
    </valuelist>

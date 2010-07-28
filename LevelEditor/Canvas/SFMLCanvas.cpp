@@ -9,6 +9,7 @@ SFMLCanvas::SFMLCanvas(QWidget* Parent, Ui::MainWindow& u, const QPoint& Positio
     connect(_win->obstaclesListView, SIGNAL(clicked(QModelIndex)), this, SLOT(on_obstaclesListView_clicked(QModelIndex)));
     connect(_win->refreshButton, SIGNAL(clicked()), this, SLOT(on_refreshButton_clicked()));
     connect(_win->angleEdit, SIGNAL(sliderMoved(int)), this, SLOT(on_angleEdit_sliderMoved(int)));
+    connect(_win->deleteButton, SIGNAL(clicked()), this, SLOT(on_deleteButton_clicked()));
     refreshItemsList();
 
     _items = new ItemFactory();
@@ -137,6 +138,7 @@ void SFMLCanvas::displayProperties() {
             _win->xLabel->setVisible(true);
             _win->yEdit->setVisible(true);
             _win->yLabel->setVisible(true);
+            _win->deleteButton->setVisible(true);
         }
         break;
         case 3 : { //Mode Obstacles
@@ -149,7 +151,7 @@ void SFMLCanvas::displayProperties() {
             _win->xEdit->setText(s.setNum(prop[2]));
             _win->yEdit->setText(s.setNum(prop[3]));
             _win->angleEdit->setValue(prop[4]);
-            _win->objectProperties->setTitle("Properties : Obstacle");
+            _win->objectProperties->setTitle("Properties : Obstacle " + _items->getTexture(_currentItem));
             _win->angleEdit->setVisible(true);
             _win->angleLabel->setVisible(true);
             _win->heightEdit->setVisible(true);
@@ -160,6 +162,7 @@ void SFMLCanvas::displayProperties() {
             _win->xLabel->setVisible(true);
             _win->yEdit->setVisible(true);
             _win->yLabel->setVisible(true);
+            _win->deleteButton->setVisible(true);
         }
         break;
     }
@@ -184,6 +187,8 @@ void SFMLCanvas::hideProperties() {
     _win->xLabel->setVisible(false);
     _win->yEdit->setVisible(false);
     _win->yLabel->setVisible(false);
+    _win->deleteButton->setVisible(false);
+    _win->objectProperties->setVisible(false);
 }
 
 void SFMLCanvas::keyPressEvent(QKeyEvent *key) {
@@ -207,18 +212,20 @@ void SFMLCanvas::on_elementsListView_clicked(QModelIndex index) {
     _currentItem = _items->add(2,"ressources/images/elements/" + index.data().toString());
 }
 
-void SFMLCanvas::on_obstaclesListView_clicked(QModelIndex index)
-{
+void SFMLCanvas::on_obstaclesListView_clicked(QModelIndex index) {
     _clicked = true;
     _currentItem = _items->add(3, "ressources/images/obstacles/" + index.data().toString());
 }
 
-void SFMLCanvas::on_refreshButton_clicked()
-{
+void SFMLCanvas::on_refreshButton_clicked() {
     refreshItemsList();
 }
 
-void SFMLCanvas::on_angleEdit_sliderMoved(int position)
-{
+void SFMLCanvas::on_angleEdit_sliderMoved(int position) {
     _items->setRotation(_currentItem, position);
+}
+
+void SFMLCanvas::on_deleteButton_clicked() {
+    _items->remove(_currentItem);
+    hideProperties();
 }

@@ -34,6 +34,7 @@
             int _currentItem;
 
     private slots:
+        void on_deleteButton_clicked();
         void on_angleEdit_sliderMoved(int position);
         void on_refreshButton_clicked();
         void on_obstaclesListView_clicked(QModelIndex index);
