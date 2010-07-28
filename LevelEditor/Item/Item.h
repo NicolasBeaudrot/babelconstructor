@@ -14,7 +14,7 @@
             bool _isVisible;
             int _type;
             int _id;
-            float _properties[8];
+            float _properties[8]; //0:Width, 1:Height, 2:X, 3:Y, 4:Angle, 5:Density, 6:Restitution, 7:Friction
 
         public :
             Item(QString file, int type, int id);
@@ -23,9 +23,15 @@
 
             void setVisibility(bool visible);
 
+            void setProperties(float *prop);
+
+            void setProperties(int index, float prop);
+
             int getType();
 
             float* getProperties();
+
+            QString getTexture();
 
             bool isClicked(float x, float y);
 

@@ -25,6 +25,16 @@ void Item::setPosition(sf::Vector2f position) {
     _sprite.SetPosition(position.x - _image.GetWidth()/2, position.y - _image.GetHeight()/2);
 }
 
+void Item::setProperties(float *prop) {
+    for(int i=2; i < 8; i++) {
+        _properties[i] = prop[i];
+    }
+}
+
+void Item::setProperties(int index, float prop) {
+    _properties[index] = prop;
+}
+
 bool Item::isClicked(float x, float y) {
     if (x >= (_sprite.GetPosition().x - _image.GetWidth()/2) && x <= (_sprite.GetPosition().x - _image.GetWidth()/2 + _image.GetWidth())
         && y >= (_sprite.GetPosition().y - _image.GetHeight()/2) && y <= (_sprite.GetPosition().y - _image.GetHeight()/2 + _image.GetHeight())
@@ -41,6 +51,10 @@ int Item::getType() {
 
 float* Item::getProperties() {
     return _properties;
+}
+
+QString Item::getTexture() {
+    return _texture;
 }
 
 void Item::render(QSFMLCanvas &win) {

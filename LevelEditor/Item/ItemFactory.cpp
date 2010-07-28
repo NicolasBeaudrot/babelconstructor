@@ -23,6 +23,10 @@ void ItemFactory::setPosition(int index, sf::Vector2f position) {
     _itemsArray[index]->setPosition(position);
 }
 
+void ItemFactory::setProperties(int index, float *prop) {
+    _itemsArray[index]->setProperties(prop);
+}
+
 int ItemFactory::isClicked(float x, float y) {
     int ret = -1;
     for( unsigned int i=0; i < _itemsArray.size(); i++) {
@@ -39,6 +43,10 @@ int ItemFactory::getType(int index) {
 
 float* ItemFactory::getProperties(int index) {
     return _itemsArray[index]->getProperties();
+}
+
+QString ItemFactory::getTexture(int index) {
+    return _itemsArray[index]->getTexture();
 }
 
 void ItemFactory::render(QSFMLCanvas &win) {

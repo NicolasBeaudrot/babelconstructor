@@ -14,7 +14,7 @@ SFMLCanvas::SFMLCanvas(QWidget* Parent, Ui::MainWindow& u, const QPoint& Positio
     _win->obstaclesListView->setModel(new QStringListModel(files));
 
     _items = new ItemFactory();
-    setFocus();
+    _win->objectProperties->setFocus();
 }
 
 SFMLCanvas::~SFMLCanvas() {
@@ -64,8 +64,28 @@ void SFMLCanvas::OnUpdate() {
 }
 
 void SFMLCanvas::on_BaseButton_clicked() {
-    if (_mode == 1) {
+    if (_mode == 1) { //Base
         _base_sprite.Resize(_win->widthEdit->text().toFloat(), _base_image.GetHeight());
+    } else if (_mode == 2) { //Element
+        float prop[8];
+        prop[2] = _win->xEdit->text().toFloat();
+        prop[3] = _win->yEdit->text().toFloat();
+        prop[4] = _win->angleEdit->value();
+        prop[5] = _win->densityEdit->value();
+        prop[6] = _win->restitutionEdit->value();
+        prop[7] = _win->frictionEdit->value();
+        _items->setProperties(_currentItem, prop);
+        _items->setPosition(_currentItem, sf::Vector2f(prop[2], prop[3]));
+    } else if (_mode == 3) { //Obstacle
+        float prop[8];
+        prop[2] = _win->xEdit->text().toFloat();
+        prop[3] = _win->yEdit->text().toFloat();
+        prop[4] = _win->angleEdit->value();
+        prop[5] = 0.0f;
+        prop[6] = 0.0f;
+        prop[7] = 0.0f;
+        _items->setProperties(_currentItem, prop);
+        _items->setPosition(_currentItem, sf::Vector2f(prop[2], prop[3]));
     }
 }
 
@@ -75,6 +95,7 @@ void SFMLCanvas::displayProperties() {
     switch(_mode) {
         case 1 : { //Mode base
             _win->objectProperties->setTitle("Properties : Base");
+            _win->widthEdit->setEnabled(true);
             _win->widthLabel->setVisible(true);
             _win->widthEdit->setVisible(true);
             QString width;
@@ -86,6 +107,8 @@ void SFMLCanvas::displayProperties() {
             QString s;
             _win->widthEdit->setText(s.setNum(prop[0]));
             _win->heightEdit->setText(s.setNum(prop[1]));
+            _win->widthEdit->setEnabled(false);
+            _win->heightEdit->setEnabled(false);
             _win->xEdit->setText(s.setNum(prop[2]));
             _win->yEdit->setText(s.setNum(prop[3]));
             _win->angleEdit->setValue(prop[4]);
@@ -116,6 +139,8 @@ void SFMLCanvas::displayProperties() {
             QString s;
             _win->widthEdit->setText(s.setNum(prop[0]));
             _win->heightEdit->setText(s.setNum(prop[1]));
+            _win->widthEdit->setEnabled(false);
+            _win->heightEdit->setEnabled(false);
             _win->xEdit->setText(s.setNum(prop[2]));
             _win->yEdit->setText(s.setNum(prop[3]));
             _win->angleEdit->setValue(prop[4]);

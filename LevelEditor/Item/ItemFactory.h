@@ -20,11 +20,15 @@
 
             void setPosition(int index, sf::Vector2f position);
 
+            void setProperties(int index, float *prop);
+
             int isClicked(float x, float y);
 
             int getType(int index);
 
             float* getProperties(int index);
+
+            QString getTexture(int index);
 
             void render(QSFMLCanvas &win);
     };
