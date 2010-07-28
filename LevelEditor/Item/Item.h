@@ -29,6 +29,8 @@
 
             void setVisibility(bool visible);
 
+            void move(int value, int direction);
+
             int getType();
 
             float* getProperties();

@@ -186,6 +186,22 @@ void SFMLCanvas::hideProperties() {
     _win->yLabel->setVisible(false);
 }
 
+void SFMLCanvas::keyPressEvent(QKeyEvent *key) {
+    if (key->key() == Qt::Key_Up) {
+        _items->move(_currentItem, -1, 1);
+        displayProperties();
+    } else if (key->key() == Qt::Key_Down) {
+        _items->move(_currentItem, 1, 1);
+        displayProperties();
+    } else if (key->key() == Qt::Key_Left) {
+        _items->move(_currentItem, -1, 0);
+        displayProperties();
+    } else if (key->key() == Qt::Key_Right) {
+        _items->move(_currentItem, 1, 0);
+        displayProperties();
+    }
+}
+
 void SFMLCanvas::on_elementsListView_clicked(QModelIndex index) {
     _clicked = true;
     _currentItem = _items->add(2,"ressources/images/elements/" + index.data().toString());
@@ -205,5 +221,4 @@ void SFMLCanvas::on_refreshButton_clicked()
 void SFMLCanvas::on_angleEdit_sliderMoved(int position)
 {
     _items->setRotation(_currentItem, position);
-    std::cout << position << std::endl;
 }

@@ -24,6 +24,8 @@
 
             void setRotation(int index, float value);
 
+            void move(int index, int value, int direction);
+
             int isClicked(float x, float y);
 
             int getType(int index);

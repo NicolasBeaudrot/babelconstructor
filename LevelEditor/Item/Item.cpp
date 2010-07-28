@@ -20,6 +20,8 @@ void Item::setVisibility(bool visible) {
 
 void Item::setPosition(sf::Vector2f position) {
     _isVisible = true;
+    position.x += _image.GetWidth()/2;
+    position.y += _image.GetHeight()/2;
     _properties[2] = position.x;
     _properties[3] = position.y;
     _sprite.SetPosition(position.x - _image.GetWidth()/2, position.y - _image.GetHeight()/2);
@@ -38,6 +40,16 @@ void Item::setProperties(int index, float prop) {
 void Item::setRotation(float value) {
     _sprite.SetRotation(value);
     _properties[4] = value;
+}
+
+void Item::move(int value, int direction) {
+    if (direction == 0) { //Horizontale
+        _properties[2] = _sprite.GetPosition().x + value;
+        _sprite.SetX(_properties[2]);
+    } else { //Verticale
+        _properties[3] = _sprite.GetPosition().y + value;
+        _sprite.SetY(_properties[3]);
+    }
 }
 
 bool Item::isClicked(float x, float y) {

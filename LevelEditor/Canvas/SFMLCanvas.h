@@ -24,6 +24,7 @@
             void OnUpdate();
             void refreshItemsList();
             void mouseReleaseEvent( QMouseEvent * e );
+            void keyPressEvent(QKeyEvent *key);
             sf::Image  _base_image;
             sf::Sprite _base_sprite;
             Ui::MainWindow *_win;

@@ -31,6 +31,10 @@ void ItemFactory::setRotation(int index, float value) {
     _itemsArray[index]->setRotation(value);
 }
 
+void ItemFactory::move(int index, int value, int direction) {
+    _itemsArray[index]->move(value, direction);
+}
+
 int ItemFactory::isClicked(float x, float y) {
     int ret = -1;
     for( unsigned int i=0; i < _itemsArray.size(); i++) {
