@@ -14,6 +14,7 @@ SFMLCanvas::SFMLCanvas(QWidget* Parent, Ui::MainWindow& u, const QPoint& Positio
     _win->obstaclesListView->setModel(new QStringListModel(files));
 
     _items = new ItemFactory();
+    setFocus();
 }
 
 SFMLCanvas::~SFMLCanvas() {
@@ -81,6 +82,16 @@ void SFMLCanvas::displayProperties() {
         }
         break;
         case 2 : { //Mode Elements
+            float *prop = _items->getProperties(_currentItem);
+            QString s;
+            _win->widthEdit->setText(s.setNum(prop[0]));
+            _win->heightEdit->setText(s.setNum(prop[1]));
+            _win->xEdit->setText(s.setNum(prop[2]));
+            _win->yEdit->setText(s.setNum(prop[3]));
+            _win->angleEdit->setValue(prop[4]);
+            _win->densityEdit->setValue(prop[5]);
+            _win->restitutionEdit->setValue(prop[6]);
+            _win->frictionEdit->setValue(prop[7]);
             _win->objectProperties->setTitle("Properties : Element");
             _win->angleEdit->setVisible(true);
             _win->angleLabel->setVisible(true);
@@ -101,6 +112,13 @@ void SFMLCanvas::displayProperties() {
         }
         break;
         case 3 : { //Mode Obstacles
+            float *prop = _items->getProperties(_currentItem);
+            QString s;
+            _win->widthEdit->setText(s.setNum(prop[0]));
+            _win->heightEdit->setText(s.setNum(prop[1]));
+            _win->xEdit->setText(s.setNum(prop[2]));
+            _win->yEdit->setText(s.setNum(prop[3]));
+            _win->angleEdit->setValue(prop[4]);
             _win->objectProperties->setTitle("Properties : Obstacle");
             _win->angleEdit->setVisible(true);
             _win->angleLabel->setVisible(true);

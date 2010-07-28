@@ -5,6 +5,13 @@ Item::Item(QString file, int type, int id) : _type(type), _id(id) {
     _sprite.SetImage(_image);
     _sprite.SetCenter(_sprite.GetSize() / 2.0f);
     _isVisible = true;
+    QStringList files = file.split('/');
+    _texture = files.last();
+    _properties[0] = _image.GetWidth();
+    _properties[1] = _image.GetHeight();
+    for(int i=2; i < 8; i++) {
+        _properties[i] = 0.0f;
+    }
 }
 
 void Item::setVisibility(bool visible) {
@@ -13,6 +20,8 @@ void Item::setVisibility(bool visible) {
 
 void Item::setPosition(sf::Vector2f position) {
     _isVisible = true;
+    _properties[2] = position.x;
+    _properties[3] = position.y;
     _sprite.SetPosition(position.x - _image.GetWidth()/2, position.y - _image.GetHeight()/2);
 }
 
@@ -28,6 +37,10 @@ bool Item::isClicked(float x, float y) {
 
 int Item::getType() {
     return _type;
+}
+
+float* Item::getProperties() {
+    return _properties;
 }
 
 void Item::render(QSFMLCanvas &win) {

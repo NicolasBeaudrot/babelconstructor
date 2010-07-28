@@ -24,6 +24,8 @@
 
             int getType(int index);
 
+            float* getProperties(int index);
+
             void render(QSFMLCanvas &win);
     };
 #endif // ITEMFACTORY_H
