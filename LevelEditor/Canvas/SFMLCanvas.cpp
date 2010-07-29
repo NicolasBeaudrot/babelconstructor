@@ -10,10 +10,15 @@ SFMLCanvas::SFMLCanvas(QWidget* Parent, Ui::MainWindow& u, const QPoint& Positio
     connect(_win->refreshButton, SIGNAL(clicked()), this, SLOT(on_refreshButton_clicked()));
     connect(_win->angleEdit, SIGNAL(sliderMoved(int)), this, SLOT(on_angleEdit_sliderMoved(int)));
     connect(_win->deleteButton, SIGNAL(clicked()), this, SLOT(on_deleteButton_clicked()));
+    connect(_win->backgroundsListView, SIGNAL(clicked(QModelIndex)), this, SLOT(on_backgroundsListView_clicked(QModelIndex)));
+    connect(_win->limiteEdit, SIGNAL(valueChanged(int)), this, SLOT(on_limiteEdit_valueChanged(int)));
     refreshItemsList();
 
     _items = new ItemFactory();
     _win->objectProperties->setFocus();
+    _limite_image.LoadFromFile("ressources/images/limite.png");
+    _limite_sprite.SetImage(_limite_image);
+    _limite_sprite.SetPosition(500 - _limite_image.GetWidth(), 350 - _win->limiteEdit->text().toFloat());
 }
 
 SFMLCanvas::~SFMLCanvas() {
@@ -35,6 +40,8 @@ void SFMLCanvas::refreshItemsList() {
     _win->elementsListView->setModel(new QStringListModel(files));
     files = QDir( "ressources/images/obstacles" ).entryList(QDir::Files | QDir::NoDotAndDotDot);
     _win->obstaclesListView->setModel(new QStringListModel(files));
+    files = QDir( "ressources/images/backgrounds" ).entryList(QDir::Files | QDir::NoDotAndDotDot);
+    _win->backgroundsListView->setModel(new QStringListModel(files));
 }
 
 void SFMLCanvas::mouseReleaseEvent  ( QMouseEvent * e ) {
@@ -61,7 +68,9 @@ void SFMLCanvas::mouseReleaseEvent  ( QMouseEvent * e ) {
 
 void SFMLCanvas::OnUpdate() {
     Clear(sf::Color(255, 255, 255));
+    Draw(_back_sprite);
     Draw(_base_sprite);
+    Draw(_limite_sprite);
 
     if (_clicked) {
         _items->setPosition(_currentItem, sf::Vector2f(QCursor::pos().x() - 150, QCursor::pos().y() - 100));
@@ -210,11 +219,13 @@ void SFMLCanvas::keyPressEvent(QKeyEvent *key) {
 void SFMLCanvas::on_elementsListView_clicked(QModelIndex index) {
     _clicked = true;
     _currentItem = _items->add(2,"ressources/images/elements/" + index.data().toString());
+    hideProperties();
 }
 
 void SFMLCanvas::on_obstaclesListView_clicked(QModelIndex index) {
     _clicked = true;
     _currentItem = _items->add(3, "ressources/images/obstacles/" + index.data().toString());
+    hideProperties();
 }
 
 void SFMLCanvas::on_refreshButton_clicked() {
@@ -228,4 +239,16 @@ void SFMLCanvas::on_angleEdit_sliderMoved(int position) {
 void SFMLCanvas::on_deleteButton_clicked() {
     _items->remove(_currentItem);
     hideProperties();
+}
+
+void SFMLCanvas::on_backgroundsListView_clicked(QModelIndex index) {
+    _back_path = index.data().toString();
+    _back_image.LoadFromFile("ressources/images/backgrounds/" + index.data().toString().toStdString());
+    _back_sprite.SetImage(_back_image);
+    _back_sprite.Resize(GetWidth(), GetHeight());
+    hideProperties();
+}
+
+void SFMLCanvas::on_limiteEdit_valueChanged(int value) {
+    _limite_sprite.SetY(350 - value);
 }

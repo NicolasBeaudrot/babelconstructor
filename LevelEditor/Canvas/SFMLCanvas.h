@@ -27,13 +27,20 @@
             void keyPressEvent(QKeyEvent *key);
             sf::Image  _base_image;
             sf::Sprite _base_sprite;
+            sf::Image _back_image;
+            sf::Sprite _back_sprite;
+            sf::Image _limite_image;
+            sf::Sprite _limite_sprite;
             Ui::MainWindow *_win;
             int _mode;
             ItemFactory *_items;
             bool _clicked;
             int _currentItem;
+            QString _back_path;
 
     private slots:
+        void on_limiteEdit_valueChanged(int );
+        void on_backgroundsListView_clicked(QModelIndex index);
         void on_deleteButton_clicked();
         void on_angleEdit_sliderMoved(int position);
         void on_refreshButton_clicked();
