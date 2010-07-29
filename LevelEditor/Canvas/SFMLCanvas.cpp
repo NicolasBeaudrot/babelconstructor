@@ -12,13 +12,11 @@ SFMLCanvas::SFMLCanvas(QWidget* Parent, Ui::MainWindow& u, const QPoint& Positio
     connect(_win->deleteButton, SIGNAL(clicked()), this, SLOT(on_deleteButton_clicked()));
     connect(_win->backgroundsListView, SIGNAL(clicked(QModelIndex)), this, SLOT(on_backgroundsListView_clicked(QModelIndex)));
     connect(_win->limiteEdit, SIGNAL(valueChanged(int)), this, SLOT(on_limiteEdit_valueChanged(int)));
+    connect(_win->saveButton, SIGNAL(clicked()), this, SLOT(on_saveButton_clicked()));
     refreshItemsList();
 
     _items = new ItemFactory();
     _win->objectProperties->setFocus();
-    _limite_image.LoadFromFile("ressources/images/limite.png");
-    _limite_sprite.SetImage(_limite_image);
-    _limite_sprite.SetPosition(500 - _limite_image.GetWidth(), 350 - _win->limiteEdit->text().toFloat());
 }
 
 SFMLCanvas::~SFMLCanvas() {
@@ -32,7 +30,12 @@ void SFMLCanvas::OnInit() {
     _base_image.LoadFromFile("ressources/images/barre.png");
     _base_sprite.SetImage(_base_image);
     _base_sprite.SetCenter(_base_sprite.GetSize() / 2.0f);
-    _base_sprite.SetPosition(this->GetWidth()/2, this->GetHeight()-50);
+    _base_sprite.SetPosition(this->GetWidth()/2, this->GetHeight()-100);
+
+    //Then we load the limit
+    _limite_image.LoadFromFile("ressources/images/limite.png");
+    _limite_sprite.SetImage(_limite_image);
+    _limite_sprite.SetPosition(this->GetWidth() - _limite_image.GetWidth(), this->GetHeight() - _win->limiteEdit->text().toFloat());
 }
 
 void SFMLCanvas::refreshItemsList() {
@@ -250,5 +253,13 @@ void SFMLCanvas::on_backgroundsListView_clicked(QModelIndex index) {
 }
 
 void SFMLCanvas::on_limiteEdit_valueChanged(int value) {
-    _limite_sprite.SetY(350 - value);
+    _limite_sprite.SetY(this->GetHeight() - value);
+}
+
+void SFMLCanvas::on_saveButton_clicked() {
+    std::cout << "<map>" << std::endl;
+    std::cout << "<backgroud>" << _back_path.toStdString() << "</background>" << std::endl;
+    std::cout << "<support width=\"" << _base_image.GetWidth() << "\" height=\"" << _base_image.GetHeight() << "\">barre.png</support>" << std::endl;
+    std::cout << "<limite y=\"" << (_base_sprite.GetPosition().y - _limite_sprite.GetPosition().y) << "\">limite.png</limite>" << std::endl;
+    std::cout << "</map>" << std::endl;
 }

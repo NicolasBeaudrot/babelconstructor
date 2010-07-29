@@ -39,6 +39,7 @@
             QString _back_path;
 
     private slots:
+        void on_saveButton_clicked();
         void on_limiteEdit_valueChanged(int );
         void on_backgroundsListView_clicked(QModelIndex index);
         void on_deleteButton_clicked();
