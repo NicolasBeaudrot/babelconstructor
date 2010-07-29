@@ -45,6 +45,41 @@ int ItemFactory::isClicked(float x, float y) {
     return ret;
 }
 
+QString ItemFactory::save(float rep_x, float rep_y) {
+    QString xml;
+
+    //Elements
+    xml = "<elements>";
+    for(unsigned int i=0; i < _itemsArray.size(); i++) {
+        if(_itemsArray[i]->getType() == 2) {
+            float *prop = _itemsArray[i]->getProperties();
+            QString temp;
+            xml += "<elem type=\"Square\" file=\"" + _itemsArray[i]->getTexture() + "\" x=\"" + temp.setNum(prop[2] - rep_x);
+            xml += "\" y=\"" + temp.setNum(rep_y - prop[3]);
+            xml += "\" angle=\"" + temp.setNum(prop[4]);
+            xml += "\" density=\"" + temp.setNum(prop[5]);
+            xml += "\" friction=\"" + temp.setNum(prop[6]);
+            xml += "\" restitution=\"" + temp.setNum(prop[7]) + "\" />";
+        }
+    }
+    xml += "</elements>";
+
+    //Obstacles
+    xml += "<obstacles>";
+    for(unsigned int i=0; i < _itemsArray.size(); i++) {
+        if(_itemsArray[i]->getType() == 3) {
+            float *prop = _itemsArray[i]->getProperties();
+            QString temp;
+            xml += "<obstacle type=\"Square\" file=\"" + _itemsArray[i]->getTexture() + "\" x=\"" + temp.setNum(prop[2] - rep_x);
+            xml += "\" y=\"" + temp.setNum(rep_y - prop[3]);
+            xml += "\" angle=\"" + temp.setNum(prop[4]) + "\" />";
+        }
+    }
+    xml += "</obstacles>";
+
+    return xml;
+}
+
 int ItemFactory::getType(int index) {
     return _itemsArray[index]->getType();
 }

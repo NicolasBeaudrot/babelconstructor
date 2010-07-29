@@ -70,6 +70,7 @@ void SFMLCanvas::mouseReleaseEvent  ( QMouseEvent * e ) {
 }
 
 void SFMLCanvas::OnUpdate() {
+    SetFramerateLimit(100);
     Clear(sf::Color(255, 255, 255));
     Draw(_back_sprite);
     Draw(_base_sprite);
@@ -90,8 +91,8 @@ void SFMLCanvas::on_BaseButton_clicked() {
         prop[3] = _win->yEdit->text().toFloat();
         prop[4] = _win->angleEdit->value();
         prop[5] = _win->densityEdit->value();
-        prop[6] = _win->restitutionEdit->value();
-        prop[7] = _win->frictionEdit->value();
+        prop[6] = _win->frictionEdit->value();
+        prop[7] = _win->restitutionEdit->value();
         _items->setProperties(_currentItem, prop);
         _items->setPosition(_currentItem, sf::Vector2f(prop[2], prop[3]));
     } else if (_mode == 3) { //Obstacle
@@ -131,8 +132,8 @@ void SFMLCanvas::displayProperties() {
             _win->yEdit->setText(s.setNum(prop[3]));
             _win->angleEdit->setValue(prop[4]);
             _win->densityEdit->setValue(prop[5]);
-            _win->restitutionEdit->setValue(prop[6]);
-            _win->frictionEdit->setValue(prop[7]);
+            _win->frictionEdit->setValue(prop[6]);
+            _win->restitutionEdit->setValue(prop[7]);
             _win->objectProperties->setTitle("Properties : Element " + _items->getTexture(_currentItem));
             _win->angleEdit->setVisible(true);
             _win->angleLabel->setVisible(true);
@@ -257,9 +258,16 @@ void SFMLCanvas::on_limiteEdit_valueChanged(int value) {
 }
 
 void SFMLCanvas::on_saveButton_clicked() {
-    std::cout << "<map>" << std::endl;
-    std::cout << "<backgroud>" << _back_path.toStdString() << "</background>" << std::endl;
-    std::cout << "<support width=\"" << _base_image.GetWidth() << "\" height=\"" << _base_image.GetHeight() << "\">barre.png</support>" << std::endl;
-    std::cout << "<limite y=\"" << (_base_sprite.GetPosition().y - _limite_sprite.GetPosition().y) << "\">limite.png</limite>" << std::endl;
-    std::cout << "</map>" << std::endl;
+    QFile file("ma_map.xml");
+    if (file.open(QFile::WriteOnly)) {
+        QTextStream out(&file);
+        out << "<?xml version=\"1.0\" ?>" << endl;
+        out << "<map>" << endl;
+        out << "<background>" << _back_path << "</background>" << endl;
+        out << "<support width=\"" << _base_image.GetWidth() << "\" height=\"" << _base_image.GetHeight() << "\">barre.png</support>" << endl;
+        out << "<limite y=\"" << (_base_sprite.GetPosition().y - _limite_sprite.GetPosition().y) << "\">limite.png</limite>" << endl;
+        out << _items->save(_base_sprite.GetPosition().x - _base_image.GetWidth()/2, _base_sprite.GetPosition().y - _base_image.GetHeight()/2) << endl;
+        out << "</map>";
+    }
+
 }

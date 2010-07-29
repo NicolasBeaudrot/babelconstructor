@@ -28,6 +28,8 @@
 
             int isClicked(float x, float y);
 
+            QString save(float rep_x, float rep_y);
+
             int getType(int index);
 
             float* getProperties(int index);

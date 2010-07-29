@@ -12,6 +12,7 @@ Item::Item(QString file, int type, int id) : _type(type), _id(id) {
     for(int i=2; i < 8; i++) {
         _properties[i] = 0.0f;
     }
+    _properties[5] = 100.0f;
 }
 
 void Item::setVisibility(bool visible) {
@@ -63,7 +64,11 @@ bool Item::isClicked(float x, float y) {
 }
 
 int Item::getType() {
-    return _type;
+    if(_isVisible) {
+        return _type;
+    } else {
+        return 0;
+    }
 }
 
 float* Item::getProperties() {
