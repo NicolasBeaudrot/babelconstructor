@@ -31,6 +31,10 @@ void ItemFactory::setRotation(int index, float value) {
     _itemsArray[index]->setRotation(value);
 }
 
+void ItemFactory::setType(int index, QString type) {
+    _itemsArray[index]->setType(type);
+}
+
 void ItemFactory::move(int index, int value, int direction) {
     _itemsArray[index]->move(value, direction);
 }
@@ -51,10 +55,11 @@ QString ItemFactory::save(float rep_x, float rep_y) {
     //Elements
     xml = "<elements>";
     for(unsigned int i=0; i < _itemsArray.size(); i++) {
-        if(_itemsArray[i]->getType() == 2) {
+        if(_itemsArray[i]->getItemType() == 2) {
             float *prop = _itemsArray[i]->getProperties();
             QString temp;
-            xml += "<elem type=\"Square\" file=\"" + _itemsArray[i]->getTexture() + "\" x=\"" + temp.setNum(prop[2] - rep_x);
+            xml += "<elem type=\"" + _itemsArray[i]->getType();
+            xml += "\" file=\"" + _itemsArray[i]->getTexture() + "\" x=\"" + temp.setNum(prop[2] - rep_x);
             xml += "\" y=\"" + temp.setNum(rep_y - prop[3]);
             xml += "\" angle=\"" + temp.setNum(prop[4]);
             xml += "\" density=\"" + temp.setNum(prop[5]);
@@ -67,10 +72,11 @@ QString ItemFactory::save(float rep_x, float rep_y) {
     //Obstacles
     xml += "<obstacles>";
     for(unsigned int i=0; i < _itemsArray.size(); i++) {
-        if(_itemsArray[i]->getType() == 3) {
+        if(_itemsArray[i]->getItemType() == 3) {
             float *prop = _itemsArray[i]->getProperties();
             QString temp;
-            xml += "<obstacle type=\"Square\" file=\"" + _itemsArray[i]->getTexture() + "\" x=\"" + temp.setNum(prop[2] - rep_x);
+            xml += "<obstacle type=\"" + _itemsArray[i]->getType();
+            xml += "\" file=\"" + _itemsArray[i]->getTexture() + "\" x=\"" + temp.setNum(prop[2] - rep_x);
             xml += "\" y=\"" + temp.setNum(rep_y - prop[3]);
             xml += "\" angle=\"" + temp.setNum(prop[4]) + "\" />";
         }
@@ -80,7 +86,11 @@ QString ItemFactory::save(float rep_x, float rep_y) {
     return xml;
 }
 
-int ItemFactory::getType(int index) {
+int ItemFactory::getItemType(int index) {
+    return _itemsArray[index]->getItemType();
+}
+
+QString ItemFactory::getType(int index) {
     return _itemsArray[index]->getType();
 }
 

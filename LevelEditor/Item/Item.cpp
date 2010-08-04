@@ -1,10 +1,11 @@
 #include "Item.h"
 
-Item::Item(QString file, int type, int id) : _type(type), _id(id) {
+Item::Item(QString file, int type, int id) : _item(type), _id(id) {
     _image.LoadFromFile(file.toStdString());
     _sprite.SetImage(_image);
     _sprite.SetCenter(_sprite.GetSize() / 2.0f);
     _isVisible = true;
+    _type = "Square";
     QStringList files = file.split('/');
     _texture = files.last();
     _properties[0] = _image.GetWidth();
@@ -38,6 +39,10 @@ void Item::setProperties(int index, float prop) {
     _properties[index] = prop;
 }
 
+void Item::setType(QString type) {
+    _type = type;
+}
+
 void Item::setRotation(float value) {
     _sprite.SetRotation(value);
     _properties[4] = value;
@@ -63,9 +68,9 @@ bool Item::isClicked(float x, float y) {
     }
 }
 
-int Item::getType() {
+int Item::getItemType() {
     if(_isVisible) {
-        return _type;
+        return _item;
     } else {
         return 0;
     }
@@ -77,6 +82,10 @@ float* Item::getProperties() {
 
 QString Item::getTexture() {
     return _texture;
+}
+
+QString Item::getType() {
+    return _type;
 }
 
 void Item::render(QSFMLCanvas &win) {

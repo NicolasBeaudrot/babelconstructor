@@ -8,6 +8,8 @@
 #include <QListView>
 #include <QStringListModel>
 #include <QMouseEvent>
+#include <QInputDialog>
+#include <QMessageBox>
 
     class SFMLCanvas : public QSFMLCanvas
     {
@@ -39,6 +41,7 @@
             QString _back_path;
 
     private slots:
+        void on_typeEdit_currentIndexChanged(QString );
         void on_saveButton_clicked();
         void on_limiteEdit_valueChanged(int );
         void on_backgroundsListView_clicked(QModelIndex index);

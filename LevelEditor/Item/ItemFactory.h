@@ -24,13 +24,17 @@
 
             void setRotation(int index, float value);
 
+            void setType(int index, QString type);
+
             void move(int index, int value, int direction);
 
             int isClicked(float x, float y);
 
             QString save(float rep_x, float rep_y);
 
-            int getType(int index);
+            int getItemType(int index);
+
+            QString getType(int index);
 
             float* getProperties(int index);
 

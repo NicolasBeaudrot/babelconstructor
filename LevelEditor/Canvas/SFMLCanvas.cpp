@@ -13,6 +13,7 @@ SFMLCanvas::SFMLCanvas(QWidget* Parent, Ui::MainWindow& u, const QPoint& Positio
     connect(_win->backgroundsListView, SIGNAL(clicked(QModelIndex)), this, SLOT(on_backgroundsListView_clicked(QModelIndex)));
     connect(_win->limiteEdit, SIGNAL(valueChanged(int)), this, SLOT(on_limiteEdit_valueChanged(int)));
     connect(_win->saveButton, SIGNAL(clicked()), this, SLOT(on_saveButton_clicked()));
+    connect(_win->typeEdit, SIGNAL(currentIndexChanged(QString)), this, SLOT(on_typeEdit_currentIndexChanged(QString)));
     refreshItemsList();
 
     _items = new ItemFactory();
@@ -55,7 +56,7 @@ void SFMLCanvas::mouseReleaseEvent  ( QMouseEvent * e ) {
             displayProperties();
         } else if (_items->isClicked(e->x(), e->y()) != -1) {
             _currentItem = _items->isClicked(e->x(), e->y());
-            _mode = _items->getType(_currentItem);
+            _mode = _items->getItemType(_currentItem);
             displayProperties();
         } else {
             _win->objectProperties->setVisible(false);
@@ -134,6 +135,7 @@ void SFMLCanvas::displayProperties() {
             _win->densityEdit->setValue(prop[5]);
             _win->frictionEdit->setValue(prop[6]);
             _win->restitutionEdit->setValue(prop[7]);
+            _win->typeEdit->setCurrentIndex(_win->typeEdit->findText(_items->getType(_currentItem)));
             _win->objectProperties->setTitle("Properties : Element " + _items->getTexture(_currentItem));
             _win->angleEdit->setVisible(true);
             _win->angleLabel->setVisible(true);
@@ -151,6 +153,8 @@ void SFMLCanvas::displayProperties() {
             _win->xLabel->setVisible(true);
             _win->yEdit->setVisible(true);
             _win->yLabel->setVisible(true);
+            _win->typeEdit->setVisible(true);
+            _win->typeLabel->setVisible(true);
             _win->deleteButton->setVisible(true);
         }
         break;
@@ -175,6 +179,8 @@ void SFMLCanvas::displayProperties() {
             _win->xLabel->setVisible(true);
             _win->yEdit->setVisible(true);
             _win->yLabel->setVisible(true);
+            _win->typeEdit->setVisible(true);
+            _win->typeLabel->setVisible(true);
             _win->deleteButton->setVisible(true);
         }
         break;
@@ -200,6 +206,8 @@ void SFMLCanvas::hideProperties() {
     _win->xLabel->setVisible(false);
     _win->yEdit->setVisible(false);
     _win->yLabel->setVisible(false);
+    _win->typeEdit->setVisible(false);
+    _win->typeLabel->setVisible(false);
     _win->deleteButton->setVisible(false);
     _win->objectProperties->setVisible(false);
 }
@@ -258,16 +266,33 @@ void SFMLCanvas::on_limiteEdit_valueChanged(int value) {
 }
 
 void SFMLCanvas::on_saveButton_clicked() {
-    QFile file("ma_map.xml");
-    if (file.open(QFile::WriteOnly)) {
-        QTextStream out(&file);
-        out << "<?xml version=\"1.0\" ?>" << endl;
-        out << "<map>" << endl;
-        out << "<background>" << _back_path << "</background>" << endl;
-        out << "<support width=\"" << _base_image.GetWidth() << "\" height=\"" << _base_image.GetHeight() << "\">barre.png</support>" << endl;
-        out << "<limite y=\"" << (_base_sprite.GetPosition().y - _limite_sprite.GetPosition().y) << "\">limite.png</limite>" << endl;
-        out << _items->save(_base_sprite.GetPosition().x - _base_image.GetWidth()/2, _base_sprite.GetPosition().y - _base_image.GetHeight()/2) << endl;
-        out << "</map>";
-    }
+    QString qs = QInputDialog::getText(this, "Save as", "Enter a filename :");
 
+    if (!qs.isEmpty()) {
+        QFile file(qs + ".xml");
+
+        if (file.open(QFile::WriteOnly)) {
+            QTextStream out(&file);
+            out << "<?xml version=\"1.0\" ?>" << endl;
+            out << "<map>" << endl;
+            if (_back_path.isEmpty()) {
+                _back_path = "empty";
+            }
+            out << "<background>" << _back_path << "</background>" << endl;
+            out << "<support width=\"" << _base_image.GetWidth() << "\" height=\"" << _base_image.GetHeight() << "\">barre.png</support>" << endl;
+            out << "<limite y=\"" << (_base_sprite.GetPosition().y - _limite_sprite.GetPosition().y) << "\">limite.png</limite>" << endl;
+            out << _items->save(_base_sprite.GetPosition().x - _base_image.GetWidth()/2, _base_sprite.GetPosition().y - _base_image.GetHeight()/2) << endl;
+            out << "</map>";
+        }
+    } else {
+        QMessageBox msgBox;
+        msgBox.setText("Incorrect filename");
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.exec();
+    }
+}
+
+void SFMLCanvas::on_typeEdit_currentIndexChanged(QString type) {
+    _items->setType(_currentItem, type);
+    std::cout << type.toStdString() << std::endl;
 }

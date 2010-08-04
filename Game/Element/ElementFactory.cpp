@@ -82,21 +82,34 @@ void ElementFactory::Delete() {
 }
 
 sf::Vector2f ElementFactory::loadBase(std::string background, std::string base, sf::Vector2f& dimension, std::string limite, float limite_y) {
-    _img_back.LoadFromFile("ressources/images/" + background);
-    _sprite_back.SetImage(_img_back);
-    _sprite_back.Resize(_app->GetWidth(), _app->GetHeight());
-    Logger::Instance()->log("Background loaded");
+    if (background != "") {
+        if (_img_back.LoadFromFile("ressources/images/" + background)) {
+            _sprite_back.SetImage(_img_back);
+            _sprite_back.Resize(_app->GetWidth(), _app->GetHeight());
+            Logger::Instance()->log("Background loaded");
+        } else {
+            Logger::Instance()->log("Background not found");
+        }
+    } else {
+        Logger::Instance()->log("Background not found");
+    }
 
-    _img_base.LoadFromFile("ressources/images/" + base);
-    _sprite_base.SetImage(_img_base);
-    _sprite_base.Resize(dimension.x, dimension.y);
-    _sprite_base.SetPosition(sf::Vector2f(_app->GetWidth()/2 - dimension.x/2, _app->GetHeight() - 100));
-    Logger::Instance()->log("Base loaded");
+    if (_img_base.LoadFromFile("ressources/images/" + base)) {
+        _sprite_base.SetImage(_img_base);
+        _sprite_base.Resize(dimension.x, dimension.y);
+        _sprite_base.SetPosition(sf::Vector2f(_app->GetWidth()/2 - dimension.x/2, _app->GetHeight() - 100));
+        Logger::Instance()->log("Base loaded");
+    } else {
+        Logger::Instance()->log("Base not found");
+    }
 
-    _img_limite.LoadFromFile("ressources/images/" + limite);
-    _sprite_limite.SetImage(_img_limite);
-    _sprite_limite.SetPosition(_app->GetWidth() - _img_limite.GetWidth(), _sprite_base.GetPosition().y - limite_y);
-    Logger::Instance()->log("Limite loaded");
+    if (_img_limite.LoadFromFile("ressources/images/" + limite)) {
+        _sprite_limite.SetImage(_img_limite);
+        _sprite_limite.SetPosition(_app->GetWidth() - _img_limite.GetWidth(), _sprite_base.GetPosition().y - limite_y);
+        Logger::Instance()->log("Limit loaded");
+    } else {
+        Logger::Instance()->log("Limit not found");
+    }
 
 	b2BodyDef baseBodyDef;
 	baseBodyDef.position.Set((_app->GetWidth()/2), 90);
