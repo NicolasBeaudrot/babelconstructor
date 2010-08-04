@@ -269,7 +269,7 @@ void SFMLCanvas::on_saveButton_clicked() {
     QString qs = QInputDialog::getText(this, "Save as", "Enter a filename :");
 
     if (!qs.isEmpty()) {
-        QFile file(qs + ".xml");
+        QFile file("ressources/map/" + qs + ".xml");
 
         if (file.open(QFile::WriteOnly)) {
             QTextStream out(&file);
