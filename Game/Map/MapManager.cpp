@@ -60,3 +60,6 @@ void MapManager::reLoad() {
     _currentMap = new Map(_app, _camera, _tabMap[_indexCurr]);
 }
 
+std::string MapManager::getCurrentMapName() {
+    return _tabMap[_indexCurr];
+}

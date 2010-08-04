@@ -14,6 +14,7 @@ class GameManager
     private :
         sf::RenderWindow _app;
         sf::Clock _clock;
+        sf::Clock _intro;
         sf::View _camera;
         b2World *world;
 
@@ -25,6 +26,8 @@ class GameManager
         void createWorld();
 
         void destroyWorld();
+
+        void loadMap();
 
         void run();
 };

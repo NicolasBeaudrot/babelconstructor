@@ -32,10 +32,7 @@ GameManager::GameManager() : _app(), _camera() {
         _app.Create(sf::VideoMode(width, height, colors), "Babel Constructor");
     }
 
-    createWorld();
     MapManager::Instance()->Init(&_app, &_camera);
-    ElementFactory::Instance()->Init(&_app, world);
-    ObstacleFactory::Instance()->Init(&_app, world);
     Logger::Instance()->Init();
 }
 
@@ -73,9 +70,17 @@ void GameManager::destroyWorld() {
     delete world;
 }
 
+void GameManager::loadMap() {
+    _intro.Reset();
+    createWorld();
+    ElementFactory::Instance()->Init(& _app,world );
+    ObstacleFactory::Instance()->Init(&_app, world);
+    MapManager::Instance()->nextMap();
+}
+
 void GameManager::run() {
 
-    MapManager::Instance()->nextMap();
+    loadMap();
     bool paused = false;
     bool winner = false;
 
@@ -94,10 +99,7 @@ void GameManager::run() {
                 }
             } else if (Event.Type == sf::Event::KeyPressed && Event.Key.Code == sf::Key::N) {
                 destroyWorld();
-                createWorld();
-                ElementFactory::Instance()->Init(& _app,world );
-                ObstacleFactory::Instance()->Init(&_app, world);
-                MapManager::Instance()->nextMap();
+                loadMap();
             } else if (Event.Type == sf::Event::KeyPressed && Event.Key.Code == sf::Key::P) {
                 paused = !paused;
             } else if (Event.Type == sf::Event::KeyPressed && Event.Key.Code == sf::Key::Return) {
@@ -119,8 +121,17 @@ void GameManager::run() {
 
             world->Step(_app.GetFrameTime(), 6, 2);
 
-            //Winner
             int status = ElementFactory::Instance()->render(_app.GetInput());
+
+            //Intro
+            if (_intro.GetElapsedTime() < 5.0f) {
+                sf::Font *font   = RessourceManager::Instance()->GetFont("ressources/fonts/gilligan.ttf");
+                sf::String intro("Map : " + MapManager::Instance()->getCurrentMapName(), *font, 20);
+                intro.SetPosition(10, 10);
+                _app.Draw(intro);
+            }
+
+            //Winner
             if (status != 0) {
                 if(status == 1) {
                     sf::Font *font   = RessourceManager::Instance()->GetFont("ressources/fonts/gilligan.ttf");
@@ -129,9 +140,7 @@ void GameManager::run() {
                     _app.Draw(text);
                     winner = true;
                 } else if (status == 2) {
-                    destroyWorld();
-                    createWorld();
-                    MapManager::Instance()->nextMap();
+                    loadMap();
                 }
             } else {
                 //Loser

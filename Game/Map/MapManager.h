@@ -53,6 +53,12 @@
             */
             void reLoad();
 
+            /**
+            * This function returns the map filename
+            * @return filename
+            */
+            std::string getCurrentMapName();
+
     };
 
 #endif
