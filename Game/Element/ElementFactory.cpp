@@ -83,7 +83,7 @@ void ElementFactory::Delete() {
 
 sf::Vector2f ElementFactory::loadBase(std::string background, std::string base, sf::Vector2f& dimension, std::string limite, float limite_y) {
     if (background != "") {
-        if (_img_back.LoadFromFile("ressources/images/" + background)) {
+        if (_img_back.LoadFromFile("ressources/images/backgrounds/" + background)) {
             _sprite_back.SetImage(_img_back);
             _sprite_back.Resize(_app->GetWidth(), _app->GetHeight());
             Logger::Instance()->log("Background loaded");

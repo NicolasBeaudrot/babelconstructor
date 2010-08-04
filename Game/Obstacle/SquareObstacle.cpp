@@ -2,7 +2,7 @@
 
 SquareObstacle::SquareObstacle(sf::Vector2f& position, float& angle, std::string file, b2World& world, sf::RenderWindow *application) : Obstacle() {
     _app = application;
-    std::string path = "ressources/images/" + file;
+    std::string path = "ressources/images/obstacles/" + file;
 
     _image = RessourceManager::Instance()->GetImage(path);
     _sprite.SetImage(*_image);
