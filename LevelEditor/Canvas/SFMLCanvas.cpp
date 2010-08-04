@@ -78,7 +78,7 @@ void SFMLCanvas::OnUpdate() {
     Draw(_limite_sprite);
 
     if (_clicked) {
-        _items->setPosition(_currentItem, sf::Vector2f(QCursor::pos().x() - 150, QCursor::pos().y() - 100));
+        _items->setPosition(_currentItem, sf::Vector2f(QCursor::pos().x() - 150, QCursor::pos().y() - 80));
     }
     _items->render(*this);
 }
