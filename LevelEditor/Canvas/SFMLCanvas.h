@@ -10,6 +10,8 @@
 #include <QMouseEvent>
 #include <QInputDialog>
 #include <QMessageBox>
+#include <QFileDialog>
+#include <QtXml>
 
     class SFMLCanvas : public QSFMLCanvas
     {
@@ -20,6 +22,7 @@
             ~SFMLCanvas();
             void displayProperties();
             void hideProperties();
+            void loadMap(QString file);
 
         private :
             void OnInit();
@@ -41,6 +44,11 @@
             QString _back_path;
 
     private slots:
+        void on_restitutionEdit_valueChanged(double );
+        void on_frictionEdit_valueChanged(double );
+        void on_densityEdit_valueChanged(double );
+        void on_widthEdit_valueChanged(double );
+        void on_loadButton_clicked();
         void on_typeEdit_currentIndexChanged(QString );
         void on_saveButton_clicked();
         void on_limiteEdit_valueChanged(int );
@@ -50,6 +58,5 @@
         void on_refreshButton_clicked();
         void on_obstaclesListView_clicked(QModelIndex index);
         void on_elementsListView_clicked(QModelIndex index);
-        void on_BaseButton_clicked();
 };
 #endif // SFMLCANVAS_H

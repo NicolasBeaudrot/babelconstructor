@@ -27,6 +27,10 @@ void ItemFactory::setProperties(int index, float *prop) {
     _itemsArray[index]->setProperties(prop);
 }
 
+void ItemFactory::setProperty(int index, int prop, float value) {
+    _itemsArray[index]->setProperty(prop, value);
+}
+
 void ItemFactory::setRotation(int index, float value) {
     _itemsArray[index]->setRotation(value);
 }
@@ -60,7 +64,7 @@ QString ItemFactory::save(float rep_x, float rep_y) {
             QString temp;
             xml += "<elem type=\"" + _itemsArray[i]->getType();
             xml += "\" file=\"" + _itemsArray[i]->getTexture() + "\" x=\"" + temp.setNum(prop[2] - (prop[0]/2) - rep_x);
-            xml += "\" y=\"" + temp.setNum(rep_y - prop[3] - prop[1]/2);
+            xml += "\" y=\"" + temp.setNum(rep_y - prop[3] - (prop[1]/2));
             xml += "\" angle=\"" + temp.setNum(prop[4]);
             xml += "\" density=\"" + temp.setNum(prop[5]);
             xml += "\" friction=\"" + temp.setNum(prop[6]);
@@ -106,4 +110,11 @@ void ItemFactory::render(QSFMLCanvas &win) {
     for(unsigned int i=0; i < _itemsArray.size() ; i++) {
         _itemsArray[i]->render(win);
     }
+}
+
+void ItemFactory::reset() {
+    for(unsigned int i=0; i < _itemsArray.size(); i++) {
+        delete _itemsArray[i];
+    }
+    _itemsArray.clear();
 }

@@ -22,6 +22,8 @@
 
             void setProperties(int index, float *prop);
 
+            void setProperty(int index, int prop, float value);
+
             void setRotation(int index, float value);
 
             void setType(int index, QString type);
@@ -41,5 +43,7 @@
             QString getTexture(int index);
 
             void render(QSFMLCanvas &win);
+
+            void reset();
     };
 #endif // ITEMFACTORY_H

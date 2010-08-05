@@ -4,7 +4,6 @@ SFMLCanvas::SFMLCanvas(QWidget* Parent, Ui::MainWindow& u, const QPoint& Positio
  : QSFMLCanvas(Parent, Position, Size), _clicked(false)
 {
     _win = &u;
-    connect(_win->BaseButton, SIGNAL(clicked()), this, SLOT(on_BaseButton_clicked()));
     connect(_win->elementsListView, SIGNAL(clicked(QModelIndex)), this, SLOT(on_elementsListView_clicked(QModelIndex)));
     connect(_win->obstaclesListView, SIGNAL(clicked(QModelIndex)), this, SLOT(on_obstaclesListView_clicked(QModelIndex)));
     connect(_win->refreshButton, SIGNAL(clicked()), this, SLOT(on_refreshButton_clicked()));
@@ -14,6 +13,11 @@ SFMLCanvas::SFMLCanvas(QWidget* Parent, Ui::MainWindow& u, const QPoint& Positio
     connect(_win->limiteEdit, SIGNAL(valueChanged(int)), this, SLOT(on_limiteEdit_valueChanged(int)));
     connect(_win->saveButton, SIGNAL(clicked()), this, SLOT(on_saveButton_clicked()));
     connect(_win->typeEdit, SIGNAL(currentIndexChanged(QString)), this, SLOT(on_typeEdit_currentIndexChanged(QString)));
+    connect(_win->loadButton, SIGNAL(clicked()), this, SLOT(on_loadButton_clicked()));
+    connect(_win->widthEdit, SIGNAL(valueChanged(double)), this, SLOT(on_widthEdit_valueChanged(double)));
+    connect(_win->densityEdit, SIGNAL(valueChanged(double)), this, SLOT(on_densityEdit_valueChanged(double)));
+    connect(_win->frictionEdit, SIGNAL(valueChanged(double)), this, SLOT(on_frictionEdit_valueChanged(double)));
+    connect(_win->restitutionEdit, SIGNAL(valueChanged(double)), this, SLOT(on_restitutionEdit_valueChanged(double)));
     refreshItemsList();
 
     _items = new ItemFactory();
@@ -83,32 +87,6 @@ void SFMLCanvas::OnUpdate() {
     _items->render(*this);
 }
 
-void SFMLCanvas::on_BaseButton_clicked() {
-    if (_mode == 1) { //Base
-        _base_sprite.Resize(_win->widthEdit->text().toFloat(), _base_image.GetHeight());
-    } else if (_mode == 2) { //Element
-        float prop[8];
-        prop[2] = _win->xEdit->text().toFloat();
-        prop[3] = _win->yEdit->text().toFloat();
-        prop[4] = _win->angleEdit->value();
-        prop[5] = _win->densityEdit->value();
-        prop[6] = _win->frictionEdit->value();
-        prop[7] = _win->restitutionEdit->value();
-        _items->setProperties(_currentItem, prop);
-        _items->setPosition(_currentItem, sf::Vector2f(prop[2], prop[3]));
-    } else if (_mode == 3) { //Obstacle
-        float prop[8];
-        prop[2] = _win->xEdit->text().toFloat();
-        prop[3] = _win->yEdit->text().toFloat();
-        prop[4] = _win->angleEdit->value();
-        prop[5] = 0.0f;
-        prop[6] = 0.0f;
-        prop[7] = 0.0f;
-        _items->setProperties(_currentItem, prop);
-        _items->setPosition(_currentItem, sf::Vector2f(prop[2], prop[3]));
-    }
-}
-
 void SFMLCanvas::displayProperties() {
     hideProperties();
 
@@ -118,15 +96,14 @@ void SFMLCanvas::displayProperties() {
             _win->widthEdit->setEnabled(true);
             _win->widthLabel->setVisible(true);
             _win->widthEdit->setVisible(true);
-            QString width;
-            _win->widthEdit->setText(width.setNum(_base_sprite.GetSize().x));
+            _win->widthEdit->setValue(_base_sprite.GetSize().x);
         }
         break;
         case 2 : { //Mode Elements
             float *prop = _items->getProperties(_currentItem);
             QString s;
-            _win->widthEdit->setText(s.setNum(prop[0]));
-            _win->heightEdit->setText(s.setNum(prop[1]));
+            _win->widthEdit->setValue(prop[0]);
+            _win->heightEdit->setValue(prop[1]);
             _win->widthEdit->setEnabled(false);
             _win->heightEdit->setEnabled(false);
             _win->xEdit->setText(s.setNum(prop[2]));
@@ -161,13 +138,14 @@ void SFMLCanvas::displayProperties() {
         case 3 : { //Mode Obstacles
             float *prop = _items->getProperties(_currentItem);
             QString s;
-            _win->widthEdit->setText(s.setNum(prop[0]));
-            _win->heightEdit->setText(s.setNum(prop[1]));
+            _win->widthEdit->setValue(prop[0]);
+            _win->heightEdit->setValue(prop[1]);
             _win->widthEdit->setEnabled(false);
             _win->heightEdit->setEnabled(false);
             _win->xEdit->setText(s.setNum(prop[2]));
             _win->yEdit->setText(s.setNum(prop[3]));
             _win->angleEdit->setValue(prop[4]);
+            _win->typeEdit->setCurrentIndex(_win->typeEdit->findText(_items->getType(_currentItem)));
             _win->objectProperties->setTitle("Properties : Obstacle " + _items->getTexture(_currentItem));
             _win->angleEdit->setVisible(true);
             _win->angleLabel->setVisible(true);
@@ -284,6 +262,7 @@ void SFMLCanvas::on_saveButton_clicked() {
             out << _items->save(_base_sprite.GetPosition().x - _base_sprite.GetSize().x/2, _base_sprite.GetPosition().y - _base_image.GetHeight()/2) << endl;
             out << "</map>";
         }
+        file.close();
     } else {
         QMessageBox msgBox;
         msgBox.setText("Incorrect filename");
@@ -294,5 +273,95 @@ void SFMLCanvas::on_saveButton_clicked() {
 
 void SFMLCanvas::on_typeEdit_currentIndexChanged(QString type) {
     _items->setType(_currentItem, type);
-    std::cout << type.toStdString() << std::endl;
+}
+
+void SFMLCanvas::on_loadButton_clicked() {
+    QFileDialog dialog(this);
+    dialog.setFileMode(QFileDialog::ExistingFile);
+    dialog.setDirectory("./ressources/map");
+    dialog.setNameFilter(tr("XML files (*.xml)"));
+    QStringList fileNames;
+    if (dialog.exec()) {
+        fileNames = dialog.selectedFiles();
+        loadMap(fileNames.takeFirst());
+    }
+}
+
+void SFMLCanvas::loadMap(QString file) {
+    _items->reset();
+    hideProperties();
+
+    QDomDocument doc;
+    QFile map(file);
+    map.open(QFile::ReadOnly);
+    doc.setContent(&map);
+    map.close();
+
+    QDomElement root=doc.documentElement();
+    QDomElement child=root.firstChild().toElement();
+    while(!child.isNull()) {
+        if (child.tagName() == "background") {
+            _back_image.LoadFromFile("ressources/images/backgrounds/" + child.text().toStdString());
+            _back_sprite.SetImage(_back_image);
+            _back_sprite.Resize(GetWidth(), GetHeight());
+        } else if (child.tagName() == "support") {
+            _base_image.LoadFromFile("ressources/images/" + child.text().toStdString());
+            _base_sprite.SetImage(_base_image);
+            _base_sprite.SetCenter(_base_sprite.GetSize() / 2.0f);
+            _base_sprite.SetPosition(this->GetWidth()/2, this->GetHeight()-100);
+            _base_sprite.Resize(child.attribute("width", "300").toFloat(), child.attribute("height", "30").toFloat());
+        } else if (child.tagName() == "limite") {
+            _limite_image.LoadFromFile("ressources/images/limite.png");
+            _limite_sprite.SetImage(_limite_image);
+            _limite_sprite.SetPosition(this->GetWidth() - _limite_image.GetWidth(), _base_sprite.GetPosition().y - child.attribute("y", "300").toFloat());
+            _win->limiteEdit->setValue(child.attribute("y", "300").toInt());
+        } else if (child.tagName() == "elements") {
+            QDomElement grandChild=child.firstChild().toElement();
+            while(!grandChild.isNull()) {
+                int index = _items->add(2, "ressources/images/elements/" + grandChild.attribute("file", "empty"));
+                float prop[8];
+                prop[2] = _base_sprite.GetPosition().x - _base_sprite.GetSize().x/2 + grandChild.attribute("x", "empty").toFloat();
+                prop[3] = _base_sprite.GetPosition().y - _base_sprite.GetSize().y/2 - grandChild.attribute("y", "empty").toFloat();
+                prop[4] = grandChild.attribute("angle", "empty").toFloat();
+                prop[5] = grandChild.attribute("density", "empty").toFloat();
+                prop[6] = grandChild.attribute("friction", "empty").toFloat();
+                prop[7] = grandChild.attribute("restitution", "empty").toFloat();
+                _items->setProperties(index, prop);
+                grandChild = grandChild.nextSibling().toElement();
+            }
+        } else if (child.tagName() == "obstacles") {
+            QDomElement grandChild=child.firstChild().toElement();
+            while(!grandChild.isNull()) {
+                int index = _items->add(3, "ressources/images/obstacles/" + grandChild.attribute("file", "empty"));
+                float prop[8];
+                prop[2] = _base_sprite.GetPosition().x - _base_sprite.GetSize().x/2 + grandChild.attribute("x", "empty").toFloat();
+                prop[3] = _base_sprite.GetPosition().y - _base_sprite.GetSize().y/2 - grandChild.attribute("y", "empty").toFloat();
+                prop[4] = grandChild.attribute("angle", "empty").toFloat();
+                prop[5] = 0;
+                prop[6] = 0;
+                prop[7] = 0;
+                _items->setProperties(index, prop);
+                grandChild = grandChild.nextSibling().toElement();
+            }
+        }
+        child = child.nextSibling().toElement();
+    }
+}
+
+void SFMLCanvas::on_widthEdit_valueChanged(double value) {
+    if (_mode == 1) {
+        _base_sprite.Resize(value, _base_image.GetHeight());
+    }
+}
+
+void SFMLCanvas::on_densityEdit_valueChanged(double value) {
+    _items->setProperty(_currentItem, 5, value);
+}
+
+void SFMLCanvas::on_frictionEdit_valueChanged(double value) {
+    _items->setProperty(_currentItem, 6, value);
+}
+
+void SFMLCanvas::on_restitutionEdit_valueChanged(double value) {
+    _items->setProperty(_currentItem, 7, value);
 }

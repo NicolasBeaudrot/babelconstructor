@@ -1,4 +1,5 @@
 DESTDIR = "bin"
+QT += xml
 INCLUDEPATH += "../ExternLibrairie/SFML-1.6/include"
 DEPENDPATH += "../ExternLibrairie/SFML-1.6/lib"
 unix:LIBS += -lsfml-graphics -lsfml-window -lsfml-system

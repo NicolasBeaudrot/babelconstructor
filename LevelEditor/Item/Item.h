@@ -24,7 +24,7 @@
 
             void setProperties(float *prop);
 
-            void setProperties(int index, float prop);
+            void setProperty(int index, float prop);
 
             void setRotation(float value);
 
