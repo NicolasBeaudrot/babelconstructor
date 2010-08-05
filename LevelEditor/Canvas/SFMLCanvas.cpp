@@ -36,7 +36,7 @@ void SFMLCanvas::OnInit() {
     //Then we load the limit
     _limite_image.LoadFromFile("ressources/images/limite.png");
     _limite_sprite.SetImage(_limite_image);
-    _limite_sprite.SetPosition(this->GetWidth() - _limite_image.GetWidth(), this->GetHeight() - _win->limiteEdit->text().toFloat());
+    _limite_sprite.SetPosition(this->GetWidth() - _limite_image.GetWidth(), _base_sprite.GetPosition().y - _win->limiteEdit->text().toFloat());
 }
 
 void SFMLCanvas::refreshItemsList() {
@@ -119,7 +119,7 @@ void SFMLCanvas::displayProperties() {
             _win->widthLabel->setVisible(true);
             _win->widthEdit->setVisible(true);
             QString width;
-            _win->widthEdit->setText(width.setNum(_base_image.GetWidth()));
+            _win->widthEdit->setText(width.setNum(_base_sprite.GetSize().x));
         }
         break;
         case 2 : { //Mode Elements
@@ -262,7 +262,7 @@ void SFMLCanvas::on_backgroundsListView_clicked(QModelIndex index) {
 }
 
 void SFMLCanvas::on_limiteEdit_valueChanged(int value) {
-    _limite_sprite.SetY(this->GetHeight() - value);
+    _limite_sprite.SetY(_base_sprite.GetPosition().y - value);
 }
 
 void SFMLCanvas::on_saveButton_clicked() {
@@ -279,9 +279,9 @@ void SFMLCanvas::on_saveButton_clicked() {
                 _back_path = "empty";
             }
             out << "<background>" << _back_path << "</background>" << endl;
-            out << "<support width=\"" << _base_image.GetWidth() << "\" height=\"" << _base_image.GetHeight() << "\">barre.png</support>" << endl;
+            out << "<support width=\"" << _base_sprite.GetSize().x << "\" height=\"" << _base_image.GetHeight() << "\">barre.png</support>" << endl;
             out << "<limite y=\"" << (_base_sprite.GetPosition().y - _limite_sprite.GetPosition().y) << "\">limite.png</limite>" << endl;
-            out << _items->save(_base_sprite.GetPosition().x - _base_image.GetWidth()/2, _base_sprite.GetPosition().y - _base_image.GetHeight()/2) << endl;
+            out << _items->save(_base_sprite.GetPosition().x - _base_sprite.GetSize().x/2, _base_sprite.GetPosition().y - _base_image.GetHeight()/2) << endl;
             out << "</map>";
         }
     } else {

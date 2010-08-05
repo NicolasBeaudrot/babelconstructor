@@ -26,7 +26,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="pageElem">
     <property name="geometry">
@@ -46,8 +46,11 @@
        <x>10</x>
        <y>0</y>
        <width>121</width>
-       <height>131</height>
+       <height>101</height>
       </rect>
+     </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAsNeeded</enum>
      </property>
     </widget>
    </widget>
@@ -56,8 +59,8 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>98</width>
-      <height>28</height>
+      <width>141</width>
+      <height>108</height>
      </rect>
     </property>
     <attribute name="label">
@@ -69,8 +72,11 @@
        <x>10</x>
        <y>0</y>
        <width>121</width>
-       <height>131</height>
+       <height>101</height>
       </rect>
+     </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAsNeeded</enum>
      </property>
     </widget>
    </widget>
@@ -79,8 +85,8 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>98</width>
-      <height>28</height>
+      <width>141</width>
+      <height>108</height>
      </rect>
     </property>
     <attribute name="label">
@@ -94,6 +100,9 @@
        <width>121</width>
        <height>101</height>
       </rect>
+     </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAsNeeded</enum>
      </property>
     </widget>
    </widget>
