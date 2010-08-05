@@ -22,7 +22,9 @@
             ~SFMLCanvas();
             void displayProperties();
             void hideProperties();
-            void loadMap(QString file);
+            void loadMap();
+            void saveMap();
+            void saveAsMap();
 
         private :
             void OnInit();
@@ -42,15 +44,18 @@
             bool _clicked;
             int _currentItem;
             QString _back_path;
+            QString _currentFile;
 
     private slots:
+        void on_saveMap();
+        void on_close();
+        void on_saveAsMap();
+        void on_loadMap();
         void on_restitutionEdit_valueChanged(double );
         void on_frictionEdit_valueChanged(double );
         void on_densityEdit_valueChanged(double );
         void on_widthEdit_valueChanged(double );
-        void on_loadButton_clicked();
         void on_typeEdit_currentIndexChanged(QString );
-        void on_saveButton_clicked();
         void on_limiteEdit_valueChanged(int );
         void on_backgroundsListView_clicked(QModelIndex index);
         void on_deleteButton_clicked();

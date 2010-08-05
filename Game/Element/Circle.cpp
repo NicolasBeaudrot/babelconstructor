@@ -4,10 +4,12 @@ Circle::Circle(sf::Vector2f &position, float angle, std::string& file, b2World& 
     _app = application;
     std::string path = "ressources/images/elements/" + file;
     _image = RessourceManager::Instance()->GetImage(path);
+    position.x += (_image->GetWidth()/2);
+    position.y += (_image->GetHeight()/2);
     _sprite.SetImage(*_image);
-    _sprite.SetPosition(position);
     _sprite.SetRotation(angle);
     _sprite.SetCenter(_image->GetWidth()/2, _image->GetHeight()/2);
+    _sprite.SetPosition(position);
 
     b2BodyDef bd;
     bd.type = b2_dynamicBody;

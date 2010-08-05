@@ -1,9 +1,41 @@
 #include "SFMLCanvas.h"
+#include <QMenuBar>
+#include <QMenu>
+#include <QStatusBar>
 
 SFMLCanvas::SFMLCanvas(QWidget* Parent, Ui::MainWindow& u, const QPoint& Position, const QSize& Size)
  : QSFMLCanvas(Parent, Position, Size), _clicked(false)
 {
     _win = &u;
+
+    QMenuBar *menu = new QMenuBar( Parent );
+    QMenu *fileMenu = new QMenu("&File", Parent);
+    menu->addMenu( fileMenu );
+
+    QAction * openAct = new QAction(tr("&Open"), this);
+    openAct->setShortcut(tr("Ctrl+O"));
+    openAct->setStatusTip(tr("Open a map in the editor"));
+    connect(openAct, SIGNAL(triggered()), this, SLOT(on_loadMap()));
+    fileMenu->addAction(openAct);
+
+    QAction * saveAct = new QAction(tr("&Save"), this);
+    saveAct->setShortcut(tr("Ctrl+S"));
+    saveAct->setStatusTip(tr("Save the map"));
+    connect(saveAct, SIGNAL(triggered()), this, SLOT(on_saveMap()));
+    fileMenu->addAction(saveAct);
+
+    QAction * saveasAct = new QAction(tr("&Save as"), this);
+    saveasAct->setShortcut(tr("Ctrl+Shift+S"));
+    saveasAct->setStatusTip(tr("Save the map in a new file"));
+    connect(saveasAct, SIGNAL(triggered()), this, SLOT(on_saveAsMap()));
+    fileMenu->addAction(saveasAct);
+
+    QAction * quitAct = new QAction(tr("&Close"), this);
+    quitAct->setShortcut(tr("Ctrl+Q"));
+    quitAct->setStatusTip(tr("Close the editor"));
+    connect(quitAct, SIGNAL(triggered()), this, SLOT(on_close()));
+    fileMenu->addAction(quitAct);
+
     connect(_win->elementsListView, SIGNAL(clicked(QModelIndex)), this, SLOT(on_elementsListView_clicked(QModelIndex)));
     connect(_win->obstaclesListView, SIGNAL(clicked(QModelIndex)), this, SLOT(on_obstaclesListView_clicked(QModelIndex)));
     connect(_win->refreshButton, SIGNAL(clicked()), this, SLOT(on_refreshButton_clicked()));
@@ -11,9 +43,7 @@ SFMLCanvas::SFMLCanvas(QWidget* Parent, Ui::MainWindow& u, const QPoint& Positio
     connect(_win->deleteButton, SIGNAL(clicked()), this, SLOT(on_deleteButton_clicked()));
     connect(_win->backgroundsListView, SIGNAL(clicked(QModelIndex)), this, SLOT(on_backgroundsListView_clicked(QModelIndex)));
     connect(_win->limiteEdit, SIGNAL(valueChanged(int)), this, SLOT(on_limiteEdit_valueChanged(int)));
-    connect(_win->saveButton, SIGNAL(clicked()), this, SLOT(on_saveButton_clicked()));
     connect(_win->typeEdit, SIGNAL(currentIndexChanged(QString)), this, SLOT(on_typeEdit_currentIndexChanged(QString)));
-    connect(_win->loadButton, SIGNAL(clicked()), this, SLOT(on_loadButton_clicked()));
     connect(_win->widthEdit, SIGNAL(valueChanged(double)), this, SLOT(on_widthEdit_valueChanged(double)));
     connect(_win->densityEdit, SIGNAL(valueChanged(double)), this, SLOT(on_densityEdit_valueChanged(double)));
     connect(_win->frictionEdit, SIGNAL(valueChanged(double)), this, SLOT(on_frictionEdit_valueChanged(double)));
@@ -41,6 +71,7 @@ void SFMLCanvas::OnInit() {
     _limite_image.LoadFromFile("ressources/images/limite.png");
     _limite_sprite.SetImage(_limite_image);
     _limite_sprite.SetPosition(this->GetWidth() - _limite_image.GetWidth(), _base_sprite.GetPosition().y - _win->limiteEdit->text().toFloat());
+
 }
 
 void SFMLCanvas::refreshItemsList() {
@@ -206,49 +237,78 @@ void SFMLCanvas::keyPressEvent(QKeyEvent *key) {
     }
 }
 
-void SFMLCanvas::on_elementsListView_clicked(QModelIndex index) {
-    _clicked = true;
-    _currentItem = _items->add(2,"ressources/images/elements/" + index.data().toString());
-    hideProperties();
+void SFMLCanvas::loadMap() {
+    QFileDialog dialog(this);
+    dialog.setFileMode(QFileDialog::ExistingFile);
+    dialog.setDirectory("./ressources/map");
+    dialog.setNameFilter(tr("XML files (*.xml)"));
+    QStringList fileNames;
+    if (dialog.exec()) {
+        fileNames = dialog.selectedFiles();
+        _items->reset();
+        hideProperties();
+
+        QDomDocument doc;
+        QFile map(fileNames.takeFirst());
+        map.open(QFile::ReadOnly);
+        doc.setContent(&map);
+        map.close();
+
+        QDomElement root=doc.documentElement();
+        QDomElement child=root.firstChild().toElement();
+        while(!child.isNull()) {
+            if (child.tagName() == "background") {
+                _back_image.LoadFromFile("ressources/images/backgrounds/" + child.text().toStdString());
+                _back_sprite.SetImage(_back_image);
+                _back_sprite.Resize(GetWidth(), GetHeight());
+            } else if (child.tagName() == "support") {
+                _base_image.LoadFromFile("ressources/images/" + child.text().toStdString());
+                _base_sprite.SetImage(_base_image);
+                _base_sprite.SetCenter(_base_sprite.GetSize() / 2.0f);
+                _base_sprite.SetPosition(this->GetWidth()/2, this->GetHeight()-100);
+                _base_sprite.Resize(child.attribute("width", "300").toFloat(), child.attribute("height", "30").toFloat());
+            } else if (child.tagName() == "limite") {
+                _limite_image.LoadFromFile("ressources/images/limite.png");
+                _limite_sprite.SetImage(_limite_image);
+                _limite_sprite.SetPosition(this->GetWidth() - _limite_image.GetWidth(), _base_sprite.GetPosition().y - child.attribute("y", "300").toFloat());
+                _win->limiteEdit->setValue(child.attribute("y", "300").toInt());
+            } else if (child.tagName() == "elements") {
+                QDomElement grandChild=child.firstChild().toElement();
+                while(!grandChild.isNull()) {
+                    int index = _items->add(2, "ressources/images/elements/" + grandChild.attribute("file", "empty"));
+                    float prop[8];
+                    prop[2] = _base_sprite.GetPosition().x - (_base_sprite.GetSize().x/2) + grandChild.attribute("x", "empty").toFloat();
+                    prop[3] = _base_sprite.GetPosition().y - _base_sprite.GetSize().y/2 - grandChild.attribute("y", "empty").toFloat();
+                    prop[4] = grandChild.attribute("angle", "empty").toFloat();
+                    prop[5] = grandChild.attribute("density", "empty").toFloat();
+                    prop[6] = grandChild.attribute("friction", "empty").toFloat();
+                    prop[7] = grandChild.attribute("restitution", "empty").toFloat();
+                    _items->setProperties(index, prop);
+                    grandChild = grandChild.nextSibling().toElement();
+                }
+            } else if (child.tagName() == "obstacles") {
+                QDomElement grandChild=child.firstChild().toElement();
+                while(!grandChild.isNull()) {
+                    int index = _items->add(3, "ressources/images/obstacles/" + grandChild.attribute("file", "empty"));
+                    float prop[8];
+                    prop[2] = _base_sprite.GetPosition().x - _base_sprite.GetSize().x/2 + grandChild.attribute("x", "empty").toFloat();
+                    prop[3] = _base_sprite.GetPosition().y - _base_sprite.GetSize().y/2 - grandChild.attribute("y", "empty").toFloat();
+                    prop[4] = grandChild.attribute("angle", "empty").toFloat();
+                    prop[5] = 0;
+                    prop[6] = 0;
+                    prop[7] = 0;
+                    _items->setProperties(index, prop);
+                    grandChild = grandChild.nextSibling().toElement();
+                }
+            }
+            child = child.nextSibling().toElement();
+        }
+    }
 }
 
-void SFMLCanvas::on_obstaclesListView_clicked(QModelIndex index) {
-    _clicked = true;
-    _currentItem = _items->add(3, "ressources/images/obstacles/" + index.data().toString());
-    hideProperties();
-}
-
-void SFMLCanvas::on_refreshButton_clicked() {
-    refreshItemsList();
-}
-
-void SFMLCanvas::on_angleEdit_sliderMoved(int position) {
-    _items->setRotation(_currentItem, position);
-}
-
-void SFMLCanvas::on_deleteButton_clicked() {
-    _items->remove(_currentItem);
-    hideProperties();
-}
-
-void SFMLCanvas::on_backgroundsListView_clicked(QModelIndex index) {
-    _back_path = index.data().toString();
-    _back_image.LoadFromFile("ressources/images/backgrounds/" + index.data().toString().toStdString());
-    _back_sprite.SetImage(_back_image);
-    _back_sprite.Resize(GetWidth(), GetHeight());
-    hideProperties();
-}
-
-void SFMLCanvas::on_limiteEdit_valueChanged(int value) {
-    _limite_sprite.SetY(_base_sprite.GetPosition().y - value);
-}
-
-void SFMLCanvas::on_saveButton_clicked() {
-    QString qs = QInputDialog::getText(this, "Save as", "Enter a filename :");
-
-    if (!qs.isEmpty()) {
-        QFile file("ressources/map/" + qs + ".xml");
-
+void SFMLCanvas::saveMap() {
+    if (!_currentFile.isEmpty()) {
+        QFile file(_currentFile);
         if (file.open(QFile::WriteOnly)) {
             QTextStream out(&file);
             out << "<?xml version=\"1.0\" ?>" << endl;
@@ -259,92 +319,34 @@ void SFMLCanvas::on_saveButton_clicked() {
             out << "<background>" << _back_path << "</background>" << endl;
             out << "<support width=\"" << _base_sprite.GetSize().x << "\" height=\"" << _base_image.GetHeight() << "\">barre.png</support>" << endl;
             out << "<limite y=\"" << (_base_sprite.GetPosition().y - _limite_sprite.GetPosition().y) << "\">limite.png</limite>" << endl;
-            out << _items->save(_base_sprite.GetPosition().x - _base_sprite.GetSize().x/2, _base_sprite.GetPosition().y - _base_image.GetHeight()/2) << endl;
+            out << _items->save(_base_sprite.GetPosition().x - (_base_sprite.GetSize().x/2), _base_sprite.GetPosition().y - (_base_sprite.GetSize().y/2)) << endl;
             out << "</map>";
         }
         file.close();
     } else {
-        QMessageBox msgBox;
-        msgBox.setText("Incorrect filename");
-        msgBox.setIcon(QMessageBox::Critical);
-        msgBox.exec();
+        saveAsMap();
     }
+
 }
 
-void SFMLCanvas::on_typeEdit_currentIndexChanged(QString type) {
-    _items->setType(_currentItem, type);
-}
-
-void SFMLCanvas::on_loadButton_clicked() {
+void SFMLCanvas::saveAsMap() {
     QFileDialog dialog(this);
-    dialog.setFileMode(QFileDialog::ExistingFile);
+    dialog.setFileMode(QFileDialog::AnyFile);
     dialog.setDirectory("./ressources/map");
     dialog.setNameFilter(tr("XML files (*.xml)"));
     QStringList fileNames;
     if (dialog.exec()) {
         fileNames = dialog.selectedFiles();
-        loadMap(fileNames.takeFirst());
-    }
-}
-
-void SFMLCanvas::loadMap(QString file) {
-    _items->reset();
-    hideProperties();
-
-    QDomDocument doc;
-    QFile map(file);
-    map.open(QFile::ReadOnly);
-    doc.setContent(&map);
-    map.close();
-
-    QDomElement root=doc.documentElement();
-    QDomElement child=root.firstChild().toElement();
-    while(!child.isNull()) {
-        if (child.tagName() == "background") {
-            _back_image.LoadFromFile("ressources/images/backgrounds/" + child.text().toStdString());
-            _back_sprite.SetImage(_back_image);
-            _back_sprite.Resize(GetWidth(), GetHeight());
-        } else if (child.tagName() == "support") {
-            _base_image.LoadFromFile("ressources/images/" + child.text().toStdString());
-            _base_sprite.SetImage(_base_image);
-            _base_sprite.SetCenter(_base_sprite.GetSize() / 2.0f);
-            _base_sprite.SetPosition(this->GetWidth()/2, this->GetHeight()-100);
-            _base_sprite.Resize(child.attribute("width", "300").toFloat(), child.attribute("height", "30").toFloat());
-        } else if (child.tagName() == "limite") {
-            _limite_image.LoadFromFile("ressources/images/limite.png");
-            _limite_sprite.SetImage(_limite_image);
-            _limite_sprite.SetPosition(this->GetWidth() - _limite_image.GetWidth(), _base_sprite.GetPosition().y - child.attribute("y", "300").toFloat());
-            _win->limiteEdit->setValue(child.attribute("y", "300").toInt());
-        } else if (child.tagName() == "elements") {
-            QDomElement grandChild=child.firstChild().toElement();
-            while(!grandChild.isNull()) {
-                int index = _items->add(2, "ressources/images/elements/" + grandChild.attribute("file", "empty"));
-                float prop[8];
-                prop[2] = _base_sprite.GetPosition().x - (_base_sprite.GetSize().x/2) + grandChild.attribute("x", "empty").toFloat();
-                prop[3] = _base_sprite.GetPosition().y + _base_sprite.GetSize().y/2 - grandChild.attribute("y", "empty").toFloat();
-                prop[4] = grandChild.attribute("angle", "empty").toFloat();
-                prop[5] = grandChild.attribute("density", "empty").toFloat();
-                prop[6] = grandChild.attribute("friction", "empty").toFloat();
-                prop[7] = grandChild.attribute("restitution", "empty").toFloat();
-                _items->setProperties(index, prop);
-                grandChild = grandChild.nextSibling().toElement();
-            }
-        } else if (child.tagName() == "obstacles") {
-            QDomElement grandChild=child.firstChild().toElement();
-            while(!grandChild.isNull()) {
-                int index = _items->add(3, "ressources/images/obstacles/" + grandChild.attribute("file", "empty"));
-                float prop[8];
-                prop[2] = _base_sprite.GetPosition().x - _base_sprite.GetSize().x/2 + grandChild.attribute("x", "empty").toFloat();
-                prop[3] = _base_sprite.GetPosition().y - _base_sprite.GetSize().y/2 - grandChild.attribute("y", "empty").toFloat();
-                prop[4] = grandChild.attribute("angle", "empty").toFloat();
-                prop[5] = 0;
-                prop[6] = 0;
-                prop[7] = 0;
-                _items->setProperties(index, prop);
-                grandChild = grandChild.nextSibling().toElement();
-            }
+        _currentFile = fileNames.takeFirst();
+        if (!_currentFile.endsWith(".xml")) {
+            _currentFile += ".xml";
         }
-        child = child.nextSibling().toElement();
+        saveMap();
+    } else {
+        QMessageBox msgBox;
+        msgBox.setText("Incorrect filename");
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.exec();
     }
 }
 
@@ -364,4 +366,61 @@ void SFMLCanvas::on_frictionEdit_valueChanged(double value) {
 
 void SFMLCanvas::on_restitutionEdit_valueChanged(double value) {
     _items->setProperty(_currentItem, 7, value);
+}
+
+void SFMLCanvas::on_elementsListView_clicked(QModelIndex index) {
+    _clicked = true;
+    _currentItem = _items->add(2,"ressources/images/elements/" + index.data().toString());
+    hideProperties();
+}
+
+void SFMLCanvas::on_obstaclesListView_clicked(QModelIndex index) {
+    _clicked = true;
+    _currentItem = _items->add(3, "ressources/images/obstacles/" + index.data().toString());
+    hideProperties();
+}
+
+void SFMLCanvas::on_backgroundsListView_clicked(QModelIndex index) {
+    _back_path = index.data().toString();
+    _back_image.LoadFromFile("ressources/images/backgrounds/" + index.data().toString().toStdString());
+    _back_sprite.SetImage(_back_image);
+    _back_sprite.Resize(GetWidth(), GetHeight());
+    hideProperties();
+}
+
+void SFMLCanvas::on_refreshButton_clicked() {
+    refreshItemsList();
+}
+
+void SFMLCanvas::on_angleEdit_sliderMoved(int position) {
+    _items->setRotation(_currentItem, position);
+}
+
+void SFMLCanvas::on_deleteButton_clicked() {
+    _items->remove(_currentItem);
+    hideProperties();
+}
+
+void SFMLCanvas::on_limiteEdit_valueChanged(int value) {
+    _limite_sprite.SetY(_base_sprite.GetPosition().y - value);
+}
+
+void SFMLCanvas::on_typeEdit_currentIndexChanged(QString type) {
+    _items->setType(_currentItem, type);
+}
+
+void SFMLCanvas::on_loadMap() {
+    loadMap();
+}
+
+void SFMLCanvas::on_saveAsMap() {
+    saveAsMap();
+}
+
+void SFMLCanvas::on_saveMap() {
+    saveMap();
+}
+
+void SFMLCanvas::on_close() {
+    this->parentWidget()->parentWidget()->close();
 }

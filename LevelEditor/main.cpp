@@ -11,14 +11,12 @@ int main(int argc, char **argv)
     QFrame* MainFrame = new QFrame;
     Ui::MainWindow ui;
     ui.setupUi(MainFrame);
-
     MainFrame->setWindowTitle("Babel Level Editor");
-
-    //MainFrame->resize(700, 600);
-    MainFrame->show();
 
     //On crée une vue SFML dans la fenêtre principale
     SFMLCanvas* SFMLView = new SFMLCanvas(MainFrame, ui, QPoint(150, 40), QSize(800, 600));
+
+    MainFrame->show();
     SFMLView->show();
 
     return App.exec();

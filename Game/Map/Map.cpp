@@ -42,7 +42,7 @@ Map::Map(sf::RenderWindow * application, sf::View* camera, const std::string &no
                 elem->QueryFloatAttribute("friction", &fixture[1]);
                 elem->QueryFloatAttribute("restitution", &fixture[2]);
 
-                if (elem->Attribute("type") != NULL && position.x != NULL && position.y != NULL && elem->Attribute("file") != NULL
+                if (elem->Attribute("type") != NULL && elem->Attribute("file") != NULL
                     && fixture[0] > 1 && fixture[1] >= 0 && fixture[1] <= 1 && fixture[2] >= 0 && fixture[2] <= 1) {
                     ElementFactory::Instance()->add(elem->Attribute("type"), position, angle, elem->Attribute("file"), fixture);
                 }
@@ -57,8 +57,9 @@ Map::Map(sf::RenderWindow * application, sf::View* camera, const std::string &no
                 elem->QueryFloatAttribute("x", &position.x);
                 elem->QueryFloatAttribute("y", &position.y);
                 elem->QueryFloatAttribute("angle", &angle);
-
-                ObstacleFactory::Instance()->add(elem->Attribute("type"), position, angle, elem->Attribute("file"), base_position);
+                if (elem->Attribute("type") != NULL && elem->Attribute("file") != NULL) {
+                    ObstacleFactory::Instance()->add(elem->Attribute("type"), position, angle, elem->Attribute("file"), base_position);
+                }
                 elem = elem->NextSiblingElement();
             }
         } catch(...) {
