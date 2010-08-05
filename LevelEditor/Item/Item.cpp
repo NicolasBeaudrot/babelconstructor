@@ -28,10 +28,10 @@ void Item::setPosition(sf::Vector2f position) {
 }
 
 void Item::setProperties(float *prop) {
-    for(int i=5; i < 8; i++) {
+    for(int i=2; i < 8; i++) {
         _properties[i] = prop[i];
     }
-    _sprite.SetPosition(_properties[2] - _image.GetWidth()/2, _properties[3] - _image.GetHeight()/2);
+    _sprite.SetPosition(_properties[2] - (_image.GetWidth()/2), _properties[3] + (_image.GetHeight()/2));
     _sprite.SetRotation(_properties[4]);
 }
 

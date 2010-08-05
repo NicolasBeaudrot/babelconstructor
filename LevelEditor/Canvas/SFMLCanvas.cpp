@@ -320,8 +320,8 @@ void SFMLCanvas::loadMap(QString file) {
             while(!grandChild.isNull()) {
                 int index = _items->add(2, "ressources/images/elements/" + grandChild.attribute("file", "empty"));
                 float prop[8];
-                prop[2] = _base_sprite.GetPosition().x - _base_sprite.GetSize().x/2 + grandChild.attribute("x", "empty").toFloat();
-                prop[3] = _base_sprite.GetPosition().y - _base_sprite.GetSize().y/2 - grandChild.attribute("y", "empty").toFloat();
+                prop[2] = _base_sprite.GetPosition().x - (_base_sprite.GetSize().x/2) + grandChild.attribute("x", "empty").toFloat();
+                prop[3] = _base_sprite.GetPosition().y + _base_sprite.GetSize().y/2 - grandChild.attribute("y", "empty").toFloat();
                 prop[4] = grandChild.attribute("angle", "empty").toFloat();
                 prop[5] = grandChild.attribute("density", "empty").toFloat();
                 prop[6] = grandChild.attribute("friction", "empty").toFloat();
