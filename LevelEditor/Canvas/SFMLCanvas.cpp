@@ -12,6 +12,12 @@ SFMLCanvas::SFMLCanvas(QWidget* Parent, Ui::MainWindow& u, const QPoint& Positio
     QMenu *fileMenu = new QMenu("&File", Parent);
     menu->addMenu( fileMenu );
 
+    QAction * newAct = new QAction(tr("&New"), this);
+    newAct->setShortcut(tr("Ctrl+N"));
+    newAct->setStatusTip(tr("Create a new map"));
+    connect(newAct, SIGNAL(triggered()), this, SLOT(on_newMap()));
+    fileMenu->addAction(newAct);
+
     QAction * openAct = new QAction(tr("&Open"), this);
     openAct->setShortcut(tr("Ctrl+O"));
     openAct->setStatusTip(tr("Open a map in the editor"));
@@ -108,7 +114,9 @@ void SFMLCanvas::mouseReleaseEvent  ( QMouseEvent * e ) {
 void SFMLCanvas::OnUpdate() {
     SetFramerateLimit(100);
     Clear(sf::Color(255, 255, 255));
-    Draw(_back_sprite);
+    if( !_back_path.isEmpty() ) {
+        Draw(_back_sprite);
+    }
     Draw(_base_sprite);
     Draw(_limite_sprite);
 
@@ -245,11 +253,13 @@ void SFMLCanvas::loadMap() {
     QStringList fileNames;
     if (dialog.exec()) {
         fileNames = dialog.selectedFiles();
+        _currentFile = fileNames.takeFirst();
         _items->reset();
         hideProperties();
+        _clicked = false;
 
         QDomDocument doc;
-        QFile map(fileNames.takeFirst());
+        QFile map(_currentFile);
         map.open(QFile::ReadOnly);
         doc.setContent(&map);
         map.close();
@@ -258,14 +268,13 @@ void SFMLCanvas::loadMap() {
         QDomElement child=root.firstChild().toElement();
         while(!child.isNull()) {
             if (child.tagName() == "background") {
+                _back_path = child.text();
                 _back_image.LoadFromFile("ressources/images/backgrounds/" + child.text().toStdString());
                 _back_sprite.SetImage(_back_image);
                 _back_sprite.Resize(GetWidth(), GetHeight());
             } else if (child.tagName() == "support") {
                 _base_image.LoadFromFile("ressources/images/" + child.text().toStdString());
                 _base_sprite.SetImage(_base_image);
-                _base_sprite.SetCenter(_base_sprite.GetSize() / 2.0f);
-                _base_sprite.SetPosition(this->GetWidth()/2, this->GetHeight()-100);
                 _base_sprite.Resize(child.attribute("width", "300").toFloat(), child.attribute("height", "30").toFloat());
             } else if (child.tagName() == "limite") {
                 _limite_image.LoadFromFile("ressources/images/limite.png");
@@ -278,7 +287,7 @@ void SFMLCanvas::loadMap() {
                     int index = _items->add(2, "ressources/images/elements/" + grandChild.attribute("file", "empty"));
                     float prop[8];
                     prop[2] = _base_sprite.GetPosition().x - (_base_sprite.GetSize().x/2) + grandChild.attribute("x", "empty").toFloat();
-                    prop[3] = _base_sprite.GetPosition().y - _base_sprite.GetSize().y/2 - grandChild.attribute("y", "empty").toFloat();
+                    prop[3] = _base_sprite.GetPosition().y - (_base_sprite.GetSize().y/2) - grandChild.attribute("y", "empty").toFloat();
                     prop[4] = grandChild.attribute("angle", "empty").toFloat();
                     prop[5] = grandChild.attribute("density", "empty").toFloat();
                     prop[6] = grandChild.attribute("friction", "empty").toFloat();
@@ -291,8 +300,8 @@ void SFMLCanvas::loadMap() {
                 while(!grandChild.isNull()) {
                     int index = _items->add(3, "ressources/images/obstacles/" + grandChild.attribute("file", "empty"));
                     float prop[8];
-                    prop[2] = _base_sprite.GetPosition().x - _base_sprite.GetSize().x/2 + grandChild.attribute("x", "empty").toFloat();
-                    prop[3] = _base_sprite.GetPosition().y - _base_sprite.GetSize().y/2 - grandChild.attribute("y", "empty").toFloat();
+                    prop[2] = _base_sprite.GetPosition().x - (_base_sprite.GetSize().x/2) + grandChild.attribute("x", "empty").toFloat();
+                    prop[3] = _base_sprite.GetPosition().y - (_base_sprite.GetSize().y/2) - grandChild.attribute("y", "empty").toFloat();
                     prop[4] = grandChild.attribute("angle", "empty").toFloat();
                     prop[5] = 0;
                     prop[6] = 0;
@@ -348,6 +357,17 @@ void SFMLCanvas::saveAsMap() {
         msgBox.setIcon(QMessageBox::Critical);
         msgBox.exec();
     }
+}
+
+void SFMLCanvas::newMap() {
+    _items->reset();
+    _clicked = false;
+    _back_path = "";
+    _currentFile = "";
+    _base_sprite.Resize(300, _base_image.GetHeight());
+     _win->limiteEdit->setValue(300);
+    _limite_sprite.SetY(_base_sprite.GetPosition().y - _win->limiteEdit->text().toFloat());
+    hideProperties();
 }
 
 void SFMLCanvas::on_widthEdit_valueChanged(double value) {
@@ -422,5 +442,9 @@ void SFMLCanvas::on_saveMap() {
 }
 
 void SFMLCanvas::on_close() {
-    this->parentWidget()->parentWidget()->close();
+    //this->parentWidget()->parentWidget()->close();
+}
+
+void SFMLCanvas::on_newMap() {
+    newMap();
 }

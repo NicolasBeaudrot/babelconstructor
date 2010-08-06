@@ -25,6 +25,7 @@
             void loadMap();
             void saveMap();
             void saveAsMap();
+            void newMap();
 
         private :
             void OnInit();
@@ -47,6 +48,7 @@
             QString _currentFile;
 
     private slots:
+        void on_newMap();
         void on_saveMap();
         void on_close();
         void on_saveAsMap();

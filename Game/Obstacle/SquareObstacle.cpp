@@ -5,10 +5,12 @@ SquareObstacle::SquareObstacle(sf::Vector2f& position, float& angle, std::string
     std::string path = "ressources/images/obstacles/" + file;
 
     _image = RessourceManager::Instance()->GetImage(path);
+    position.x += (_image->GetWidth()/2);
+    position.y += (_image->GetHeight()/2);
     _sprite.SetImage(*_image);
-    _sprite.SetPosition(position);
     _sprite.SetCenter(_image->GetWidth()/2, _image->GetHeight()/2);
     _sprite.SetRotation(angle);
+    _sprite.SetPosition(position);
 
     b2BodyDef obsBodyDef;
 	obsBodyDef.position.Set(application->GetWidth() - position.x, application->GetHeight() - position.y);

@@ -80,8 +80,8 @@ QString ItemFactory::save(float rep_x, float rep_y) {
             float *prop = _itemsArray[i]->getProperties();
             QString temp;
             xml += "<obstacle type=\"" + _itemsArray[i]->getType();
-            xml += "\" file=\"" + _itemsArray[i]->getTexture() + "\" x=\"" + temp.setNum(prop[2] - rep_x);
-            xml += "\" y=\"" + temp.setNum(rep_y - prop[3]);
+            xml += "\" file=\"" + _itemsArray[i]->getTexture() + "\" x=\"" + temp.setNum(prop[2] - (prop[0]/2) - rep_x);
+            xml += "\" y=\"" + temp.setNum(rep_y - prop[3] + (prop[1]/2));
             xml += "\" angle=\"" + temp.setNum(prop[4]) + "\" />";
         }
     }
