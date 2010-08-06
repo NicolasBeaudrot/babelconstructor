@@ -16,6 +16,7 @@ int main(int argc, char **argv)
     //On crée une vue SFML dans la fenêtre principale
     SFMLCanvas* SFMLView = new SFMLCanvas(MainFrame, ui, QPoint(150, 40), QSize(800, 600));
 
+    MainFrame->setWindowState(Qt::WindowMaximized);
     MainFrame->show();
     SFMLView->show();
 
