@@ -81,15 +81,16 @@ void GameManager::loadMap() {
 void GameManager::run() {
 
     loadMap();
-    bool paused = false;
+    int paused = 1;
     bool winner = false;
+    sf::Font *font = RessourceManager::Instance()->GetFont("ressources/fonts/gilligan.ttf");
 
     while (_app.IsOpened()) {
         sf::Event Event;
         while (_app.GetEvent(Event))  {
             if (Event.Type == sf::Event::Closed || (Event.Type == sf::Event::KeyPressed && Event.Key.Code == sf::Key::Escape)) {
                 _app.Close();
-            } else if (Event.Type == sf::Event::MouseButtonReleased && !winner) {
+            } else if (Event.Type == sf::Event::MouseButtonReleased && !winner && paused == 1) {
                 ElementFactory::Instance()->clic(_app.GetInput());
             } else if (Event.Type == sf::Event::KeyPressed && (Event.Key.Code == sf::Key::Up || Event.Key.Code == sf::Key::Down)) {
                 if (Event.Key.Code == sf::Key::Up) {
@@ -98,12 +99,17 @@ void GameManager::run() {
                     ElementFactory::Instance()->rotate(-0.1);
                 }
             } else if (Event.Type == sf::Event::KeyPressed && Event.Key.Code == sf::Key::N) {
+                paused = 1;
                 destroyWorld();
                 loadMap();
             } else if (Event.Type == sf::Event::KeyPressed && Event.Key.Code == sf::Key::P) {
-                paused = !paused;
+                if (paused == 0) {
+                    paused = 1;
+                } else {
+                    paused = 0;
+                }
             } else if (Event.Type == sf::Event::KeyPressed && Event.Key.Code == sf::Key::Return) {
-                paused = false;
+                paused = 1;
                 destroyWorld();
                 createWorld();
                 ElementFactory::Instance()->Init(& _app,world );
@@ -115,46 +121,52 @@ void GameManager::run() {
             }
         }
 
-        if (!paused) {
-            _app.SetFramerateLimit(100);
-            _app.Clear();
+        _app.SetFramerateLimit(100);
+        _app.Clear();
 
+        if (paused == 1) {
             world->Step(_app.GetFrameTime(), 6, 2);
-
-            int status = ElementFactory::Instance()->render(_app.GetInput());
-
-            //Intro
-            if (_intro.GetElapsedTime() < 5.0f) {
-                sf::Font *font   = RessourceManager::Instance()->GetFont("ressources/fonts/gilligan.ttf");
-                sf::String intro("Map : " + MapManager::Instance()->getCurrentMapName(), *font, 20);
-                intro.SetPosition(10, 10);
-                _app.Draw(intro);
-            }
-
-            //Winner
-            if (status != 0) {
-                if(status == 1) {
-                    sf::Font *font   = RessourceManager::Instance()->GetFont("ressources/fonts/gilligan.ttf");
-                    sf::String text("Winner", *font, 50);
-                    text.SetPosition(_app.GetWidth()/2-50, 10);
-                    _app.Draw(text);
-                    winner = true;
-                } else if (status == 2) {
-                    loadMap();
-                }
-            } else {
-                //Loser
-                if(ElementFactory::Instance()->below()) {
-                    sf::Font *font   = RessourceManager::Instance()->GetFont("ressources/fonts/gilligan.ttf");
-                    sf::String perdu("You lose !", *font, 50);
-                    perdu.SetPosition(_app.GetWidth()/2-100, 10);
-                    _app.Draw(perdu);
-                    paused = true;
-                }
-            }
-
-            _app.SetView(_app.GetDefaultView());
-            _app.Display();
         }
+
+        int status = ElementFactory::Instance()->render(_app.GetInput());
+
+        //Pause
+        if (paused == 0) {
+            sf::String pause("Paused", *font, 50);
+            pause.SetPosition(_app.GetWidth()/2-100, 100);
+            _app.Draw(pause);
+        }
+
+        //Intro
+        if (_intro.GetElapsedTime() < 5.0f) {
+            sf::String intro("Map : " + MapManager::Instance()->getCurrentMapName(), *font, 20);
+            intro.SetPosition(10, 10);
+            _app.Draw(intro);
+        }
+
+        //Winner
+        if (status != 0) {
+            if(status == 1) {
+                sf::String text("Winner", *font, 50);
+                text.SetPosition(_app.GetWidth()/2-50, 10);
+                _app.Draw(text);
+                winner = true;
+            } else if (status == 2) {
+                winner = false;
+                paused = 1;
+                loadMap();
+            }
+        } else { //Loser
+            if(ElementFactory::Instance()->below() && !winner) {
+                sf::String perdu("You lose !", *font, 50);
+                perdu.SetPosition(_app.GetWidth()/2-100, 10);
+                _app.Draw(perdu);
+                paused = 2;
+            }
+        }
+
+        _app.SetView(_app.GetDefaultView());
+        _app.Display();
+
     }
 }
