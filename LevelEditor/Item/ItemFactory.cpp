@@ -1,6 +1,9 @@
 #include "ItemFactory.h"
 
 ItemFactory::ItemFactory() {
+    _mouse.SetColor(sf::Color::Black);
+    _mouse.Resize(2, 2);
+    _mouse.SetCenter(0, 0);
 }
 
 ItemFactory::~ItemFactory() {
@@ -45,8 +48,9 @@ void ItemFactory::move(int index, int value, int direction) {
 
 int ItemFactory::isClicked(float x, float y) {
     int ret = -1;
+    _mouse.SetPosition(x, y);
     for( unsigned int i=0; i < _itemsArray.size(); i++) {
-        if (_itemsArray[i]->isClicked(x,y)) {
+        if (_itemsArray[i]->isClicked(_mouse)) {
             ret = i;
         }
     }

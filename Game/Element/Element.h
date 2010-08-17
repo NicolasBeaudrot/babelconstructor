@@ -32,19 +32,22 @@
             sf::Sprite _sprite;
             sf::RenderWindow *_app;
 
-            int xClicked;
-            int yClicked;
-
         public :
             Element();
 
             ~Element();
 
             /**
-            * This function is called each clic
-            * @param mouse coordonnates, b2Body
+            * This function is used to return the y position of the element
+            * @return y position
             */
-            void clic(sf::Sprite& mouse,b2Body *);
+            float getYPosition();
+
+            /**
+            * This function is called each clic
+            * @param b2Body
+            */
+            void clic(b2Body *);
 
             /**
             * This function is used to rotate an element

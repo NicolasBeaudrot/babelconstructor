@@ -38,6 +38,7 @@
             b2World *_world;
             b2MouseJoint* _mouseJoint;
             b2Body* _groundBody;
+            std::string images_path;
             sf::Font *_font;
             sf::Clock _clock;
             sf::RenderWindow *_app;
@@ -48,6 +49,8 @@
             sf::Sprite _sprite_base;
             sf::Image _img_limite;
             sf::Sprite _sprite_limite;
+            sf::Image _img_current;
+            sf::Sprite _sprite_current;
 
         public :
             /**

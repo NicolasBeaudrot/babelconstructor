@@ -9,6 +9,7 @@
     {
         private :
             std::vector<Item*> _itemsArray;
+            sf::Sprite _mouse;
         public :
             ItemFactory();
 

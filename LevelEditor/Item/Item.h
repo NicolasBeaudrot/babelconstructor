@@ -42,7 +42,7 @@
 
             QString getType();
 
-            bool isClicked(float x, float y);
+            bool isClicked(sf::Sprite &mouse);
 
             void render(QSFMLCanvas &win);
     };

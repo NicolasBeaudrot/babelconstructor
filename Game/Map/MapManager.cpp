@@ -1,4 +1,5 @@
 #include "MapManager.h"
+#include <algorithm>
 
 MapManager::MapManager() :
                     _app(NULL),
@@ -25,6 +26,8 @@ MapManager::MapManager() :
             }
         }
         closedir(rep);
+        std::sort (_tabMap.begin(), _tabMap.end());
+
         Logger::Instance()->log("Map directory listed");
     } else {
         Logger::Instance()->log("Unable to open maps' directory");

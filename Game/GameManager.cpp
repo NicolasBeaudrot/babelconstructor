@@ -101,6 +101,7 @@ void GameManager::run() {
             } else if (Event.Type == sf::Event::KeyPressed && Event.Key.Code == sf::Key::N) {
                 paused = 1;
                 destroyWorld();
+                winner = false;
                 loadMap();
             } else if (Event.Type == sf::Event::KeyPressed && Event.Key.Code == sf::Key::P) {
                 if (paused == 0) {
@@ -151,9 +152,11 @@ void GameManager::run() {
                 text.SetPosition(_app.GetWidth()/2-50, 10);
                 _app.Draw(text);
                 winner = true;
+                paused = 2;
             } else if (status == 2) {
                 winner = false;
                 paused = 1;
+                destroyWorld();
                 loadMap();
             }
         } else { //Loser

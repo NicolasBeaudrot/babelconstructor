@@ -1,4 +1,5 @@
 #include "Item.h"
+#include "../Utility/Collision.h"
 
 Item::Item(QString file, int type, int id) : _item(type), _id(id) {
     _image.LoadFromFile(file.toStdString());
@@ -60,9 +61,16 @@ void Item::move(int value, int direction) {
     }
 }
 
-bool Item::isClicked(float x, float y) {
-    if (x >= (_sprite.GetPosition().x - _image.GetWidth()/2) && x <= (_sprite.GetPosition().x - _image.GetWidth()/2 + _image.GetWidth())
+bool Item::isClicked(sf::Sprite &mouse) {
+    /*if (x >= (_sprite.GetPosition().x - _image.GetWidth()/2) && x <= (_sprite.GetPosition().x - _image.GetWidth()/2 + _image.GetWidth())
         && y >= (_sprite.GetPosition().y - _image.GetHeight()/2) && y <= (_sprite.GetPosition().y - _image.GetHeight()/2 + _image.GetHeight())
+        && _isVisible) {
+        return true;
+    } else {
+        return false;
+    }*/
+
+    if (Collision::PixelPerfectTest(mouse, _sprite)
         && _isVisible) {
         return true;
     } else {
