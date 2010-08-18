@@ -30,22 +30,19 @@ class QueryCallback : public b2QueryCallback
 };
 
 
-ElementFactory::ElementFactory() : _mouseJoint(NULL),_groundBody(NULL) {
+ElementFactory::ElementFactory() : _mouseJoint(NULL), _groundBody(NULL) {
 }
 
 ElementFactory::~ElementFactory() {
 }
 
 void ElementFactory::Init(sf::RenderWindow *application, b2World *world) {
-
     _mouseJoint=NULL;
     _groundBody=NULL;
     images_path = "ressources/images/";
     _world  = world;
     _app    = application;
     _font   = RessourceManager::Instance()->GetFont("ressources/fonts/gilligan.ttf");
-    tested  = false;
-    clicked = false;
 
     _world->SetContactListener(this);
 
@@ -58,13 +55,11 @@ void ElementFactory::PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
 }
 
 void ElementFactory::Delete() {
-    tested  = false;
-    clicked = false;
-
     for (unsigned int i=0 ; i < _tabElem.size() ; i++) {
         delete _tabElem[i];
     }
     _tabElem.clear();
+    _clock.Reset();
 }
 
 sf::Vector2f ElementFactory::loadBase(std::string background, std::string base, sf::Vector2f& dimension, std::string limite, float limite_y) {
@@ -148,10 +143,6 @@ void ElementFactory::clic(const sf::Input& input) {
             && input.GetMouseY() >= _sprite_base.GetPosition().y && (unsigned)input.GetMouseY() <= _app->GetHeight())) {
 
         sf::Vector2f mouse = sf::Vector2f(input.GetMouseX(),input.GetMouseY());
-        clicked = !clicked;
-        if(!clicked) {
-            _clock.Reset();
-        }
 
         if (_mouseJoint) {
             //revert back the fixedRotation Attribute
@@ -195,16 +186,11 @@ void ElementFactory::clic(const sf::Input& input) {
             }
         }
 
-        tested = false;
         for(unsigned int i=0 ; i <  _tabElem.size() ; i++) {
             if(_mouseJoint) {
                 _tabElem[i]->clic(_mouseJoint->GetBodyB());
             } else { // to deselect element
                 _tabElem[i]->clic(NULL);
-
-                if (_tabElem[i]->test(_sprite_limite.GetPosition().y)) {
-                    tested = true;
-                }
             }
         }
     }
@@ -228,6 +214,7 @@ void ElementFactory::rotate(float value) {
 int ElementFactory::render(const sf::Input& input) {
     int ret = 0;
     float current_y = 800;
+    bool tested = false;
 
     _app->Draw(_sprite_back);
     _app->Draw(_sprite_base);
@@ -240,11 +227,14 @@ int ElementFactory::render(const sf::Input& input) {
         if(tmp_y < current_y) {
             current_y = tmp_y;
         }
+        if (_tabElem[i]->test(_sprite_limite.GetPosition().y)) {
+            tested = true;
+        }
     }
     _sprite_current.SetY(current_y );
     _app->Draw(_sprite_current);
 
-    if (tested && !clicked) {
+    if (tested) {
         float elapsedTime = _clock.GetElapsedTime();
         if(elapsedTime >= 2.5 && elapsedTime <= 5) {
             std::ostringstream oss;
@@ -259,16 +249,10 @@ int ElementFactory::render(const sf::Input& input) {
             if (floor(elapsedTime) == 8) {
                 ret = 2;
             }
-        } else {
-            if ((int)elapsedTime % 2 == 0) {
-                tested = false;
-                for(unsigned int i=0 ; i <  _tabElem.size() ; i++) {
-                    if (_tabElem[i]->test(_sprite_limite.GetPosition().y)) {
-                        tested = true;
-                    }
-                }
-            }
         }
+    } else {
+        _clock.Reset();
     }
+
     return ret;
 }

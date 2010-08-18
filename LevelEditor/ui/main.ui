@@ -68,8 +68,8 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>141</width>
-      <height>108</height>
+      <width>98</width>
+      <height>28</height>
      </rect>
     </property>
     <attribute name="label">
@@ -94,8 +94,8 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>141</width>
-      <height>108</height>
+      <width>98</width>
+      <height>28</height>
      </rect>
     </property>
     <attribute name="label">
@@ -457,7 +457,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Limite :</string>
+     <string>Limit :</string>
     </property>
    </widget>
    <widget class="QSpinBox" name="limiteEdit">

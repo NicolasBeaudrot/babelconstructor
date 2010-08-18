@@ -34,7 +34,6 @@
             ElementFactory();
             virtual ~ElementFactory();
             std::vector<Element*> _tabElem;
-            bool clicked, tested;
             b2World *_world;
             b2MouseJoint* _mouseJoint;
             b2Body* _groundBody;

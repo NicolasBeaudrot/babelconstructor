@@ -292,6 +292,7 @@ void SFMLCanvas::loadMap() {
                     prop[5] = grandChild.attribute("density", "empty").toFloat();
                     prop[6] = grandChild.attribute("friction", "empty").toFloat();
                     prop[7] = grandChild.attribute("restitution", "empty").toFloat();
+                    _items->setType(index, grandChild.attribute("type", "Square"));
                     _items->setProperties(index, prop);
                     grandChild = grandChild.nextSibling().toElement();
                 }
@@ -306,6 +307,7 @@ void SFMLCanvas::loadMap() {
                     prop[5] = 0;
                     prop[6] = 0;
                     prop[7] = 0;
+                    _items->setType(index, grandChild.attribute("type", "Square"));
                     _items->setProperties(index, prop);
                     grandChild = grandChild.nextSibling().toElement();
                 }
@@ -324,6 +326,10 @@ void SFMLCanvas::saveMap() {
             out << "<map>" << endl;
             if (_back_path.isEmpty()) {
                 _back_path = "empty";
+            }
+            if (_clicked) {
+                _items->remove(_currentItem);
+                _clicked = false;
             }
             out << "<background>" << _back_path << "</background>" << endl;
             out << "<support width=\"" << _base_sprite.GetSize().x << "\" height=\"" << _base_image.GetHeight() << "\">barre.png</support>" << endl;
@@ -351,11 +357,6 @@ void SFMLCanvas::saveAsMap() {
             _currentFile += ".xml";
         }
         saveMap();
-    } else {
-        QMessageBox msgBox;
-        msgBox.setText("Incorrect filename");
-        msgBox.setIcon(QMessageBox::Critical);
-        msgBox.exec();
     }
 }
 
@@ -442,7 +443,7 @@ void SFMLCanvas::on_saveMap() {
 }
 
 void SFMLCanvas::on_close() {
-    //this->parentWidget()->parentWidget()->close();
+    this->parentWidget()->close();
 }
 
 void SFMLCanvas::on_newMap() {

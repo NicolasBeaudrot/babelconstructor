@@ -66,13 +66,17 @@ QString ItemFactory::save(float rep_x, float rep_y) {
         if(_itemsArray[i]->getItemType() == 2) {
             float *prop = _itemsArray[i]->getProperties();
             QString temp;
-            xml += "<elem type=\"" + _itemsArray[i]->getType();
-            xml += "\" file=\"" + _itemsArray[i]->getTexture() + "\" x=\"" + temp.setNum(prop[2] - (prop[0]/2) - rep_x);
-            xml += "\" y=\"" + temp.setNum(rep_y - prop[3] + (prop[1]/2));
-            xml += "\" angle=\"" + temp.setNum(prop[4]);
-            xml += "\" density=\"" + temp.setNum(prop[5]);
-            xml += "\" friction=\"" + temp.setNum(prop[6]);
-            xml += "\" restitution=\"" + temp.setNum(prop[7]) + "\" />";
+            if ((prop[2] - (prop[0]/2) - rep_x) > -100 
+                && (rep_y - prop[3] + (prop[1]/2)) > - 20){
+            
+                xml += "<elem type=\"" + _itemsArray[i]->getType();
+                xml += "\" file=\"" + _itemsArray[i]->getTexture() + "\" x=\"" + temp.setNum(prop[2] - (prop[0]/2) - rep_x);
+                xml += "\" y=\"" + temp.setNum(rep_y - prop[3] + (prop[1]/2));
+                xml += "\" angle=\"" + temp.setNum(prop[4]);
+                xml += "\" density=\"" + temp.setNum(prop[5]);
+                xml += "\" friction=\"" + temp.setNum(prop[6]);
+                xml += "\" restitution=\"" + temp.setNum(prop[7]) + "\" />";
+            }
         }
     }
     xml += "</elements>";
