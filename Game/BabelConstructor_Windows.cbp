@@ -56,6 +56,16 @@
 		<Unit filename="Element/Triangle.h" />
 		<Unit filename="GameManager.cpp" />
 		<Unit filename="GameManager.h" />
+		<Unit filename="Gui/Button.cpp" />
+		<Unit filename="Gui/Button.h" />
+		<Unit filename="Gui/Gui.cpp" />
+		<Unit filename="Gui/Gui.h" />
+		<Unit filename="Gui/Menu.cpp" />
+		<Unit filename="Gui/Menu.h" />
+		<Unit filename="Gui/Widget.cpp" />
+		<Unit filename="Gui/Widget.h" />
+		<Unit filename="GuiManager.cpp" />
+		<Unit filename="GuiManager.h" />
 		<Unit filename="Map/Map.cpp" />
 		<Unit filename="Map/Map.h" />
 		<Unit filename="Map/MapManager.cpp" />

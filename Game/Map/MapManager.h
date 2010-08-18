@@ -27,9 +27,8 @@
         private:
             friend class CSingleton<MapManager>;
             MapManager();
-            virtual ~MapManager();
+            ~MapManager();
             sf::RenderWindow* _app;
-            sf::View* _camera;
             std::vector<std::string> _tabMap;
             unsigned int _indexCurr;
             Map* _currentMap;
@@ -38,9 +37,14 @@
             /**
             * Constructor
             * @param window : SFML window
-            * @param camera : SFML camera
             */
-            void Init(sf::RenderWindow* window, sf::View* camera);
+            void Init(sf::RenderWindow* window);
+
+            /**
+            * This function is used to load a map
+            * @param : map filename
+            */
+            void load(std::string filename);
 
             /**
             * This function is used to load the next map
@@ -58,6 +62,8 @@
             * @return filename
             */
             std::string getCurrentMapName();
+
+            std::vector<std::string>& getMapList();
 
     };
 

@@ -1,7 +1,7 @@
 #include "Map.h"
 #include <tinyxml.h>
 
-Map::Map(sf::RenderWindow * application, sf::View* camera, const std::string &nom) : _app(application), _camera(camera){
+Map::Map(sf::RenderWindow * application, const std::string &nom) : _app(application) {
     const std::string file = "ressources/map/" + nom;
     sf::Vector2f dimension;
     sf::Vector2f base_position;
@@ -71,4 +71,5 @@ Map::Map(sf::RenderWindow * application, sf::View* camera, const std::string &no
 Map::~Map() {
     ElementFactory::Instance()->Delete();
     ObstacleFactory::Instance()->Delete();
+    Logger::Instance()->log("Map deleted");
 }

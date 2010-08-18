@@ -17,19 +17,21 @@ class GameManager
         sf::Clock _intro;
         sf::View _camera;
         b2World *world;
+        int _paused;
+        bool _winner;
 
+        //Private functions
+        void createWorld();
+        void destroyWorld();
+        void loadMap(std::string path = "");
     public :
         GameManager();
 
         virtual ~GameManager();
 
-        void createWorld();
+        void run(std::string path = "");
 
-        void destroyWorld();
-
-        void loadMap();
-
-        void run();
+        sf::RenderWindow &getApp();
 };
 
 #endif

@@ -10,6 +10,8 @@ GameManager::GameManager() : _app(), _camera() {
     TiXmlDocument doc("ressources/config.xml");
     int width, height, colors;
     std::string fullscreen = "false";
+    _paused = 1;
+    _winner = false;
 
     if (!doc.LoadFile()) {
         Logger::Instance()->log("Unable to load the config file");
@@ -31,24 +33,116 @@ GameManager::GameManager() : _app(), _camera() {
     } else {
         _app.Create(sf::VideoMode(width, height, colors), "Babel Constructor");
     }
-
-    MapManager::Instance()->Init(&_app, &_camera);
-    Logger::Instance()->Init();
 }
 
 GameManager::~GameManager() {
+}
+
+sf::RenderWindow &GameManager::getApp() {
+    return _app;
+}
+
+void GameManager::run(std::string path) {
+
+    loadMap(path);
+    sf::Font *font = RessourceManager::Instance()->GetFont("ressources/fonts/gilligan.ttf");
+    bool open = true;
+
+    while (open) {
+        sf::Event Event;
+        while (_app.GetEvent(Event))  {
+            if (Event.Type == sf::Event::Closed || (Event.Type == sf::Event::KeyPressed && Event.Key.Code == sf::Key::Escape)) {
+                open = false;
+            } else if (Event.Type == sf::Event::MouseButtonReleased && !_winner && _paused == 1) {
+                ElementFactory::Instance()->clic(_app.GetInput());
+            } else if (Event.Type == sf::Event::KeyPressed && (Event.Key.Code == sf::Key::Up || Event.Key.Code == sf::Key::Down)) {
+                if (Event.Key.Code == sf::Key::Up) {
+                    ElementFactory::Instance()->rotate(0.1);
+                } else {
+                    ElementFactory::Instance()->rotate(-0.1);
+                }
+            } else if (Event.Type == sf::Event::KeyPressed && Event.Key.Code == sf::Key::N) {
+                destroyWorld();
+                loadMap();
+            } else if (Event.Type == sf::Event::KeyPressed && Event.Key.Code == sf::Key::P) {
+                if (_paused == 0) {
+                    _paused = 1;
+                } else {
+                    _paused = 0;
+                }
+            } else if (Event.Type == sf::Event::KeyPressed && Event.Key.Code == sf::Key::Return) {
+                _winner = false;
+                _paused = 1;
+                destroyWorld();
+                createWorld();
+                ElementFactory::Instance()->Init(& _app,world );
+                ObstacleFactory::Instance()->Init(&_app, world);
+                MapManager::Instance()->reLoad();
+
+            }else if(Event.Type == sf::Event::MouseMoved){
+                ElementFactory::Instance()->move(_app.GetInput());
+            }
+        }
+
+        _app.SetFramerateLimit(100);
+        _app.Clear();
+
+        if (_paused == 1) {
+            world->Step(_app.GetFrameTime(), 6, 2);
+        }
+
+        int status = ElementFactory::Instance()->render(_app.GetInput());
+
+        //Pause
+        if (_paused == 0) {
+            sf::String pause("Paused", *font, 50);
+            pause.SetPosition(_app.GetWidth()/2-100, 100);
+            _app.Draw(pause);
+        }
+
+        //Intro
+        if (_intro.GetElapsedTime() < 5.0f) {
+            sf::String intro("Map : " + MapManager::Instance()->getCurrentMapName(), *font, 20);
+            intro.SetPosition(10, 10);
+            _app.Draw(intro);
+        }
+
+        //Winner
+        if (status != 0) {
+            if(status == 1) {
+                sf::String text("Winner", *font, 50);
+                text.SetPosition(_app.GetWidth()/2-50, 10);
+                _app.Draw(text);
+                _winner = true;
+                _paused = 2;
+            } else if (status == 2) {
+                destroyWorld();
+                loadMap();
+            }
+        } else { //Loser
+            if(ElementFactory::Instance()->below() && !_winner) {
+                sf::String perdu("You lose !", *font, 50);
+                perdu.SetPosition(_app.GetWidth()/2-100, 10);
+                _app.Draw(perdu);
+                _paused = 2;
+            }
+        }
+
+        _app.SetView(_app.GetDefaultView());
+        _app.Display();
+
+    }
+
     destroyWorld();
     MapManager::Kill();
     ElementFactory::Kill();
     ObstacleFactory::Kill();
-    Logger::Kill();
-    RessourceManager::Kill();
 }
+
 
 void GameManager::createWorld() {
     b2Vec2 gravity(0.0f, -170.0f);
-	bool doSleep = true;
-	world = new b2World(gravity, doSleep);
+	world = new b2World(gravity, true);
 
 	b2BodyDef groundBodyDef;
 	groundBodyDef.position.Set(0.0f, 0.0f);
@@ -70,106 +164,17 @@ void GameManager::destroyWorld() {
     delete world;
 }
 
-void GameManager::loadMap() {
+void GameManager::loadMap(std::string path) {
     _intro.Reset();
+    _winner = false;
+    _paused = 1;
     createWorld();
     ElementFactory::Instance()->Init(& _app,world );
     ObstacleFactory::Instance()->Init(&_app, world);
-    MapManager::Instance()->nextMap();
-}
 
-void GameManager::run() {
-
-    loadMap();
-    int paused = 1;
-    bool winner = false;
-    sf::Font *font = RessourceManager::Instance()->GetFont("ressources/fonts/gilligan.ttf");
-
-    while (_app.IsOpened()) {
-        sf::Event Event;
-        while (_app.GetEvent(Event))  {
-            if (Event.Type == sf::Event::Closed || (Event.Type == sf::Event::KeyPressed && Event.Key.Code == sf::Key::Escape)) {
-                _app.Close();
-            } else if (Event.Type == sf::Event::MouseButtonReleased && !winner && paused == 1) {
-                ElementFactory::Instance()->clic(_app.GetInput());
-            } else if (Event.Type == sf::Event::KeyPressed && (Event.Key.Code == sf::Key::Up || Event.Key.Code == sf::Key::Down)) {
-                if (Event.Key.Code == sf::Key::Up) {
-                    ElementFactory::Instance()->rotate(0.1);
-                } else {
-                    ElementFactory::Instance()->rotate(-0.1);
-                }
-            } else if (Event.Type == sf::Event::KeyPressed && Event.Key.Code == sf::Key::N) {
-                paused = 1;
-                destroyWorld();
-                winner = false;
-                loadMap();
-            } else if (Event.Type == sf::Event::KeyPressed && Event.Key.Code == sf::Key::P) {
-                if (paused == 0) {
-                    paused = 1;
-                } else {
-                    paused = 0;
-                }
-            } else if (Event.Type == sf::Event::KeyPressed && Event.Key.Code == sf::Key::Return) {
-                paused = 1;
-                destroyWorld();
-                createWorld();
-                ElementFactory::Instance()->Init(& _app,world );
-                ObstacleFactory::Instance()->Init(&_app, world);
-                MapManager::Instance()->reLoad();
-
-            }else if(Event.Type == sf::Event::MouseMoved){
-                ElementFactory::Instance()->move(_app.GetInput());
-            }
-        }
-
-        _app.SetFramerateLimit(100);
-        _app.Clear();
-
-        if (paused == 1) {
-            world->Step(_app.GetFrameTime(), 6, 2);
-        }
-
-        int status = ElementFactory::Instance()->render(_app.GetInput());
-
-        //Pause
-        if (paused == 0) {
-            sf::String pause("Paused", *font, 50);
-            pause.SetPosition(_app.GetWidth()/2-100, 100);
-            _app.Draw(pause);
-        }
-
-        //Intro
-        if (_intro.GetElapsedTime() < 5.0f) {
-            sf::String intro("Map : " + MapManager::Instance()->getCurrentMapName(), *font, 20);
-            intro.SetPosition(10, 10);
-            _app.Draw(intro);
-        }
-
-        //Winner
-        if (status != 0) {
-            if(status == 1) {
-                sf::String text("Winner", *font, 50);
-                text.SetPosition(_app.GetWidth()/2-50, 10);
-                _app.Draw(text);
-                winner = true;
-                paused = 2;
-            } else if (status == 2) {
-                winner = false;
-                paused = 1;
-                destroyWorld();
-                loadMap();
-            }
-        } else { //Loser
-            if(ElementFactory::Instance()->below() && !winner) {
-                sf::String perdu("You lose !", *font, 50);
-                perdu.SetPosition(_app.GetWidth()/2-100, 10);
-                _app.Draw(perdu);
-                paused = 2;
-            }
-        }
-
-        _app.SetView(_app.GetDefaultView());
-        _app.Display();
-
+    if ( path.empty() ) {
+        MapManager::Instance()->nextMap();
+    } else {
+        MapManager::Instance()->load(path);
     }
 }

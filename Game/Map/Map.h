@@ -23,21 +23,19 @@
 class Map {
 	private:
 		sf::RenderWindow * _app;
-        sf::View * _camera;
 
     public :
         /**
         * Constructor : it will load a map
         * @param application : SFML window
-        * @param camera : SFML camera
         * @param nom : map filename
         */
-        Map(sf::RenderWindow * application, sf::View* camera, const std::string &nom);
+        Map(sf::RenderWindow * application, const std::string &nom);
 
         /**
         * Destructor
         */
-        virtual ~Map();
+        ~Map();
 };
 
 #endif

@@ -2,8 +2,7 @@
 #include <algorithm>
 
 MapManager::MapManager() :
-                    _app(NULL),
-                    _camera(NULL) {
+                    _app(NULL) {
     _currentMap = NULL;
     _indexCurr = -1;
     DIR * rep = opendir("./ressources/map");
@@ -37,22 +36,32 @@ MapManager::MapManager() :
 MapManager::~MapManager() {
     _tabMap.clear();
     delete _currentMap;
-    Logger::Instance()->log("Map deleted");
 }
 
-void MapManager::Init(sf::RenderWindow* windows, sf::View* camera) {
+void MapManager::Init(sf::RenderWindow* windows) {
 	_app = windows;
-	_camera = camera;
+}
+
+void MapManager::load(std::string filename) {
+    delete _currentMap;
+    _indexCurr = 0;
+    for (unsigned int i=0; i < _tabMap.size(); i++) {
+        if (_tabMap[i] == filename) {
+            _indexCurr = i;
+            break;
+        }
+    }
+    _currentMap = new Map(_app, _tabMap[_indexCurr]);
 }
 
 bool MapManager::nextMap() {
     _indexCurr++;
     delete _currentMap;
     if (_indexCurr < _tabMap.size()) {
-        _currentMap = new Map(_app, _camera, _tabMap[_indexCurr]);
+        _currentMap = new Map(_app, _tabMap[_indexCurr]);
     } else {
         _indexCurr = 0;
-        _currentMap = new Map(_app, _camera, _tabMap[_indexCurr]);
+        _currentMap = new Map(_app, _tabMap[_indexCurr]);
         return false;
     }
     return true;
@@ -60,9 +69,13 @@ bool MapManager::nextMap() {
 
 void MapManager::reLoad() {
     delete _currentMap;
-    _currentMap = new Map(_app, _camera, _tabMap[_indexCurr]);
+    _currentMap = new Map(_app, _tabMap[_indexCurr]);
 }
 
 std::string MapManager::getCurrentMapName() {
     return _tabMap[_indexCurr];
+}
+
+std::vector<std::string>& MapManager::getMapList() {
+    return _tabMap;
 }
