@@ -39,6 +39,7 @@ ElementFactory::~ElementFactory() {
 void ElementFactory::Init(sf::RenderWindow *application, b2World *world) {
     _mouseJoint=NULL;
     _groundBody=NULL;
+    _element_selected = false;
     images_path = "ressources/images/";
     _world  = world;
     _app    = application;
@@ -189,8 +190,12 @@ void ElementFactory::clic(const sf::Input& input) {
         for(unsigned int i=0 ; i <  _tabElem.size() ; i++) {
             if(_mouseJoint) {
                 _tabElem[i]->clic(_mouseJoint->GetBodyB());
+                _element_selected = true;
+                //std::cout << "Selection" << std::endl;
             } else { // to deselect element
                 _tabElem[i]->clic(NULL);
+                _element_selected = false;
+                //std::cout << "Pas de forme" << std::endl;
             }
         }
     }
@@ -227,8 +232,10 @@ int ElementFactory::render(const sf::Input& input) {
         if(tmp_y < current_y) {
             current_y = tmp_y;
         }
-        if (_tabElem[i]->test(_sprite_limite.GetPosition().y)) {
-            tested = true;
+        if (!_element_selected) {
+            if (_tabElem[i]->test(_sprite_limite.GetPosition().y)) {
+                tested = true;
+            }
         }
     }
     _sprite_current.SetY(current_y );

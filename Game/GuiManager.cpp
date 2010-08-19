@@ -38,11 +38,14 @@ void GuiManager::create() {
         m->add(b);
 
         if (ScoreManager::Instance()->getHightScore(list[i]) > 0) {
-            str_score << (1./10.) * floor(ScoreManager::Instance()->getHightScore(list[i]) * 10.);
-            Label *l = new Label("time" + str_i.str(), str_score.str() + "\"", font, 14);
-            l->setPosition(b->getPosition().x + 10, b->getPosition().y - 15);
-            m->add(l);
+            str_score << (1./10.) * floor(ScoreManager::Instance()->getHightScore(list[i]) * 10.) << "\"";
+        } else {
+            str_score << "";
         }
+
+        Label *l = new Label("time" + str_i.str(), str_score.str(), font, 14);
+        l->setPosition(b->getPosition().x + 10, b->getPosition().y - 15);
+        m->add(l);
 
         if ((i % 4) == 0 && i > 0) {
             y += 60;
@@ -63,15 +66,17 @@ void GuiManager::create() {
 }
 
 void GuiManager::refresh(int menu) {
-    if (menu == 0 && _gui) {
+    if (menu == 0) {
         std::vector<std::string> &list = MapManager::Instance()->getMapList();
         for(unsigned int i = 0; i < list.size(); i++) {
-            std::stringstream str_i, str_score;
-            str_i << i;
-            Label *tmp = (Label*)_gui->getCurrentMenu()->get("time" + str_i.str());
-            if (tmp) {
-                str_score << (1./10.) * floor(ScoreManager::Instance()->getHightScore(list[i]) * 10.);
-                tmp->setText(str_score.str());
+            if (ScoreManager::Instance()->getHightScore(list[i]) > 0) {
+                std::stringstream str_i, str_score;
+                str_i << i;
+                Label *tmp = (Label*)_gui->getCurrentMenu()->get("time" + str_i.str());
+                if (tmp) {
+                    str_score << (1./10.) * floor(ScoreManager::Instance()->getHightScore(list[i]) * 10.) << "\"";
+                    tmp->setText(str_score.str());
+                }
             }
         }
     }
