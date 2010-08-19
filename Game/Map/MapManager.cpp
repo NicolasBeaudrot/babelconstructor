@@ -72,6 +72,11 @@ void MapManager::reLoad() {
     _currentMap = new Map(_app, _tabMap[_indexCurr]);
 }
 
+void MapManager::stop() {
+    delete _currentMap;
+    _currentMap = NULL;
+}
+
 std::string MapManager::getCurrentMapName() {
     return _tabMap[_indexCurr];
 }

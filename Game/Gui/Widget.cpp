@@ -1,12 +1,19 @@
 #include "Widget.h"
 
-Widget::Widget(GameManager* game, std::string name) {
-    _game = game;
-    _visible = true;
-    _name = name;
+Widget::Widget(std::string name) : _name(name), _visible(true) {
 }
 
 Widget::~Widget() {
+}
+
+bool Widget::intersect(float x, float y) {
+    return false;
+}
+
+void Widget::onClic(int bouton) {
+}
+
+void Widget::onHover() {
 }
 
 std::string Widget::getName() {

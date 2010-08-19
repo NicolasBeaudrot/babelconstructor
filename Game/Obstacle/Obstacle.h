@@ -19,9 +19,9 @@
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 #include <Box2D/Box2D.h>
-#include "../Utility/Collision.h"
+#include "../Utility/Conversion.h"
 #include "../Utility/Logger.h"
-#include "../Utility/ImageManager.h"
+#include "../Utility/RessourceManager.h"
 
     class Obstacle
     {

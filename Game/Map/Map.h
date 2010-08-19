@@ -28,9 +28,9 @@ class Map {
         /**
         * Constructor : it will load a map
         * @param application : SFML window
-        * @param nom : map filename
+        * @param map : map filename
         */
-        Map(sf::RenderWindow * application, const std::string &nom);
+        Map(sf::RenderWindow * application, const std::string &map);
 
         /**
         * Destructor

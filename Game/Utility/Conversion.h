@@ -14,28 +14,21 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef UIMANAGER_H
-#define UIMANAGER_H
-#include <SFML/Graphics.hpp>
-#include "GameManager.h"
-#include "Gui/Gui.h"
+#ifndef _CONVERSION_H
+#define	_CONVERSION_H
 
-    class GuiManager : public CSingleton<GuiManager>
-    {
-        private :
-            friend class CSingleton<GuiManager>;
-            GuiManager();
-            ~GuiManager();
-            void create();
+#ifndef PI
+    #define PI (3.14159265358979323846)
+#endif
 
-            sf::RenderWindow* _app;
-            Gui *_gui;
-            bool _run;
+class Conversion {
+    public:
+        static float to_degres(float angle);
 
-        public :
-            void Init(sf::RenderWindow* app);
-            void refresh(int menu);
-            void display();
-    };
+        static float to_radian(float angle);
+
+    private:
+        Conversion();
+};
 
 #endif

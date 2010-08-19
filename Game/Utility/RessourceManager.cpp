@@ -5,7 +5,7 @@
             Nicolas Beaudrot - nicolas.beaudrot@gmail.com
 */
 
-#include "ImageManager.h"
+#include "RessourceManager.h"
 
 /* -------------------------- */
 /* RessourceManager::RessourceManager */

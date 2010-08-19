@@ -239,8 +239,7 @@ int ElementFactory::render(const sf::Input& input) {
         if(elapsedTime >= 2.5 && elapsedTime <= 5) {
             std::ostringstream oss;
             oss << floor(elapsedTime) - 1;
-            std::string t = oss.str();
-            sf::String time(t, *_font, 40);
+            sf::String time(oss.str(), *_font, 40);
             time.SetPosition(20,20);
             _app->Draw(time);
         }

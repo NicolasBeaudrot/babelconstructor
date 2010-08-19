@@ -1,8 +1,8 @@
 #include "Map.h"
 #include <tinyxml.h>
 
-Map::Map(sf::RenderWindow * application, const std::string &nom) : _app(application) {
-    const std::string file = "ressources/map/" + nom;
+Map::Map(sf::RenderWindow * application, const std::string &map) : _app(application) {
+    const std::string file = "ressources/map/" + map;
     sf::Vector2f dimension;
     sf::Vector2f base_position;
     float limite_y = 0;
@@ -11,7 +11,7 @@ Map::Map(sf::RenderWindow * application, const std::string &nom) : _app(applicat
     if (!doc.LoadFile()) {
         Logger::Instance()->log("Unable to load the map : " + file);
     } else {
-        Logger::Instance()->log("Map loaded");
+        Logger::Instance()->log("Map " + file + " loaded");
 
         try {
             TiXmlElement *back, *base, *limite, *elem;

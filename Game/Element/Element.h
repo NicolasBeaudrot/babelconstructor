@@ -18,9 +18,9 @@
 #define ELEMENT_H
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
-#include "../Utility/Collision.h"
+#include "../Utility/Conversion.h"
 #include "../Utility/Logger.h"
-#include "../Utility/ImageManager.h"
+#include "../Utility/RessourceManager.h"
 #include <Box2D/Box2D.h>
 
     class Element

@@ -1,7 +1,9 @@
 #include "Button.h"
+#include "../GuiManager.h"
 
-Button::Button(GameManager* game, std::string name, std::string texture, std::string action) : Widget(game, name) {
-    addTexture(texture);
+Button::Button(std::string name, std::string texture1, std::string texture2, std::string action) : Widget(name) {
+    addTexture(texture1);
+    addTexture(texture2);
     _hover = false;
     _action = action;
     _font = RessourceManager::Instance()->GetFont("ressources/fonts/gilligan.ttf");
@@ -20,7 +22,8 @@ bool Button::intersect(float x, float y) {
 }
 
 void Button::onClic(int bouton) {
-    _game->run(_action);
+    GameManager::Instance()->run(_action);
+    GuiManager::Instance()->refresh(0);
 }
 
 void Button::onHover() {
@@ -32,6 +35,18 @@ void Button::setPosition(float x, float y) {
         _arrSprites[i].SetPosition(x, y);
     }
     _name.SetPosition(x + 14, y + 8);
+}
+
+sf::Vector2f Button::getPosition() {
+    return _arrSprites[0].GetPosition();
+}
+
+float Button::getHeight() {
+    return _arrImages[0]->GetHeight();
+}
+
+float Button::getWidth() {
+    return _arrImages[0]->GetWidth();
 }
 
 void Button::display(sf::RenderWindow* app) {

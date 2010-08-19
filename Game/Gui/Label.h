@@ -14,28 +14,21 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef UIMANAGER_H
-#define UIMANAGER_H
-#include <SFML/Graphics.hpp>
-#include "GameManager.h"
-#include "Gui/Gui.h"
-
-    class GuiManager : public CSingleton<GuiManager>
+#ifndef LABEL_H
+#define LABEL_H
+#include "Widget.h"
+    class Label : public Widget
     {
         private :
-            friend class CSingleton<GuiManager>;
-            GuiManager();
-            ~GuiManager();
-            void create();
-
-            sf::RenderWindow* _app;
-            Gui *_gui;
-            bool _run;
-
+            sf::String _text;
         public :
-            void Init(sf::RenderWindow* app);
-            void refresh(int menu);
-            void display();
+            Label(std::string name, std::string text, sf::Font *font, int size);
+            void setText(std::string text);
+            void setFont(sf::Font *font);
+            void setSize(int size);
+            void setPosition(float x, float y);
+            sf::Vector2f getPosition();
+            void display(sf::RenderWindow* app);
     };
 
 #endif

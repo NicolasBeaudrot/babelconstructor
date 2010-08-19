@@ -60,6 +60,10 @@
 		<Unit filename="Gui/Button.h" />
 		<Unit filename="Gui/Gui.cpp" />
 		<Unit filename="Gui/Gui.h" />
+		<Unit filename="Gui/Image.cpp" />
+		<Unit filename="Gui/Image.h" />
+		<Unit filename="Gui/Label.cpp" />
+		<Unit filename="Gui/Label.h" />
 		<Unit filename="Gui/Menu.cpp" />
 		<Unit filename="Gui/Menu.h" />
 		<Unit filename="Gui/Widget.cpp" />
@@ -76,12 +80,15 @@
 		<Unit filename="Obstacle/ObstacleFactory.h" />
 		<Unit filename="Obstacle/SquareObstacle.cpp" />
 		<Unit filename="Obstacle/SquareObstacle.h" />
-		<Unit filename="Utility/Collision.cpp" />
-		<Unit filename="Utility/Collision.h" />
-		<Unit filename="Utility/ImageManager.cpp" />
-		<Unit filename="Utility/ImageManager.h" />
+		<Unit filename="Utility/Conversion.cpp" />
+		<Unit filename="Utility/Conversion.h" />
 		<Unit filename="Utility/Logger.cpp" />
 		<Unit filename="Utility/Logger.h" />
+		<Unit filename="Utility/PausableClock.h" />
+		<Unit filename="Utility/RessourceManager.cpp" />
+		<Unit filename="Utility/RessourceManager.h" />
+		<Unit filename="Utility/ScoreManager.cpp" />
+		<Unit filename="Utility/ScoreManager.h" />
 		<Unit filename="Utility/Singleton.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>

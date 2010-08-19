@@ -1,35 +1,48 @@
 #include "GuiManager.h"
 #include <sstream>
 
-GuiManager::GuiManager(sf::RenderWindow* app, GameManager* game) {
-    _app  = app;
-    _game = game;
-    _gui = new Gui(_app);
-    init();
+GuiManager::GuiManager() : _run(true) {
+    _gui = NULL;
 }
 
 GuiManager::~GuiManager() {
     delete _gui;
+    Logger::Instance()->log("GUI deleted");
 }
 
-void GuiManager::init() {
-    img_level_selector.LoadFromFile("ressources/gui/level_selector.png");
-    sp_level_selector.SetImage(img_level_selector);
-    sp_level_selector.SetPosition(_app->GetWidth()/2 - img_level_selector.GetWidth()/2, _app->GetHeight()/2 - img_level_selector.GetHeight()/2);
+void GuiManager::Init(sf::RenderWindow* app) {
+    _app  = app;
+    _gui = new Gui(_app);
+    create();
+}
 
+void GuiManager::create() {
+
+    //Menu Official Level Selector
+    sf::Font *font = RessourceManager::Instance()->GetFont("ressources/fonts/gilligan.ttf");
     Menu* m = new Menu();
     _gui->add(m);
+
+    Image *back_selector = new Image("image_selector", "ressources/gui/level_selector.png");
+    back_selector->setPosition(_app->GetWidth()/2, _app->GetHeight()/2);
+    m->add(back_selector);
 
     std::vector<std::string> &list = MapManager::Instance()->getMapList();
     int y = 0;
     int x = 0;
     for(unsigned int i = 0; i < list.size(); i++) {
-        std::stringstream st;
-        st << i;
-        Button *b = new Button(_game, st.str() , "ressources/gui/bloc_ouvert.png", list[i]);
-        b->addTexture("ressources/gui/bloc_ouvert_hover.png");
-        b->setPosition(sp_level_selector.GetPosition().x + 100 + x, sp_level_selector.GetPosition().y + 100 + y);
+        std::stringstream str_i, str_score;
+        str_i << i;
+        Button *b = new Button(str_i.str(), "ressources/gui/bloc_ouvert.png", "ressources/gui/bloc_ouvert_hover.png", list[i]);
+        b->setPosition(back_selector->getPosition().x + 100 + x, back_selector->getPosition().y + 100 + y);
         m->add(b);
+
+        if (ScoreManager::Instance()->getHightScore(list[i]) > 0) {
+            str_score << (1./10.) * floor(ScoreManager::Instance()->getHightScore(list[i]) * 10.);
+            Label *l = new Label("time" + str_i.str(), str_score.str() + "\"", font, 14);
+            l->setPosition(b->getPosition().x + 10, b->getPosition().y - 15);
+            m->add(l);
+        }
 
         if ((i % 4) == 0 && i > 0) {
             y += 60;
@@ -38,11 +51,35 @@ void GuiManager::init() {
             x += 80;
         }
     }
+
+    //Menu Members Level Selector
+    Menu* m2 = new Menu();
+    _gui->add(m2);
+    Image *back_selector_2 = new Image("image_selector", "ressources/gui/level_selector.png");
+    back_selector_2->setPosition(_app->GetWidth()/2, _app->GetHeight()/2);
+    m2->add(back_selector_2);
+
+    Logger::Instance()->log("GUI loaded");
+}
+
+void GuiManager::refresh(int menu) {
+    if (menu == 0 && _gui) {
+        std::vector<std::string> &list = MapManager::Instance()->getMapList();
+        for(unsigned int i = 0; i < list.size(); i++) {
+            std::stringstream str_i, str_score;
+            str_i << i;
+            Label *tmp = (Label*)_gui->getCurrentMenu()->get("time" + str_i.str());
+            if (tmp) {
+                str_score << (1./10.) * floor(ScoreManager::Instance()->getHightScore(list[i]) * 10.);
+                tmp->setText(str_score.str());
+            }
+        }
+    }
 }
 
 void GuiManager::display() {
-    bool run = true;
     _gui->setCurrentMenu(0);
+    bool run = true;
 
     while(run) {
         sf::Event Event;
@@ -51,7 +88,9 @@ void GuiManager::display() {
         while (_app->GetEvent(Event))  {
             if (Event.Type == sf::Event::Closed || (Event.Type == sf::Event::KeyPressed && Event.Key.Code == sf::Key::Escape)) {
                run = false;
-            } else {
+            } else if (Event.Type == sf::Event::KeyPressed && Event.Key.Code == sf::Key::M) {
+                _gui->setCurrentMenu(1);
+            }else {
                 _gui->event(&Event, Input);
             }
         }
@@ -59,13 +98,9 @@ void GuiManager::display() {
         _app->SetFramerateLimit(100);
         _app->Clear(sf::Color(125, 137, 255));
 
-        _app->Draw(sp_level_selector);
-
         _gui->display();
 
         _app->SetView(_app->GetDefaultView());
         _app->Display();
     }
-
-    _app->Close();
 }

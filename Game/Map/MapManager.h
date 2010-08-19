@@ -58,11 +58,19 @@
             void reLoad();
 
             /**
+            * This function is used to stop the game
+            */
+            void stop();
+
+            /**
             * This function returns the map filename
             * @return filename
             */
             std::string getCurrentMapName();
 
+            /**
+            * This function returns the maps list
+            */
             std::vector<std::string>& getMapList();
 
     };

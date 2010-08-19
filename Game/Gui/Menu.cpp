@@ -8,11 +8,19 @@ Menu::~Menu() {
     for (unsigned int i = 0; i < _arrWidget.size(); i++) {
         delete _arrWidget[i];
     }
-    std::cout << "Menu deleted" << std::endl;
 }
 
 void Menu::add(Widget *w) {
     _arrWidget.push_back(w);
+}
+
+Widget* Menu::get(std::string name) {
+    for(unsigned int i = 0; i < _arrWidget.size(); i++) {
+        if (_arrWidget[i]->getName() == name) {
+            return _arrWidget[i];
+        }
+    }
+    return NULL;
 }
 
 void Menu::event(sf::Event *ev, const sf::Input& in) {

@@ -7,12 +7,18 @@ Gui::Gui(sf::RenderWindow* app) {
 }
 
 Gui::~Gui() {
-    delete _currentMenu;
+    for(unsigned int i=0; i < _arrMenus.size(); i++) {
+        delete _arrMenus[i];
+    }
 }
 
 void Gui::add(Menu *m) {
     _arrMenus.push_back(m);
     _currentMenu = _arrMenus[_arrMenus.size()-1];
+}
+
+Menu* Gui::getCurrentMenu() {
+    return _currentMenu;
 }
 
 void Gui::event(sf::Event* ev, const sf::Input& in) {

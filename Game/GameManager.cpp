@@ -5,8 +5,16 @@
 #include <tinyxmlparser.cpp>
 #include <tinystr.cpp>
 #include <tinystr.h>
+#include <sstream>
 
-GameManager::GameManager() : _app(), _camera() {
+GameManager::GameManager() {
+}
+
+GameManager::~GameManager() {
+    _app.Close();
+}
+
+void GameManager::Init() {
     TiXmlDocument doc("ressources/config.xml");
     int width, height, colors;
     std::string fullscreen = "false";
@@ -35,8 +43,6 @@ GameManager::GameManager() : _app(), _camera() {
     }
 }
 
-GameManager::~GameManager() {
-}
 
 sf::RenderWindow &GameManager::getApp() {
     return _app;
@@ -46,6 +52,10 @@ void GameManager::run(std::string path) {
 
     loadMap(path);
     sf::Font *font = RessourceManager::Instance()->GetFont("ressources/fonts/gilligan.ttf");
+    sf::String str_counter;
+    str_counter.SetPosition(_app.GetWidth()-50, 20);
+    str_counter.SetFont(*font);
+    str_counter.SetSize(25);
     bool open = true;
 
     while (open) {
@@ -71,24 +81,24 @@ void GameManager::run(std::string path) {
                     _paused = 0;
                 }
             } else if (Event.Type == sf::Event::KeyPressed && Event.Key.Code == sf::Key::Return) {
-                _winner = false;
-                _paused = 1;
                 destroyWorld();
-                createWorld();
-                ElementFactory::Instance()->Init(& _app,world );
-                ObstacleFactory::Instance()->Init(&_app, world);
-                MapManager::Instance()->reLoad();
-
+                loadMap(MapManager::Instance()->getCurrentMapName());
             }else if(Event.Type == sf::Event::MouseMoved){
                 ElementFactory::Instance()->move(_app.GetInput());
             }
         }
 
         _app.SetFramerateLimit(100);
-        _app.Clear();
+        _app.Clear(sf::Color::Black);
 
         if (_paused == 1) {
+            _counter.Start();
             world->Step(_app.GetFrameTime(), 6, 2);
+            std::ostringstream oss;
+            oss << floor(_counter.GetElapsedTime());
+            str_counter.SetText(oss.str());
+        } else {
+            _counter.Pause();
         }
 
         int status = ElementFactory::Instance()->render(_app.GetInput());
@@ -107,14 +117,21 @@ void GameManager::run(std::string path) {
             _app.Draw(intro);
         }
 
+        _app.Draw(str_counter);
+
         //Winner
         if (status != 0) {
             if(status == 1) {
                 sf::String text("Winner", *font, 50);
                 text.SetPosition(_app.GetWidth()/2-50, 10);
                 _app.Draw(text);
-                _winner = true;
-                _paused = 2;
+                if (_first_loop) {
+                    _winner = true;
+                    _paused = 2;
+                    ScoreManager::Instance()->update(MapManager::Instance()->getCurrentMapName(), _counter.GetElapsedTime());
+                    ScoreManager::Instance()->save("ressources/config.xml");
+                    _first_loop = false;
+                }
             } else if (status == 2) {
                 destroyWorld();
                 loadMap();
@@ -132,11 +149,8 @@ void GameManager::run(std::string path) {
         _app.Display();
 
     }
-
     destroyWorld();
-    MapManager::Kill();
-    ElementFactory::Kill();
-    ObstacleFactory::Kill();
+    MapManager::Instance()->stop();
 }
 
 
@@ -166,7 +180,9 @@ void GameManager::destroyWorld() {
 
 void GameManager::loadMap(std::string path) {
     _intro.Reset();
+    _counter.Reset();
     _winner = false;
+    _first_loop = true;
     _paused = 1;
     createWorld();
     ElementFactory::Instance()->Init(& _app,world );

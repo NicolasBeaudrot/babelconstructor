@@ -63,7 +63,7 @@ void Element::render(const sf::Input& input) {
     b2Vec2 position = _body->GetPosition();
     _sprite.SetX(_app->GetWidth() - position.x);
     _sprite.SetY(_app->GetHeight() - position.y);
-    _sprite.SetRotation(-Collision::to_degres(_body->GetAngle()));
+    _sprite.SetRotation(-Conversion::to_degres(_body->GetAngle()));
 
     _app->Draw(_sprite);
 }

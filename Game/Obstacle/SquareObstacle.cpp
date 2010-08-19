@@ -14,7 +14,7 @@ SquareObstacle::SquareObstacle(sf::Vector2f& position, float& angle, std::string
 
     b2BodyDef obsBodyDef;
 	obsBodyDef.position.Set(application->GetWidth() - position.x, application->GetHeight() - position.y);
-	obsBodyDef.angle = -Collision::to_radian(angle);
+	obsBodyDef.angle = -Conversion::to_radian(angle);
 	b2Body* obsBody = world.CreateBody(&obsBodyDef);
 	b2PolygonShape obsBox;
     obsBox.SetAsBox(_image->GetWidth()/2.0f, _image->GetHeight()/2.0f);
