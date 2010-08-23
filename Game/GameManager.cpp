@@ -20,27 +20,25 @@ void GameManager::Init() {
     std::string fullscreen = "false";
     _paused = 1;
     _winner = false;
+    width = 800;
+    height = 600;
+    colors = 32;
 
     if (!doc.LoadFile()) {
         Logger::Instance()->log("Unable to load the config file");
-        width = 800;
-        height = 600;
-        colors = 32;
     } else {
         Logger::Instance()->log("Config loaded");
         TiXmlHandle hdl(&doc);
         TiXmlElement *win;
         win = hdl.FirstChildElement("game").FirstChild("window").Element();
-        win->QueryIntAttribute("width", &width);
-        win->QueryIntAttribute("height", &height);
-        win->QueryIntAttribute("colors", &colors);
         fullscreen = win->Attribute("fullscreen");
     }
     if (fullscreen == "true") {
         _app.Create(sf::VideoMode(width, height, colors), "Babel Constructor", sf::Style::Fullscreen);
     } else {
-        _app.Create(sf::VideoMode(width, height, colors), "Babel Constructor");
+        _app.Create(sf::VideoMode(width, height, colors), "Babel Constructor", sf::Style::Close);
     }
+    _app.SetFramerateLimit(60);
 }
 
 
@@ -88,7 +86,6 @@ void GameManager::run(std::string path) {
             }
         }
 
-        _app.SetFramerateLimit(100);
         _app.Clear(sf::Color::Black);
 
         if (_paused == 1) {
@@ -147,7 +144,6 @@ void GameManager::run(std::string path) {
 
         _app.SetView(_app.GetDefaultView());
         _app.Display();
-
     }
     destroyWorld();
     MapManager::Instance()->stop();

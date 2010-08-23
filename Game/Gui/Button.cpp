@@ -24,6 +24,7 @@ bool Button::intersect(float x, float y) {
 void Button::onClic(int bouton) {
     GameManager::Instance()->run(_action);
     GuiManager::Instance()->refresh(0);
+    _hover = false;
 }
 
 void Button::onHover() {

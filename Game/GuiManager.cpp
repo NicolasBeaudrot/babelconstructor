@@ -48,7 +48,7 @@ void GuiManager::create() {
         m->add(l);
 
         if ((i % 4) == 0 && i > 0) {
-            y += 60;
+            y += 80;
             x = 0;
         } else {
             x += 80;
@@ -100,7 +100,6 @@ void GuiManager::display() {
             }
         }
 
-        _app->SetFramerateLimit(100);
         _app->Clear(sf::Color(125, 137, 255));
 
         _gui->display();

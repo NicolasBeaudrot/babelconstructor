@@ -67,7 +67,7 @@ sf::Vector2f ElementFactory::loadBase(std::string background, std::string base, 
     if (background != "") {
         if (_img_back.LoadFromFile(images_path + "backgrounds/" + background)) {
             _sprite_back.SetImage(_img_back);
-            _sprite_back.Resize(_app->GetWidth(), _app->GetHeight());
+            _sprite_back.SetPosition(0,0);
             Logger::Instance()->log("Background loaded");
         } else {
             Logger::Instance()->log("Background not found");
