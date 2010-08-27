@@ -2,9 +2,5 @@
 <game>
     <window fullscreen="false" />
     <scores>
-        <score value="64.9344">map5.xml</score>
-        <score value="27.4382">map6-old.xml</score>
-        <score value="31.4142">map1.xml</score>
-        <score value="30.3535">map5-Equilibrium.xml</score>
     </scores>
 </game>

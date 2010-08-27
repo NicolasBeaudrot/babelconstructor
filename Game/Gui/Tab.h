@@ -14,27 +14,27 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef MENU_H
-#define MENU_H
+#ifndef TAB_H
+#define TAB_H
 #include "Widget.h"
+#include "Gui.h"
 
-    class Menu
+    class Tab : public Widget
     {
         private :
-            bool _visible;
-            int _id;
-            std::vector<Widget*> _arrWidget;
+            int _menu_id;
+            Gui *_gui;
 
         public :
-            Menu(int id);
-            ~Menu();
-            void add(Widget *w);
-            int getId();
-            Widget* get(std::string name);
-            void remove(std::string name);
-            void event(sf::Event *ev, const sf::Input& in);
-            void setVisibility(bool visible);
+            Tab(std::string name, std::string texture1, std::string texture2, Gui *gui, int menu);
+            bool intersect(float x, float y);
+            void onClic(int bouton);
+            void onHover();
+            void setPosition(float x, float y);
+            sf::Vector2f getPosition();
+            float getHeight();
+            float getWidth();
             void display(sf::RenderWindow* app);
     };
-
 #endif
+

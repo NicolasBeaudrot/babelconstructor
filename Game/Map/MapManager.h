@@ -29,9 +29,11 @@
             MapManager();
             ~MapManager();
             sf::RenderWindow* _app;
-            std::vector<std::string> _tabMap;
+            std::vector<std::string> _tabOfficialMap, _tabUnofficialMap;
             unsigned int _indexCurr;
             Map* _currentMap;
+            bool _official;
+            void listDir(std::string path, bool official);
 
         public:
             /**
@@ -71,7 +73,9 @@
             /**
             * This function returns the maps list
             */
-            std::vector<std::string>& getMapList();
+            std::vector<std::string>& getMapList(bool official=true);
+
+            void setOfficialMode(bool status);
 
     };
 

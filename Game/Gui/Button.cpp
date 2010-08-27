@@ -23,7 +23,7 @@ bool Button::intersect(float x, float y) {
 
 void Button::onClic(int bouton) {
     GameManager::Instance()->run(_action);
-    GuiManager::Instance()->refresh(0);
+    GuiManager::Instance()->refresh();
     _hover = false;
 }
 
@@ -35,7 +35,8 @@ void Button::setPosition(float x, float y) {
     for (unsigned int i = 0; i < _arrSprites.size(); i++) {
         _arrSprites[i].SetPosition(x, y);
     }
-    _name.SetPosition(x + 14, y + 8);
+    sf::FloatRect rect = _name.GetRect();
+    _name.SetPosition(x + (_arrImages[0]->GetWidth() - rect.GetWidth())/2 , y + 8);
 }
 
 sf::Vector2f Button::getPosition() {

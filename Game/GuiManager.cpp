@@ -20,32 +20,46 @@ void GuiManager::create() {
 
     //Menu Official Level Selector
     sf::Font *font = RessourceManager::Instance()->GetFont("ressources/fonts/gilligan.ttf");
-    Menu* m = new Menu();
+    Menu* m = new Menu(1);
     _gui->add(m);
 
     Image *back_selector = new Image("image_selector", "ressources/gui/level_selector.png");
     back_selector->setPosition(_app->GetWidth()/2, _app->GetHeight()/2);
     m->add(back_selector);
 
+    Tab *official = new Tab("tab_official", "ressources/gui/onglet_official.png", "ressources/gui/onglet_official_hover.png", _gui, 1);
+    official->setPosition(back_selector->getPosition().x + 80, back_selector->getPosition().y + 50);
+    m->add(official);
+
+    Tab *unofficial = new Tab("tab_unofficial", "ressources/gui/onglet_unofficial.png", "ressources/gui/onglet_unofficial_hover.png", _gui, 2);
+    unofficial->setPosition(back_selector->getPosition().x + 450, back_selector->getPosition().y + 50);
+    m->add(unofficial);
+
     std::vector<std::string> &list = MapManager::Instance()->getMapList();
-    int y = 0;
-    int x = 0;
+    int y = 0, x = 0;
+    bool initialized = false;
     for(unsigned int i = 0; i < list.size(); i++) {
         std::stringstream str_i, str_score;
         str_i << i;
-        Button *b = new Button(str_i.str(), "ressources/gui/bloc_ouvert.png", "ressources/gui/bloc_ouvert_hover.png", list[i]);
-        b->setPosition(back_selector->getPosition().x + 100 + x, back_selector->getPosition().y + 100 + y);
-        m->add(b);
+        if (ScoreManager::Instance()->getHightScore(list[i]) > 0 || !initialized) {
+            Button *b = new Button(str_i.str(), "ressources/gui/bloc_ouvert.png", "ressources/gui/bloc_ouvert_hover.png", list[i]);
+            b->setPosition(back_selector->getPosition().x + 100 + x, back_selector->getPosition().y + 100 + y);
+            m->add(b);
 
-        if (ScoreManager::Instance()->getHightScore(list[i]) > 0) {
-            str_score << (1./10.) * floor(ScoreManager::Instance()->getHightScore(list[i]) * 10.) << "\"";
+            if (ScoreManager::Instance()->getHightScore(list[i]) == 0){
+                initialized = true;
+                str_score << "";
+            } else {
+                str_score << (1./10.) * floor(ScoreManager::Instance()->getHightScore(list[i]) * 10.) << "\"";
+            }
+            Label *l = new Label("time" + str_i.str(), str_score.str(), font, 14);
+            l->setPosition(b->getPosition().x + 10, b->getPosition().y - 15);
+            m->add(l);
         } else {
-            str_score << "";
+            Image* lock_b = new Image("img" + str_i.str(), "ressources/gui/bloc_cadenas.png");
+            lock_b->setPosition(back_selector->getPosition().x + 120 + x, back_selector->getPosition().y + 125 + y);
+            m->add(lock_b);
         }
-
-        Label *l = new Label("time" + str_i.str(), str_score.str(), font, 14);
-        l->setPosition(b->getPosition().x + 10, b->getPosition().y - 15);
-        m->add(l);
 
         if ((i % 4) == 0 && i > 0) {
             y += 80;
@@ -56,34 +70,61 @@ void GuiManager::create() {
     }
 
     //Menu Members Level Selector
-    Menu* m2 = new Menu();
+    Menu* m2 = new Menu(2);
     _gui->add(m2);
-    Image *back_selector_2 = new Image("image_selector", "ressources/gui/level_selector.png");
-    back_selector_2->setPosition(_app->GetWidth()/2, _app->GetHeight()/2);
-    m2->add(back_selector_2);
+    m2->add(back_selector);
+    m2->add(official);
+    m2->add(unofficial);
+    std::vector<std::string> &list2 = MapManager::Instance()->getMapList(false);
+    for(unsigned int i = 0; i < list2.size(); i++) {
+        Label *map = new Label("labeltest", list2[i], font, 16);
+        map->setPosition(back_selector->getPosition().x + 100,  back_selector->getPosition().y + 100 + i*50);
+        m2->add(map);
+        Button* go = new Button("Go", "ressources/gui/bloc_ouvert.png", "ressources/gui/bloc_ouvert_hover.png", list2[i]);
+        go->setPosition(map->getPosition().x + 300, map->getPosition().y - 20);
+        m2->add(go);
+    }
 
     Logger::Instance()->log("GUI loaded");
 }
 
-void GuiManager::refresh(int menu) {
-    if (menu == 0) {
+void GuiManager::refresh() {
+    sf::Font *font = RessourceManager::Instance()->GetFont("ressources/fonts/gilligan.ttf");
+
+    if (_gui->getCurrentMenu()->getId() == 1) {
         std::vector<std::string> &list = MapManager::Instance()->getMapList();
+        int x=0, y=0;
         for(unsigned int i = 0; i < list.size(); i++) {
+            std::stringstream str_i, str_score;
+            str_i << i;
             if (ScoreManager::Instance()->getHightScore(list[i]) > 0) {
-                std::stringstream str_i, str_score;
-                str_i << i;
                 Label *tmp = (Label*)_gui->getCurrentMenu()->get("time" + str_i.str());
                 if (tmp) {
                     str_score << (1./10.) * floor(ScoreManager::Instance()->getHightScore(list[i]) * 10.) << "\"";
                     tmp->setText(str_score.str());
                 }
+            } else {
+                _gui->getCurrentMenu()->remove("img" + str_i.str());
+                Button *b = new Button(str_i.str(), "ressources/gui/bloc_ouvert.png", "ressources/gui/bloc_ouvert_hover.png", list[i]);
+                b->setPosition(_gui->getCurrentMenu()->get("image_selector")->getPosition().x + 100 + x, _gui->getCurrentMenu()->get("image_selector")->getPosition().y + 100 + y);
+                _gui->getCurrentMenu()->add(b);
+                Label *l = new Label("time" + str_i.str(), "", font, 14);
+                l->setPosition(b->getPosition().x + 10, b->getPosition().y - 15);
+                _gui->getCurrentMenu()->add(l);
+                break;
+            }
+            if ((i % 4) == 0 && i > 0) {
+                y += 80;
+                x = 0;
+            } else {
+                x += 80;
             }
         }
     }
 }
 
 void GuiManager::display() {
-    _gui->setCurrentMenu(0);
+    _gui->setCurrentMenu(1);
     bool run = true;
 
     while(run) {

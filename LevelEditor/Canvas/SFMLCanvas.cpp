@@ -248,7 +248,7 @@ void SFMLCanvas::keyPressEvent(QKeyEvent *key) {
 void SFMLCanvas::loadMap() {
     QFileDialog dialog(this);
     dialog.setFileMode(QFileDialog::ExistingFile);
-    dialog.setDirectory("./ressources/map");
+    dialog.setDirectory("./ressources/map/unofficial");
     dialog.setNameFilter(tr("XML files (*.xml)"));
     QStringList fileNames;
     if (dialog.exec()) {
@@ -347,7 +347,7 @@ void SFMLCanvas::saveMap() {
 void SFMLCanvas::saveAsMap() {
     QFileDialog dialog(this);
     dialog.setFileMode(QFileDialog::AnyFile);
-    dialog.setDirectory("./ressources/map");
+    dialog.setDirectory("./ressources/map/unofficial");
     dialog.setNameFilter(tr("XML files (*.xml)"));
     QStringList fileNames;
     if (dialog.exec()) {

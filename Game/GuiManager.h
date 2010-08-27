@@ -19,6 +19,10 @@
 #include <SFML/Graphics.hpp>
 #include "GameManager.h"
 #include "Gui/Gui.h"
+#include "Gui/Button.h"
+#include "Gui/Image.h"
+#include "Gui/Label.h"
+#include "Gui/Tab.h"
 
     class GuiManager : public CSingleton<GuiManager>
     {
@@ -34,7 +38,7 @@
 
         public :
             void Init(sf::RenderWindow* app);
-            void refresh(int menu);
+            void refresh();
             void display();
     };
 

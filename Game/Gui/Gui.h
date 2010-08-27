@@ -17,9 +17,6 @@
 #ifndef GUI_H
 #define GUI_H
 #include "Menu.h"
-#include "Button.h"
-#include "Image.h"
-#include "Label.h"
 
     class Gui
     {
@@ -34,8 +31,9 @@
             ~Gui();
             void add(Menu *m);
             Menu* getCurrentMenu();
+            int getMenuId();
             void event(sf::Event* ev, const sf::Input& in);
-            void setCurrentMenu(int i);
+            void setCurrentMenu(int id);
             void setVisibility(bool visible);
             void display();
     };
