@@ -1,14 +1,14 @@
 #include "Button.h"
 #include "../GuiManager.h"
 
-Button::Button(std::string name, std::string texture1, std::string texture2, std::string action) : Widget(name) {
+Button::Button(std::string name, std::string label, std::string texture1, std::string texture2, std::string action) : Widget(name) {
     addTexture(texture1);
     addTexture(texture2);
     _hover = false;
     _action = action;
     _font = RessourceManager::Instance()->GetFont("ressources/fonts/gilligan.ttf");
     _name.SetFont(*_font);
-    _name.SetText(name);
+    _name.SetText(label);
 }
 
 bool Button::intersect(float x, float y) {
@@ -52,12 +52,10 @@ float Button::getWidth() {
 }
 
 void Button::display(sf::RenderWindow* app) {
-    if (_visible ) {
-        if ( !_hover ) {
-            app->Draw(_arrSprites[0]);
-        } else {
-            app->Draw(_arrSprites[1]);
-        }
-        app->Draw(_name);
+    if ( !_hover ) {
+        app->Draw(_arrSprites[0]);
+    } else {
+        app->Draw(_arrSprites[1]);
     }
+    app->Draw(_name);
 }

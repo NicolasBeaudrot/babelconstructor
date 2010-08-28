@@ -75,6 +75,14 @@
             */
             std::vector<std::string>& getMapList(bool official=true);
 
+            /**
+            * This function returns the current mode
+            */
+            bool isOfficialMode();
+
+            /**
+            * Set the official mode
+            */
             void setOfficialMode(bool status);
 
     };

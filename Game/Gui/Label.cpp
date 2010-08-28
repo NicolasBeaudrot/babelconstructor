@@ -27,6 +27,10 @@ sf::Vector2f Label::getPosition() {
     return _text.GetPosition();
 }
 
+float Label::getWidth() {
+    return _text.GetRect().GetWidth();
+}
+
 void Label::display(sf::RenderWindow* app) {
     app->Draw(_text);
 }

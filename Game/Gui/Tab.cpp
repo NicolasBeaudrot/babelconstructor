@@ -46,11 +46,9 @@ float Tab::getWidth() {
 }
 
 void Tab::display(sf::RenderWindow* app) {
-    if (_visible ) {
-        if ( _gui->getCurrentMenu()->getId() == _menu_id ) {
-            app->Draw(_arrSprites[1]);
-        } else {
-            app->Draw(_arrSprites[0]);
-        }
+    if ( _gui->getCurrentMenu()->getId() == _menu_id ) {
+        app->Draw(_arrSprites[1]);
+    } else {
+        app->Draw(_arrSprites[0]);
     }
 }

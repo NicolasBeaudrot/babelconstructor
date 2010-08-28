@@ -14,21 +14,29 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef LABEL_H
-#define LABEL_H
+#ifndef PAGING_H
+#define PAGING_H
 #include "Widget.h"
-    class Label : public Widget
+
+    class Paging : public Widget
     {
         private :
-            sf::String _text;
+            unsigned int _current_page
+                        ,_page_focused
+                        ,_element_per_page
+                        ,_total;
+            sf::Font *_font;
+            std::vector<sf::String*> _arrPage;
+            bool _hover;
         public :
-            Label(std::string name, std::string text, sf::Font *font, int size);
-            void setText(std::string text);
-            void setFont(sf::Font *font);
-            void setSize(int size);
+            Paging(std::string name, int total, int element_per_page = 5);
+            bool intersect(float x, float y);
+            void onClic(int bouton);
+            void onHover();
             void setPosition(float x, float y);
             sf::Vector2f getPosition();
-            float getWidth();
+            sf::Vector2f getPageLimit();
+            unsigned int getTotal();
             void display(sf::RenderWindow* app);
     };
 

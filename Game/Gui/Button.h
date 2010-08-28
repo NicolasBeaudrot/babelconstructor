@@ -27,7 +27,7 @@
             sf::String _name;
 
         public :
-            Button(std::string name, std::string texture1, std::string texture2, std::string action);
+            Button(std::string name, std::string label, std::string texture1, std::string texture2, std::string action);
             bool intersect(float x, float y);
             void onClic(int bouton);
             void onHover();

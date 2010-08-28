@@ -18,7 +18,7 @@ void GuiManager::Init(sf::RenderWindow* app) {
 
 void GuiManager::create() {
 
-    //Menu Official Level Selector
+    //Menu Official Level
     sf::Font *font = RessourceManager::Instance()->GetFont("ressources/fonts/gilligan.ttf");
     Menu* m = new Menu(1);
     _gui->add(m);
@@ -42,7 +42,7 @@ void GuiManager::create() {
         std::stringstream str_i, str_score;
         str_i << i;
         if (ScoreManager::Instance()->getHightScore(list[i]) > 0 || !initialized) {
-            Button *b = new Button(str_i.str(), "ressources/gui/bloc_ouvert.png", "ressources/gui/bloc_ouvert_hover.png", list[i]);
+            Button *b = new Button("btnOfficial" + str_i.str(), str_i.str(), "ressources/gui/bloc_ouvert.png", "ressources/gui/bloc_ouvert_hover.png", list[i]);
             b->setPosition(back_selector->getPosition().x + 100 + x, back_selector->getPosition().y + 100 + y);
             m->add(b);
 
@@ -69,23 +69,51 @@ void GuiManager::create() {
         }
     }
 
-    //Menu Members Level Selector
+    //Menu Members Level
     Menu* m2 = new Menu(2);
     _gui->add(m2);
     m2->add(back_selector);
     m2->add(official);
     m2->add(unofficial);
     std::vector<std::string> &list2 = MapManager::Instance()->getMapList(false);
+
+    Paging *pager = new Paging("pager", list2.size());
+    pager->setPosition(back_selector->getPosition().x + 100, back_selector->getPosition().y + 330);
+    m2->add(pager);
+
     for(unsigned int i = 0; i < list2.size(); i++) {
-        Label *map = new Label("labeltest", list2[i], font, 16);
-        map->setPosition(back_selector->getPosition().x + 100,  back_selector->getPosition().y + 100 + i*50);
+        std::stringstream str_i;
+        str_i << i;
+        Label *map = new Label("labelUnofficial" + str_i.str(), list2[i], font, 16);
+        map->setPosition(back_selector->getPosition().x + 100,  back_selector->getPosition().y + 90 + i*50);
         m2->add(map);
-        Button* go = new Button("Go", "ressources/gui/bloc_ouvert.png", "ressources/gui/bloc_ouvert_hover.png", list2[i]);
-        go->setPosition(map->getPosition().x + 300, map->getPosition().y - 20);
+        Button* go = new Button("btnUnofficial" + str_i.str(), "Go", "ressources/gui/bloc_ouvert.png", "ressources/gui/bloc_ouvert_hover.png", list2[i]);
+        go->setPosition(map->getPosition().x + 350, map->getPosition().y - 20);
         m2->add(go);
     }
-
+    displayPage();
     Logger::Instance()->log("GUI loaded");
+}
+
+void GuiManager::displayPage() {
+    if (_gui->getCurrentMenu()->getId() == 2) {
+        Paging *pager = (Paging*)_gui->getCurrentMenu()->get("pager");
+        int y = 0;
+        for (unsigned int i=0; i < pager->getTotal(); i++) {
+            std::stringstream str_i;
+            str_i << i;
+            if (i >= pager->getPageLimit().x && i < pager->getPageLimit().y) {
+                _gui->getCurrentMenu()->get("labelUnofficial" + str_i.str())->setVisibility(true);
+                _gui->getCurrentMenu()->get("btnUnofficial" + str_i.str())->setVisibility(true);
+                _gui->getCurrentMenu()->get("labelUnofficial" + str_i.str())->setPosition(_gui->getCurrentMenu()->get("image_selector")->getPosition().x + 100,  _gui->getCurrentMenu()->get("image_selector")->getPosition().y + 90 + y*50);
+                _gui->getCurrentMenu()->get("btnUnofficial" + str_i.str())->setPosition(_gui->getCurrentMenu()->get("image_selector")->getPosition().x + 350,  _gui->getCurrentMenu()->get("labelUnofficial" + str_i.str())->getPosition().y - 20);
+                y++;
+            } else {
+                _gui->getCurrentMenu()->get("labelUnofficial" + str_i.str())->setVisibility(false);
+                _gui->getCurrentMenu()->get("btnUnofficial" + str_i.str())->setVisibility(false);
+            }
+        }
+    }
 }
 
 void GuiManager::refresh() {
@@ -105,7 +133,7 @@ void GuiManager::refresh() {
                 }
             } else {
                 _gui->getCurrentMenu()->remove("img" + str_i.str());
-                Button *b = new Button(str_i.str(), "ressources/gui/bloc_ouvert.png", "ressources/gui/bloc_ouvert_hover.png", list[i]);
+                Button *b = new Button("btnOfficial" + str_i.str(), str_i.str(), "ressources/gui/bloc_ouvert.png", "ressources/gui/bloc_ouvert_hover.png", list[i]);
                 b->setPosition(_gui->getCurrentMenu()->get("image_selector")->getPosition().x + 100 + x, _gui->getCurrentMenu()->get("image_selector")->getPosition().y + 100 + y);
                 _gui->getCurrentMenu()->add(b);
                 Label *l = new Label("time" + str_i.str(), "", font, 14);
@@ -134,9 +162,7 @@ void GuiManager::display() {
         while (_app->GetEvent(Event))  {
             if (Event.Type == sf::Event::Closed || (Event.Type == sf::Event::KeyPressed && Event.Key.Code == sf::Key::Escape)) {
                run = false;
-            } else if (Event.Type == sf::Event::KeyPressed && Event.Key.Code == sf::Key::M) {
-                _gui->setCurrentMenu(1);
-            }else {
+            } else {
                 _gui->event(&Event, Input);
             }
         }

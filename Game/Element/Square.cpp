@@ -27,6 +27,4 @@ Square::Square(sf::Vector2f &position, float angle, std::string& file, b2World& 
 	fixtureDef.friction = fixture[1];
 	fixtureDef.restitution = fixture[2];
     _body->CreateFixture(&fixtureDef);
-
-    Logger::Instance()->log("Square loaded");
 }

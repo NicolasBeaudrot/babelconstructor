@@ -133,6 +133,10 @@ void MapManager::listDir(std::string path, bool official) {
     }
 }
 
+bool MapManager::isOfficialMode() {
+    return _official;
+}
+
 void MapManager::setOfficialMode(bool status) {
     _official = status;
 }

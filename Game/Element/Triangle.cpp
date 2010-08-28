@@ -36,6 +36,4 @@ Triangle::Triangle(sf::Vector2f &position, float angle, std::string& file, b2Wor
 	fixtureDef.friction = fixture[1];
 	fixtureDef.restitution = fixture[2];
     _body->CreateFixture(&fixtureDef);
-
-    Logger::Instance()->log("Triangle loaded");
 }

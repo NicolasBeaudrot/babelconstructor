@@ -37,13 +37,13 @@ void Menu::remove(std::string name) {
 void Menu::event(sf::Event *ev, const sf::Input& in) {
     if (ev->Type == sf::Event::MouseMoved) {
         for (unsigned int i = 0; i < _arrWidget.size(); i++) {
-            if (_arrWidget[i]->intersect(ev->MouseMove.X, ev->MouseMove.Y)) {
+            if (_arrWidget[i]->getVisibility() && _arrWidget[i]->intersect(ev->MouseMove.X, ev->MouseMove.Y)) {
                 _arrWidget[i]->onHover();
             }
         }
     } else if (ev->Type == sf::Event::MouseButtonPressed) {
         for (unsigned int i = 0; i < _arrWidget.size(); i++) {
-            if (_arrWidget[i]->intersect(in.GetMouseX(), in.GetMouseY())) {
+            if (_arrWidget[i]->getVisibility() && _arrWidget[i]->intersect(in.GetMouseX(), in.GetMouseY())) {
                 if (in.IsMouseButtonDown(sf::Mouse::Left)) {
                     _arrWidget[i]->onClic(1);
                 } else {
@@ -61,7 +61,9 @@ void Menu::setVisibility(bool visible) {
 void Menu::display(sf::RenderWindow* app) {
     if ( _visible ) {
         for (unsigned int i = 0; i < _arrWidget.size(); i++) {
-            _arrWidget[i]->display(app);
+            if (_arrWidget[i]->getVisibility()) {
+                _arrWidget[i]->display(app);
+            }
         }
     }
 }

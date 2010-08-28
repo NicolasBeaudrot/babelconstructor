@@ -69,7 +69,7 @@ void GameManager::run(std::string path) {
                 } else {
                     ElementFactory::Instance()->rotate(-0.1);
                 }
-            } else if (Event.Type == sf::Event::KeyPressed && Event.Key.Code == sf::Key::N) {
+            } else if (Event.Type == sf::Event::KeyPressed && Event.Key.Code == sf::Key::N && !MapManager::Instance()->isOfficialMode()) {
                 destroyWorld();
                 loadMap();
             } else if (Event.Type == sf::Event::KeyPressed && Event.Key.Code == sf::Key::P) {

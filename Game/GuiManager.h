@@ -23,6 +23,7 @@
 #include "Gui/Image.h"
 #include "Gui/Label.h"
 #include "Gui/Tab.h"
+#include "Gui/Paging.h"
 
     class GuiManager : public CSingleton<GuiManager>
     {
@@ -39,6 +40,7 @@
         public :
             void Init(sf::RenderWindow* app);
             void refresh();
+            void displayPage();
             void display();
     };
 

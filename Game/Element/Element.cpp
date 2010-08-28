@@ -5,7 +5,6 @@ Element::Element() : clicked(false) {
 }
 
 Element::~Element() {
-    Logger::Instance()->log("Element deleted");
 }
 
 float Element::getYPosition() {
