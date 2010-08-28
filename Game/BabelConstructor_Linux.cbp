@@ -66,6 +66,8 @@
 		<Unit filename="Gui/Label.h" />
 		<Unit filename="Gui/Menu.cpp" />
 		<Unit filename="Gui/Menu.h" />
+		<Unit filename="Gui/Paging.cpp" />
+		<Unit filename="Gui/Paging.h" />
 		<Unit filename="Gui/Tab.cpp" />
 		<Unit filename="Gui/Tab.h" />
 		<Unit filename="Gui/Widget.cpp" />
