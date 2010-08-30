@@ -5,7 +5,6 @@ Obstacle::Obstacle() {
 }
 
 Obstacle::~Obstacle() {
-    Logger::Instance()->log("Obstacle deleted");
 }
 
 void Obstacle::render() {

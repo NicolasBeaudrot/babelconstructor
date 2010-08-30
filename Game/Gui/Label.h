@@ -26,6 +26,7 @@
             void setText(std::string text);
             void setFont(sf::Font *font);
             void setSize(int size);
+            void setColor(const sf::Color& color);
             void setPosition(float x, float y);
             sf::Vector2f getPosition();
             float getWidth();

@@ -37,6 +37,7 @@
 			<Add directory="../ExternLibrairie/tinyxml" />
 		</Compiler>
 		<Linker>
+			<Add option="-lsfml-network" />
 			<Add option="-lsfml-graphics" />
 			<Add option="-lsfml-window" />
 			<Add option="-lsfml-system" />

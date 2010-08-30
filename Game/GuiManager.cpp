@@ -82,14 +82,25 @@ void GuiManager::create() {
     m2->add(pager);
 
     for(unsigned int i = 0; i < list2.size(); i++) {
-        std::stringstream str_i;
+        std::stringstream str_i, str_score;
         str_i << i;
         Label *map = new Label("labelUnofficial" + str_i.str(), list2[i], font, 16);
         map->setPosition(back_selector->getPosition().x + 100,  back_selector->getPosition().y + 90 + i*50);
         m2->add(map);
         Button* go = new Button("btnUnofficial" + str_i.str(), "Go", "ressources/gui/bloc_ouvert.png", "ressources/gui/bloc_ouvert_hover.png", list2[i]);
-        go->setPosition(map->getPosition().x + 350, map->getPosition().y - 20);
+        go->setPosition(map->getPosition().x + 450, map->getPosition().y - 20);
         m2->add(go);
+
+        if (ScoreManager::Instance()->getHightScore(list2[i]) > 0) {
+            str_score << (1./10.) * floor(ScoreManager::Instance()->getHightScore(list2[i]) * 10) << "\"";
+        } else {
+            str_score << "";
+        }
+
+        Label* score = new Label("scoreUnofficial" + str_i.str(), str_score.str(), font, 16);
+        score->setPosition(map->getPosition().x + map->getWidth() + 20, map->getPosition().y);
+        score->setColor(sf::Color::Red);
+        m2->add(score);
     }
     displayPage();
     Logger::Instance()->log("GUI loaded");
@@ -105,12 +116,16 @@ void GuiManager::displayPage() {
             if (i >= pager->getPageLimit().x && i < pager->getPageLimit().y) {
                 _gui->getCurrentMenu()->get("labelUnofficial" + str_i.str())->setVisibility(true);
                 _gui->getCurrentMenu()->get("btnUnofficial" + str_i.str())->setVisibility(true);
+                _gui->getCurrentMenu()->get("scoreUnofficial" + str_i.str())->setVisibility(true);
                 _gui->getCurrentMenu()->get("labelUnofficial" + str_i.str())->setPosition(_gui->getCurrentMenu()->get("image_selector")->getPosition().x + 100,  _gui->getCurrentMenu()->get("image_selector")->getPosition().y + 90 + y*50);
-                _gui->getCurrentMenu()->get("btnUnofficial" + str_i.str())->setPosition(_gui->getCurrentMenu()->get("image_selector")->getPosition().x + 350,  _gui->getCurrentMenu()->get("labelUnofficial" + str_i.str())->getPosition().y - 20);
+                _gui->getCurrentMenu()->get("btnUnofficial" + str_i.str())->setPosition(_gui->getCurrentMenu()->get("image_selector")->getPosition().x + 450,  _gui->getCurrentMenu()->get("labelUnofficial" + str_i.str())->getPosition().y - 20);
+                Label *tmp = (Label*)_gui->getCurrentMenu()->get("labelUnofficial" + str_i.str());
+                _gui->getCurrentMenu()->get("scoreUnofficial" + str_i.str())->setPosition(tmp->getPosition().x + tmp->getWidth() + 20, tmp->getPosition().y);
                 y++;
             } else {
                 _gui->getCurrentMenu()->get("labelUnofficial" + str_i.str())->setVisibility(false);
                 _gui->getCurrentMenu()->get("btnUnofficial" + str_i.str())->setVisibility(false);
+                _gui->getCurrentMenu()->get("scoreUnofficial" + str_i.str())->setVisibility(false);
             }
         }
     }
@@ -146,6 +161,20 @@ void GuiManager::refresh() {
                 x = 0;
             } else {
                 x += 80;
+            }
+        }
+    } else if (_gui->getCurrentMenu()->getId() == 2) {
+        std::vector<std::string> &list = MapManager::Instance()->getMapList(false);
+
+        for(unsigned int i = 0; i < list.size(); i++) {
+            std::stringstream str_i, str_score;
+            str_i << i;
+            if (ScoreManager::Instance()->getHightScore(list[i]) > 0) {
+                Label *tmp = (Label*)_gui->getCurrentMenu()->get("scoreUnofficial" + str_i.str());
+                if (tmp) {
+                    str_score << (1./10.) * floor(ScoreManager::Instance()->getHightScore(list[i]) * 10.) << "\"";
+                    tmp->setText(str_score.str());
+                }
             }
         }
     }

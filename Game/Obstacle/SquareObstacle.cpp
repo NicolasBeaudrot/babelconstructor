@@ -19,6 +19,4 @@ SquareObstacle::SquareObstacle(sf::Vector2f& position, float& angle, std::string
 	b2PolygonShape obsBox;
     obsBox.SetAsBox(_image->GetWidth()/2.0f, _image->GetHeight()/2.0f);
 	obsBody->CreateFixture(&obsBox, 0.0f);
-
-    Logger::Instance()->log("SquareObstacle loaded");
 }

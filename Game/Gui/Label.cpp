@@ -19,6 +19,10 @@ void Label::setSize(int size) {
     _text.SetSize(size);
 }
 
+void Label::setColor(const sf::Color& color) {
+    _text.SetColor(color);
+}
+
 void Label::setPosition(float x, float y) {
     _text.SetPosition(x, y);
 }
