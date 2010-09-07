@@ -141,12 +141,23 @@ void GuiManager::refresh() {
             std::stringstream str_i, str_score;
             str_i << i;
             if (ScoreManager::Instance()->getHightScore(list[i]) > 0) {
+                //On met à jour le score des niveaux terminés
                 Label *tmp = (Label*)_gui->getCurrentMenu()->get("time" + str_i.str());
+                str_score << (1./10.) * floor(ScoreManager::Instance()->getHightScore(list[i]) * 10.) << "\"";
                 if (tmp) {
-                    str_score << (1./10.) * floor(ScoreManager::Instance()->getHightScore(list[i]) * 10.) << "\"";
                     tmp->setText(str_score.str());
+                } else {
+                    _gui->getCurrentMenu()->remove("img" + str_i.str());
+                    Button *b = new Button("btnOfficial" + str_i.str(), str_i.str(), "ressources/gui/bloc_ouvert.png", "ressources/gui/bloc_ouvert_hover.png", list[i]);
+                    b->setPosition(_gui->getCurrentMenu()->get("image_selector")->getPosition().x + 100 + x, _gui->getCurrentMenu()->get("image_selector")->getPosition().y + 100 + y);
+                    _gui->getCurrentMenu()->add(b);
+                    Label *l = new Label("time" + str_i.str(), "", font, 14);
+                    l->setPosition(b->getPosition().x + 10, b->getPosition().y - 15);
+                    l->setText(str_score.str());
+                    _gui->getCurrentMenu()->add(l);
                 }
             } else {
+                //On débloque le niveau suivant
                 _gui->getCurrentMenu()->remove("img" + str_i.str());
                 Button *b = new Button("btnOfficial" + str_i.str(), str_i.str(), "ressources/gui/bloc_ouvert.png", "ressources/gui/bloc_ouvert_hover.png", list[i]);
                 b->setPosition(_gui->getCurrentMenu()->get("image_selector")->getPosition().x + 100 + x, _gui->getCurrentMenu()->get("image_selector")->getPosition().y + 100 + y);

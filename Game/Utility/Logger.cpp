@@ -11,7 +11,7 @@ Logger::~Logger() {
 }
 
 void Logger::Init() {
-    _debug = true;
+    _debug = false;
     if (!_debug) {
         _file.open("log.txt", std::ios::out | std::ios::trunc);
     }

@@ -1,0 +1,49 @@
+BabelConstructor r96
+Auteurs : Nicolas Beaudrot, Vincent Durey
+Licence : GPL v3
+
+ -- Fonctionnement du jeu --
+ 
+Le but de Babelconstructor est simple : vous devez construire des tours afin d'atteindre la hauteur de la marque rouge à droite de votre écran.
+
+Pour sélectionner les formes, il suffit de cliquer sur une forme (et de relacher votre clic). Une fois la forme sélectionnée elle va suivre
+le mouvement de votre souris. La forme ne va pas suivre exactement le pointeur de votre souris, cela fait partit du gameplay, ce n'est pas un bug !
+Vous pouvez également faire tourner la forme à l'aide des flèches du haut et du bas.
+Pour relacher la forme, vous devez cliquer une nouvelle fois.
+
+Dès que vous avez atteint la hauteur de la marque rouge, il faut que votre tour tienne bon 5 secondes !
+
+Touches utiles :
+ * Flèche du haut : Rotation de la forme vers la droite
+ * Flèche du bas : Rotation de la forme vers la gauche
+ * P : Active ou désactive la pause
+ * Entrée : Redémarre le niveau (utile lorsque vous perdez)
+ * N : Passe au niveau suivant uniquement pour les niveaux non officiels
+ 
+ 
+
+ -- Fonctionnement de l'éditeur --
+
+L'éditeur permet d'ajouter des Elements, Obstacles et Background. Pour placer un élément ou un obstacle, il suffit de cliquer sur le nom de l'image que l'on veut ajouter. Une fois que l'on a choisis l'image que l'on souhaite, il faut la placer sur le rectangle blanc de la scène. Si l'on veut ajouter une nouvelle image alors que l'éditeur est lancé, il faut cliquer sur le bouton Refresh pour la voir apparaître dans la liste des images.
+
+Pour modifier le background, il suffit de cliquer sur le nom de l'image que l'on souhaite, l'arrière plan va être modifié directement.
+
+Lorsque l'on a placé un élément ou un obstacle et que l'on a sélectionné ce dernier, il est possible d'effectuer différentes actions :
+
+    * Le déplacer avec l'aide des flèches du clavier
+    * Modifier son angle
+    * Modifier son type : le jeu interprètera la forme selon le type que vous lui donnerez (il est possible de placer un cercle et de le définir comme un carré) 
+
+Pour les éléments vous pourrez modifier :
+
+    * La densité qui est par défaut de 100
+    * La friction par rapport au sol : (forme glissante ~0)
+    * La restitution qui vous permettra de faire des formes rebondissantes en augmentant le chiffre (~1). 
+
+Lorsque vous sélectionnez une forme, il est possible d'annuler la sélection en cliquant droit. Si la forme est déjà posée sur la scène, vous devez utiliser le bouton Delete pour la supprimer.
+
+A gauche, vous pourrez régler la hauteur de la limite. La valeur de la hauteur est calculée par rapport à la base. C'est à dire qu'une hauteur de 100 sera 100 pixels au dessus de la base.
+
+Grâce au menu File, vous pourrez créer une nouvelle carte, ouvrir une carte existante et sauvegarder vos modifications. 
+
+Bon jeu !
