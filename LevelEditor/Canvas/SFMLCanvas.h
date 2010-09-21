@@ -26,6 +26,7 @@
             void saveMap();
             void saveAsMap();
             void newMap();
+            void modifyTitle(bool change=false);
 
         private :
             void OnInit();

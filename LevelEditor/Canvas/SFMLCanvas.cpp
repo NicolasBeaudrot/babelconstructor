@@ -257,6 +257,7 @@ void SFMLCanvas::loadMap() {
         _items->reset();
         hideProperties();
         _clicked = false;
+        modifyTitle();
 
         QDomDocument doc;
         QFile map(_currentFile);
@@ -336,6 +337,7 @@ void SFMLCanvas::saveMap() {
             out << "<limite y=\"" << (_base_sprite.GetPosition().y - _limite_sprite.GetPosition().y) << "\">limite.png</limite>" << endl;
             out << _items->save(_base_sprite.GetPosition().x - (_base_sprite.GetSize().x/2), _base_sprite.GetPosition().y - (_base_sprite.GetSize().y/2)) << endl;
             out << "</map>";
+            modifyTitle();
         }
         file.close();
     } else {
@@ -365,40 +367,55 @@ void SFMLCanvas::newMap() {
     _clicked = false;
     _back_path = "";
     _currentFile = "";
+    modifyTitle();
     _base_sprite.Resize(300, _base_image.GetHeight());
      _win->limiteEdit->setValue(300);
     _limite_sprite.SetY(_base_sprite.GetPosition().y - _win->limiteEdit->text().toFloat());
     hideProperties();
 }
 
+void SFMLCanvas::modifyTitle(bool change) {
+    QString title = "Babel Level Editor - " + _currentFile;
+    if (change) {
+        title += "*";
+    }
+    this->parentWidget()->setWindowTitle(title);
+}
+
 void SFMLCanvas::on_widthEdit_valueChanged(double value) {
     if (_mode == 1) {
         _base_sprite.Resize(value, _base_image.GetHeight());
+        modifyTitle(true);
     }
 }
 
 void SFMLCanvas::on_densityEdit_valueChanged(double value) {
     _items->setProperty(_currentItem, 5, value);
+    modifyTitle(true);
 }
 
 void SFMLCanvas::on_frictionEdit_valueChanged(double value) {
     _items->setProperty(_currentItem, 6, value);
+    modifyTitle(true);
 }
 
 void SFMLCanvas::on_restitutionEdit_valueChanged(double value) {
     _items->setProperty(_currentItem, 7, value);
+    modifyTitle(true);
 }
 
 void SFMLCanvas::on_elementsListView_clicked(QModelIndex index) {
     _clicked = true;
     _currentItem = _items->add(2,"ressources/images/elements/" + index.data().toString());
     hideProperties();
+    modifyTitle(true);
 }
 
 void SFMLCanvas::on_obstaclesListView_clicked(QModelIndex index) {
     _clicked = true;
     _currentItem = _items->add(3, "ressources/images/obstacles/" + index.data().toString());
     hideProperties();
+    modifyTitle(true);
 }
 
 void SFMLCanvas::on_backgroundsListView_clicked(QModelIndex index) {
@@ -407,6 +424,7 @@ void SFMLCanvas::on_backgroundsListView_clicked(QModelIndex index) {
     _back_sprite.SetImage(_back_image);
     _back_sprite.Resize(GetWidth(), GetHeight());
     hideProperties();
+    modifyTitle(true);
 }
 
 void SFMLCanvas::on_refreshButton_clicked() {
@@ -415,19 +433,23 @@ void SFMLCanvas::on_refreshButton_clicked() {
 
 void SFMLCanvas::on_angleEdit_sliderMoved(int position) {
     _items->setRotation(_currentItem, position);
+    modifyTitle(true);
 }
 
 void SFMLCanvas::on_deleteButton_clicked() {
     _items->remove(_currentItem);
     hideProperties();
+    modifyTitle(true);
 }
 
 void SFMLCanvas::on_limiteEdit_valueChanged(int value) {
     _limite_sprite.SetY(_base_sprite.GetPosition().y - value);
+    modifyTitle(true);
 }
 
 void SFMLCanvas::on_typeEdit_currentIndexChanged(QString type) {
     _items->setType(_currentItem, type);
+    modifyTitle(true);
 }
 
 void SFMLCanvas::on_loadMap() {
