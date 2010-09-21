@@ -50,6 +50,16 @@ void GameManager::run(std::string path) {
 
     loadMap(path);
     sf::Font *font = RessourceManager::Instance()->GetFont("ressources/fonts/gilligan.ttf");
+    sf::SoundBuffer buffer_click;
+    if (!buffer_click.LoadFromFile("ressources/sounds/click.wav")) {
+        Logger::Instance()->log("Impossible de charger le son click.wav");
+    }
+    sf::Sound sound_click(buffer_click);
+    sf::SoundBuffer buffer_winner;
+    if (!buffer_winner.LoadFromFile("ressources/sounds/winner.aif")) {
+        Logger::Instance()->log("Impossible de charger le son winner.wav");
+    }
+    sf::Sound sound_winner(buffer_winner);
     sf::String str_counter;
     str_counter.SetPosition(_app.GetWidth()-50, 20);
     str_counter.SetFont(*font);
@@ -63,6 +73,7 @@ void GameManager::run(std::string path) {
                 open = false;
             } else if (Event.Type == sf::Event::MouseButtonReleased && !_winner && _paused == 1) {
                 ElementFactory::Instance()->clic(_app.GetInput());
+                sound_click.Play();
             } else if (Event.Type == sf::Event::KeyPressed && (Event.Key.Code == sf::Key::Up || Event.Key.Code == sf::Key::Down)) {
                 if (Event.Key.Code == sf::Key::Up) {
                     ElementFactory::Instance()->rotate(0.1);
@@ -128,6 +139,7 @@ void GameManager::run(std::string path) {
                     ScoreManager::Instance()->update(MapManager::Instance()->getCurrentMapName(), _counter.GetElapsedTime());
                     ScoreManager::Instance()->save("ressources/config.xml");
                     _first_loop = false;
+                    sound_winner.Play();
                 }
             } else if (status == 2) {
                 destroyWorld();

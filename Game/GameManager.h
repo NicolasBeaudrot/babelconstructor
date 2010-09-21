@@ -26,6 +26,7 @@
 #include "Obstacle/ObstacleFactory.h"
 #include "Utility/PausableClock.h"
 #include "Utility/ScoreManager.h"
+#include <SFML/Audio.hpp>
 
 class GameManager : public CSingleton<GameManager>
 {

@@ -22,7 +22,6 @@
 #include "Utility/Logger.h"
 #include "Utility/ScoreManager.h"
 #include "GuiManager.h"
-#include <SFML/Network.hpp>
 
 int main(int argc, char** argv)
 {
