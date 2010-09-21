@@ -52,14 +52,19 @@ void GameManager::run(std::string path) {
     sf::Font *font = RessourceManager::Instance()->GetFont("ressources/fonts/gilligan.ttf");
     sf::SoundBuffer buffer_click;
     if (!buffer_click.LoadFromFile("ressources/sounds/click.wav")) {
-        Logger::Instance()->log("Impossible de charger le son click.wav");
+        Logger::Instance()->log("Unable to load the sound click.wav");
     }
     sf::Sound sound_click(buffer_click);
     sf::SoundBuffer buffer_winner;
     if (!buffer_winner.LoadFromFile("ressources/sounds/winner.aif")) {
-        Logger::Instance()->log("Impossible de charger le son winner.wav");
+        Logger::Instance()->log("Unable to load the sound winner.aif");
     }
     sf::Sound sound_winner(buffer_winner);
+    sf::SoundBuffer buffer_loser;
+    if (!buffer_loser.LoadFromFile("ressources/sounds/gameover.wav")) {
+        Logger::Instance()->log("Unable to load the sound gameover.wav");
+    }
+    sf::Sound sound_loser(buffer_loser);
     sf::String str_counter;
     str_counter.SetPosition(_app.GetWidth()-50, 20);
     str_counter.SetFont(*font);
@@ -151,6 +156,10 @@ void GameManager::run(std::string path) {
                 perdu.SetPosition(_app.GetWidth()/2-100, 10);
                 _app.Draw(perdu);
                 _paused = 2;
+                if (sound_loser.GetStatus() != sf::Sound::Playing && _first_loop) {
+                    sound_loser.Play();
+                    _first_loop = false;
+                }
             }
         }
 
