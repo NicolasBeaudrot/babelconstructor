@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <map>
 <background>fond_bleu_central.jpg</background>
-<support width="230" height="30">barre.png</support>
-<limite y="200">limite.png</limite>
-<elements><elem type="Triangle" file="triangle.png" x="87" y="74.5" angle="0" density="100" friction="0.7" restitution="0.2" /><elem type="Circle" file="cercle.png" x="-12" y="50" angle="0" density="100" friction="0.7" restitution="0.2" /><elem type="Circle" file="cercle.png" x="187" y="51" angle="0" density="100" friction="0.7" restitution="0.2" /><elem type="Square" file="rectangle.png" x="18" y="52" angle="138" density="100" friction="0.4" restitution="0.2" /><elem type="Square" file="rectangle.png" x="126" y="53" angle="42" density="100" friction="0.4" restitution="0.2" /></elements><obstacles></obstacles>
+<support width="340" height="30">barre.png</support>
+<limite y="173">limite.png</limite>
+<elements><elem type="Square" file="triangle.png" x="4" y="44.5" angle="0" density="100" friction="0.2" restitution="0.2" /><elem type="Triangle" file="triangle.png" x="56" y="44.5" angle="0" density="100" friction="0.2" restitution="0.2" /><elem type="Circle" file="cercle.png" x="283" y="52" angle="0" density="100" friction="0.5" restitution="0.3" /><elem type="Circle" file="cercle.png" x="231" y="52" angle="0" density="100" friction="0.5" restitution="0.3" /><elem type="Square" file="carre.png" x="141" y="80" angle="0" density="100" friction="0.2" restitution="0.2" /><elem type="Square" file="rectangle.png" x="127" y="29" angle="0" density="100" friction="0.2" restitution="0.2" /></elements><obstacles></obstacles>
 </map>

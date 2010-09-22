@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<map>
+<background>fond_bleu_central.jpg</background>
+<support width="180" height="30">barre.png</support>
+<limite y="300">limite.png</limite>
+<elements><elem type="Square" file="barre.png" x="16" y="20" angle="0" density="100" friction="0.6" restitution="0.2" /><elem type="Triangle" file="triangle.png" x="65" y="140.5" angle="0" density="100" friction="0.4" restitution="0.2" /><elem type="Square" file="rectangle.png" x="50" y="72" angle="90" density="100" friction="0.2" restitution="0.2" /></elements><obstacles><obstacle type="Square" file="carre.png" x="-39" y="186" angle="61" /><obstacle type="Square" file="carre.png" x="101" y="243" angle="146" /></obstacles>
+</map>

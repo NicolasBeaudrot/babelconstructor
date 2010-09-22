@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <map>
 <background>fond_bleu_central.jpg</background>
-<support width="160" height="30">barre.png</support>
-<limite y="240">limite.png</limite>
-<elements><elem type="Square" file="carre.png" x="5" y="69" angle="0" density="100" friction="0.2" restitution="0.2" /><elem type="Square" file="carre.png" x="5" y="119" angle="0" density="100" friction="0.2" restitution="0.2" /><elem type="Rectangle" file="barre.png" x="5" y="19" angle="0" density="100" friction="0.2" restitution="0.2" /><elem type="Triangle" file="triangle.png" x="55" y="92.5" angle="0" density="100" friction="0.2" restitution="0.2" /><elem type="Triangle" file="triangle.png" x="105" y="91.5" angle="0" density="100" friction="0.2" restitution="0.2" /><elem type="Rectangle" file="rectangle.png" x="63" y="49" angle="0" density="100" friction="0.2" restitution="0.2" /></elements><obstacles></obstacles>
+<support width="300" height="30">barre.png</support>
+<limite y="470">limite.png</limite>
+<elements><elem type="Square" file="carre.png" x="48" y="399" angle="0" density="100" friction="0.2" restitution="0.2" /><elem type="Square" file="carre.png" x="178" y="399" angle="0" density="100" friction="0.2" restitution="0.2" /><elem type="Square" file="barre.png" x="76" y="21" angle="0" density="100" friction="0.2" restitution="0.2" /><elem type="Square" file="rectangle.png" x="110" y="75" angle="90" density="100" friction="0.2" restitution="0.2" /></elements><obstacles><obstacle type="Square" file="carre2.png" x="48" y="499" angle="0" /><obstacle type="Square" file="carre2.png" x="178" y="499" angle="0" /><obstacle type="Square" file="carre2.png" x="48" y="449" angle="0" /><obstacle type="Square" file="carre2.png" x="178" y="449" angle="0" /><obstacle type="Square" file="carre2.png" x="48" y="348" angle="0" /><obstacle type="Square" file="carre2.png" x="178" y="348" angle="0" /></obstacles>
 </map>

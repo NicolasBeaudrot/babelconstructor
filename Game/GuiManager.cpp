@@ -36,7 +36,7 @@ void GuiManager::create() {
     m->add(unofficial);
 
     std::vector<std::string> &list = MapManager::Instance()->getMapList();
-    int y = 0, x = 0;
+    int y = 0, x = 0, page = 0;
     bool initialized = false;
     for(unsigned int i = 0; i < list.size(); i++) {
         std::stringstream str_i, str_score;
@@ -60,10 +60,11 @@ void GuiManager::create() {
             lock_b->setPosition(back_selector->getPosition().x + 120 + x, back_selector->getPosition().y + 125 + y);
             m->add(lock_b);
         }
-
-        if ((i % 4) == 0 && i > 0) {
+        page++;
+        if (page == 5) {
             y += 80;
             x = 0;
+            page = 0;
         } else {
             x += 80;
         }
